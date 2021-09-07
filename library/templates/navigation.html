@@ -1,0 +1,76 @@
+<nav id="nav">
+  <img id="logo" src="BOOK_ICON" />
+
+  <h2 id="nav-header">
+    {% if 'user_name' in session %} Hello, {{ session['user_name'] }} {%
+    endif %}
+  </h2>
+
+  <div>
+    <h3>
+      <a class="btn-nav" href="{{ url_for('HOME') }}">
+        Home
+      </a>
+    </h3>
+  </div>
+
+  <div>
+    <h3>
+      <a class="btn-nav" href="{{ url_for('REGISTER') }}">
+        Register
+      </a>
+    </h3>
+  </div>
+
+  <div>
+    <h3>
+      <a class="btn-nav" href="{{ url_for('LOGIN') }}">
+        Login
+      </a>
+    </h3>
+  </div>
+
+  <div>
+    <h3>
+      <a class="btn-nav" href="{{ url_for('PROFILE') }}">
+        Profile
+      </a>
+    </h3>
+  </div>
+
+  <div>
+    <h3>
+      <a class="btn-nav" href="{{ url_for('READING_LIST') }}">
+        Reading list
+      </a>
+    </h3>
+  </div>
+
+  <div>
+    <h3>
+      <a class="btn-nav" href="{{ url_for('BOOKS BY DATE') }}">
+        Browse by date
+      </a>
+    </h3>
+  </div>
+
+  <div>
+    <h3>
+      <a class="btn-nav" href="{{ url_for('AUTHORS') }}">
+        Browse by author
+      </a>
+    </h3>
+  </div>
+
+    <div>
+    <h3>
+      <a class="btn-nav" href="{{ url_for('PUBLISHERS') }}">
+        Browse by publisher
+      </a>
+    </h3>
+  </div>
+
+  <div id="nav-footer">
+    COMPSCI 235 Software Development Methodologies
+  </div>
+</nav>
