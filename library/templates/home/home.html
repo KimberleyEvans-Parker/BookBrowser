@@ -1,6 +1,9 @@
 {% extends 'layout.html' %} {% block content %}
 <main id="main">
   <h1>Browse</h1>
+  {% for book in books %}
+  <p>{{book}}</p>
+  {% endfor %}
   <p style="text-align: right; font-style: italic;">
     Wikipedia
   </p>

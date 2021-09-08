@@ -1,6 +1,9 @@
 """Initialize Flask app."""
 
 from flask import Flask, render_template
+from library.adapters import jsondatareader
+
+from library.adapters.jsondatareader import BooksJSONReader
 
 # TODO: Access to the books should be implemented via the repository pattern and using blueprints, so this can not stay here!
 from library.domain.model import Book
@@ -20,10 +23,14 @@ def create_some_book():
 def create_app():
     app = Flask(__name__)
 
-    @app.route('/')
-    def home():
-        some_book = create_some_book()
-        # Use Jinja to customize a predefined html page rendering the layout for showing a single book.
-        return render_template('simple_book.html', book=some_book)
+    jsondatareader.book_dataset = BooksJSONReader("library/adapters/data/comic_books_excerpt.json", 
+        "library/adapters/data/book_authors_excerpt.json")
+    jsondatareader.book_dataset.read_json_files()
+    print(len(jsondatareader.book_dataset.dataset_of_books), jsondatareader.book_dataset.dataset_of_books[0])
+
+    
+    with app.app_context():
+        from .books_blueprint import books
+        app.register_blueprint(books.books_blueprint)
 
     return app

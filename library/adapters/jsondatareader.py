@@ -3,6 +3,7 @@ from typing import List
 
 from library.domain.model import Publisher, Author, Book
 
+book_dataset = None
 
 class BooksJSONReader:
 
