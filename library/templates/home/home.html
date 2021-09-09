@@ -4,7 +4,7 @@
 <main id="main">
   <h1>Browse</h1>
   {% for book in books %}
-  {{ book_macro.book_item(book) }}
+  {{ book_macro.book_item(book, 5, 10) }}
   {% endfor %}
   <p style="text-align: right; font-style: italic;">
     Wikipedia

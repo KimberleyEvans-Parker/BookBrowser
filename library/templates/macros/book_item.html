@@ -39,10 +39,13 @@
     </div>
 
     {% if cost != none %}
-        <div class="price-tag">{{cost}}</div>
+        <div class="price-tag book-tag"><p>${{cost}}</p></div>
     {% endif %}
     {% if stock != none %}
-        <div class="stock">{{stock}}</div>
+        <div class="stock-tag book-tag">
+            <p>{{stock}}</p>
+            <p class="small">left</p>
+        </div>
     {% endif %}
 
 </div>

@@ -172,3 +172,40 @@ body {
     background-color: rgb(34, 141, 87);
     background-image: url("../img/green-book.jpg");
 }
+.book-tag {
+    position: absolute;
+    z-index: 10;
+    background-size: 100% 100%;
+    text-align: center;
+}
+.price-tag {
+    background-image: url("../img/price-tag.png");
+    left: 320px;
+    top: 0px;
+    width: 60px;
+    height: 80px;
+}
+.stock-tag {
+    background-image: url("../img/stock-tag.png");
+    left: 330px;
+    top: 80px;
+    width: 60px;
+    height: 100px;
+}
+.book-tag p {
+    font-weight: bolder;
+    font-size: larger;
+    margin: 0;
+    position: absolute;
+    top: 45%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+.book-tag .small {
+    font-weight: 100;
+    font-size: small;
+    padding-top: 20px;
+}
