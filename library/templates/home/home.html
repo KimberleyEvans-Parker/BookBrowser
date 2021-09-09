@@ -1,8 +1,10 @@
+{% import "macros/book_item.html" as book_macro %}
+
 {% extends 'layout.html' %} {% block content %}
 <main id="main">
   <h1>Browse</h1>
   {% for book in books %}
-  <p>{{book}}</p>
+  {{ book_macro.book_item(book) }}
   {% endfor %}
   <p style="text-align: right; font-style: italic;">
     Wikipedia
