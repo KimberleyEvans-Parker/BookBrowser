@@ -1,13 +1,18 @@
 {% import "macros/book_item.html" as book_macro %}
 
 {% extends 'layout.html' %} {% block content %}
-<main id="main">
-  <h1>Browse</h1>
+<main id="main" class="main-container">
+  <div class="header">
+    <h1>Browse books</h1>
+    <div>
+      <button class="change-page float-left">First Page</button>
+      <button class="change-page float-left">Previous</button>
+      <button class="change-page float-right">Next</button>
+      <button class="change-page float-right">Last Page</button>
+    </div>
+  </div>
   {% for book in books %}
-  {{ book_macro.book_item(book, 5, 10) }}
+    {{ book_macro.book_item(book, 5, 10) }}
   {% endfor %}
-  <p style="text-align: right; font-style: italic;">
-    Wikipedia
-  </p>
 </main>
 {% endblock %}

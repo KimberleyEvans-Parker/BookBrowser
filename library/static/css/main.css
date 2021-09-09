@@ -5,18 +5,43 @@ body {
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */
     background-attachment: fixed;
+    font-family: 'Times New Roman', Times, serif;
 }
 
+.main-container {
+    margin: 0px 150px;
+}
+
+.header {
+    height: 120px;
+}
+
+.change-page {
+    padding: 10px;
+    border: none;
+    background-color: #efefef;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: large;
+    margin: 10px;
+}
+
+.float-left {
+    float: left;
+}
+.float-right {
+    float: right;
+}
 
 /* ------------------------- book item --------------------------- */
 .book-item {
-    width: 300px;
-    height: 380px;
+    width: 200px;
+    height: 350px;
     display: flex;
     justify-content: center;
     align-items: center;
     perspective: 1200px;
     float: left;
+    margin: 15px;
 }
 .book-item h2 {
     color: white;
@@ -38,12 +63,12 @@ body {
     font-style: italic;
     text-align: center;
 }
-.float-left {
+.release-year {
     position: fixed;
     text-align: left;
     width: 150px;
 }
-.float-right {
+.num-pages {
     position: fixed;
     text-align: right;
     width: 150px;
@@ -84,6 +109,7 @@ body {
     height: 300px;
     cursor: pointer;
     backface-visibility: visible;
+    left: -100px;
 }
   
   .front, .back, .page1, .page2, .page3, .page4, .page5, .page6 {
@@ -180,14 +206,14 @@ body {
 }
 .price-tag {
     background-image: url("../img/price-tag.png");
-    left: 320px;
+    left: 160px;
     top: 0px;
     width: 60px;
     height: 80px;
 }
 .stock-tag {
     background-image: url("../img/stock-tag.png");
-    left: 330px;
+    left: 170px;
     top: 80px;
     width: 60px;
     height: 100px;
