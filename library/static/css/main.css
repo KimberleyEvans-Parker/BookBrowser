@@ -8,6 +8,10 @@ body {
     font-family: 'Times New Roman', Times, serif;
 }
 
+h1 {
+    margin: 15px;
+}
+
 .main-container {
     margin: 0px 150px;
 }
@@ -22,7 +26,13 @@ body {
     background-color: #efefef;
     font-family: 'Times New Roman', Times, serif;
     font-size: large;
-    margin: 10px;
+    margin: 10px 15px;
+    cursor: pointer;
+}
+
+.change-page:hover {
+    opacity: 0.5;
+    transition-duration: 1s;
 }
 
 .float-left {
