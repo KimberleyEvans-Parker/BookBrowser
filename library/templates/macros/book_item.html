@@ -1,9 +1,10 @@
 {% macro book_item(book, cost = -1, stock = -1) %}
 <div class="book-item">
+    {% set cover = ['red-book', 'blue-book', 'brown-book', 'green-book'] | random %}
     <div class="book">
-        <div class="back {{ ['red-book', 'blue-book', 'brown-book', 'green-book'] | random }}" + ></div>
+        <div class="back {{ cover }}" + ></div>
         <div class="page6">
-          <div class="description">
+          <div class="page-container description">
               {{ book.description }}
           </div></div>
         <div class="page5"></div>
@@ -11,14 +12,38 @@
         <div class="page3"></div>
         <div class="page2"></div>
         <div class="page1"></div>
-        <div class="front {{ ['red-book', 'blue-book', 'brown-book', 'green-book'] | random }}">
-            <h2>{{ book.title }}</h2>
-            {% for author in book.authors %}
-                <h3>{{ author.full_name }}</h3>
-                {{ ", " if not loop.last else "" }}
-            {% endfor %}
-            <h3>{{ book.publisher.name }}</h3>
+        <div class="front {{ cover }}">
+            <div class="page-container title">
+                <h2>{{ book.title }}</h2>
+            </div>
+            <div class="page-container authors">
+                <h3>
+                    {% for author in book.authors %}
+                        {{ author.full_name }}{{ ", " if not loop.last else "" }}
+                    {% endfor %}
+                </h3>
+            </div>
+            <div class="page-container publisher">
+                {% if book.publisher.name != "N/A" %}
+                    <h3>{{ book.publisher.name }}</h3>
+                {% endif %}
+            </div>
+            <div class="page-container">
+                {% if book.release_year != none %}<h4 class="float-left">{{book.release_year}}</h4>{% endif %}
+                {% if book.num_pages != none %}<h4 class="float-right">{{book.num_pages}} pgs</h4>{% endif %}
+            </div>
+            <div class="page-container">
+                {% if book.ebook %}<h5>This comes as an ebook</h5>{% endif %}
+            </div>
         </div>
-      </div>
+    </div>
+
+    {% if cost != none %}
+        <div class="price-tag">{{cost}}</div>
+    {% endif %}
+    {% if stock != none %}
+        <div class="stock">{{stock}}</div>
+    {% endif %}
+
 </div>
 {% endmacro %}
