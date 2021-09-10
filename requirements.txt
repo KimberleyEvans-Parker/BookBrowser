@@ -1,2 +1,4 @@
 pytest
 Flask==1.1.4
+flask-wtf==0.14.2
+python-dotenv==0.13.0
