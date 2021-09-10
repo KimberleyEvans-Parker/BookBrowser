@@ -7,7 +7,11 @@ from library.adapters.jsondatareader import BooksJSONReader
 
 def create_app():
     app = Flask(__name__)
+    
+    # Configure the app from configuration-file settings.
+    app.config.from_object('config.Config')
 
+    # Initialise repo
     jsondatareader.book_dataset = BooksJSONReader("library/adapters/data/comic_books_excerpt.json", 
         "library/adapters/data/book_authors_excerpt.json")
     jsondatareader.book_dataset.read_json_files()

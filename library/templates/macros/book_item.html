@@ -1,4 +1,5 @@
 {% macro book_item(book, cost = -1, stock = -1) %}
+
 <div class="book-item">
     {% set cover = ['red-book', 'blue-book', 'brown-book', 'green-book'] | random %}
     <div class="book">
@@ -29,8 +30,8 @@
                 {% endif %}
             </div>
             <div class="page-container">
-                {% if book.release_year != none %}<h4 class="float-left">{{book.release_year}}</h4>{% endif %}
-                {% if book.num_pages != none %}<h4 class="float-right">{{book.num_pages}} pgs</h4>{% endif %}
+                {% if book.release_year != none %}<h4 class="release-year">{{book.release_year}}</h4>{% endif %}
+                {% if book.num_pages != none %}<h4 class="num-pages">{{book.num_pages}} pgs</h4>{% endif %}
             </div>
             <div class="page-container">
                 {% if book.ebook %}<h5>This comes as an ebook</h5>{% endif %}
