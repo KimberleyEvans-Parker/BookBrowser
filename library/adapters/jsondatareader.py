@@ -87,8 +87,6 @@ class BooksJSONReader:
             self.__dataset_of_books.append(book_instance)
 
         for inventory_item_json in inventory_json:
-            print(inventory_item_json)
             book:Book = self.get_book_by_id(int(inventory_item_json["book_id"]))
             if book is not None:
-                print(book)
                 self.__books_inventory.add_book(book, inventory_item_json["price"], inventory_item_json["stock"])
