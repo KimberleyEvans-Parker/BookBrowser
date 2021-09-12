@@ -15,7 +15,7 @@
 
   <div class="browse-content">
     {% for book in books %}
-      {{ book_macro.book_item(book, 20, 10) }}
+      {{ book_macro.book_item(book, inventory.find_price(book.book_id), inventory.find_stock_count(book.book_id)) }}
     {% endfor %}
   </div>
 

@@ -11,14 +11,15 @@ books_blueprint = Blueprint(
 def home():
     return render_template(
         'home/home.html',
-        books=repo.book_dataset.dataset_of_books
+        books=repo.book_dataset.dataset_of_books,
+        inventory = repo.book_dataset.books_inventory
     )
 
 @books_blueprint.route('/book')
 def book():
     return render_template(
         'books_and_reviews/book.html',
-        book=repo.book_dataset.dataset_of_books[0] # TODO: find correct book
+        book=repo.book_dataset.dataset_of_books.get_book_by_id(25742454) # TODO: get correct book id from url
     )
 
 @books_blueprint.route('/register')
