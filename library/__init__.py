@@ -13,7 +13,7 @@ def create_app():
 
     # Initialise repo
     jsondatareader.book_dataset = BooksJSONReader("library/adapters/data/comic_books_excerpt.json", 
-        "library/adapters/data/book_authors_excerpt.json")
+        "library/adapters/data/book_authors_excerpt.json", "library/adapters/data/book_inventory.json")
     jsondatareader.book_dataset.read_json_files()
     print(len(jsondatareader.book_dataset.dataset_of_books), jsondatareader.book_dataset.dataset_of_books[0])
 
