@@ -15,11 +15,12 @@ def home():
         inventory = repo.book_dataset.books_inventory
     )
 
-@books_blueprint.route('/book')
-def book():
+@books_blueprint.route('/book/<id>')
+def book(id):
+    print(id)
     return render_template(
         'books_and_reviews/book.html',
-        book=repo.book_dataset.dataset_of_books.get_book_by_id(25742454) # TODO: get correct book id from url
+        book=repo.book_dataset.get_book_by_id(int(id))
     )
 
 @books_blueprint.route('/register')

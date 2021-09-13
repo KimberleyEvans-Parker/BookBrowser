@@ -1,5 +1,7 @@
+
 {% macro book_item(book, cost = -1, stock = -1) %}
 
+<a href="{{ url_for('books_bp.book', id=book.book_id) }}">
 <div class="book-item">
     {% set cover = ['red-book', 'blue-book', 'brown-book', 'green-book'] | random %}
     <div class="book">
@@ -50,4 +52,5 @@
     {% endif %}
 
 </div>
+</a>
 {% endmacro %}
