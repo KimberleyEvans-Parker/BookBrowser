@@ -1,20 +1,26 @@
 import json
 from typing import List
 
-from library.domain.model import Publisher, Author, Book
+from library.domain.model import BooksInventory, Publisher, Author, Book
 
 book_dataset = None
 
 class BooksJSONReader:
 
-    def __init__(self, books_file_name: str, authors_file_name: str):
+    def __init__(self, books_file_name: str, authors_file_name: str, inventory_file_name: str):
         self.__books_file_name = books_file_name
         self.__authors_file_name = authors_file_name
+        self.__inventory_file_name = inventory_file_name
         self.__dataset_of_books = []
+        self.__books_inventory = BooksInventory()
 
     @property
     def dataset_of_books(self) -> List[Book]:
         return self.__dataset_of_books
+
+    @property
+    def books_inventory(self) -> BooksInventory:
+        return self.__books_inventory
 
     def read_books_file(self) -> list:
         books_json = []
@@ -32,10 +38,24 @@ class BooksJSONReader:
                 authors_json.append(author_entry)
         return authors_json
 
+    def read_inventory(self) -> list:
+        inventory_json = []
+        with open(self.__inventory_file_name, encoding='UTF-8') as inventory_jsonfile:
+            for line in inventory_jsonfile:
+                inventory_entry = json.loads(line)
+                inventory_json.append(inventory_entry)
+        return inventory_json
+
+    def get_book_by_id(self, book_id) -> Book:
+        for book in self.__dataset_of_books:
+            if book.book_id == book_id:
+                return book
+        return None
 
     def read_json_files(self):
         authors_json = self.read_authors_file()
         books_json = self.read_books_file()
+        inventory_json = self.read_inventory()
 
         for book_json in books_json:
             book_instance = Book(int(book_json['book_id']), book_json['title'])
@@ -65,3 +85,8 @@ class BooksJSONReader:
                 book_instance.add_author(Author(numerical_id, author_name))
 
             self.__dataset_of_books.append(book_instance)
+
+        for inventory_item_json in inventory_json:
+            book:Book = self.get_book_by_id(int(inventory_item_json["book_id"]))
+            if book is not None:
+                self.__books_inventory.add_book(book, inventory_item_json["price"], inventory_item_json["stock"])
