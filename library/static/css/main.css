@@ -8,6 +8,12 @@ body {
     font-family: 'Times New Roman', Times, serif;
 }
 
+a {
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 h1 {
     margin: 15px;
 }
