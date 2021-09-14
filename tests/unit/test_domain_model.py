@@ -401,6 +401,7 @@ class TestUser:
 def read_books_and_authors():
     books_file_name = 'comic_books_excerpt.json'
     authors_file_name = 'book_authors_excerpt.json'
+    inventory_file_name = 'book_inventory.json'
 
     # we use a method from a utils file in the root folder to figure out the root
     # this way testing code is always finding the right path to the data files
@@ -408,7 +409,8 @@ def read_books_and_authors():
     data_folder = Path("library/adapters/data")
     path_to_books_file = str(root_folder / data_folder / books_file_name)
     path_to_authors_file = str(root_folder / data_folder / authors_file_name)
-    reader = BooksJSONReader(path_to_books_file, path_to_authors_file)
+    path_to_inventory_file = str(root_folder / data_folder / inventory_file_name)
+    reader = BooksJSONReader(path_to_books_file, path_to_authors_file, path_to_inventory_file)
     reader.read_json_files()
     return reader.dataset_of_books
 
@@ -444,6 +446,62 @@ class TestBooksJSONReader:
     def test_read_books_from_file_special_characters(self, read_books_and_authors):
         dataset_of_books = read_books_and_authors
         assert dataset_of_books[17].title == "續．星守犬"
+
+
+
+@pytest.fixture
+def get_books_inventory():
+    books_file_name = 'comic_books_excerpt.json'
+    authors_file_name = 'book_authors_excerpt.json'
+    inventory_file_name = 'book_inventory.json'
+
+    # we use a method from a utils file in the root folder to figure out the root
+    # this way testing code is always finding the right path to the data files
+    root_folder = get_project_root()
+    data_folder = Path("library/adapters/data")
+    path_to_books_file = str(root_folder / data_folder / books_file_name)
+    path_to_authors_file = str(root_folder / data_folder / authors_file_name)
+    path_to_inventory_file = str(root_folder / data_folder / inventory_file_name)
+    reader = BooksJSONReader(path_to_books_file, path_to_authors_file, path_to_inventory_file)
+    reader.read_json_files()
+    return reader.books_inventory
+
+
+class TestRepoInventory:
+
+    def test_find_book(self, get_books_inventory):
+        inventory = get_books_inventory
+        assert str(inventory.find_book(25742454)) == "<Book The Switchblade Mamma, book id = 25742454>"
+        assert str(inventory.find_book(27036539)) == "<Book War Stories, Volume 4, book id = 27036539>"
+        assert str(inventory.find_book(18955715)) == "<Book D.Gray-man, Vol. 16: Blood & Chains, book id = 18955715>"
+        assert inventory.find_book(0) == None
+
+    def test_remove_book(self, get_books_inventory):
+        inventory = get_books_inventory
+        assert str(inventory.find_book(25742454)) == "<Book The Switchblade Mamma, book id = 25742454>"
+        inventory.remove_book(25742454)
+        assert inventory.find_book(25742454) == None
+
+    def test_find_price(self, get_books_inventory):
+        inventory = get_books_inventory
+        assert inventory.find_price(25742454) == 20
+        assert inventory.find_price(27036539) == 9
+        assert inventory.find_price(18955715) == 26
+        assert inventory.find_price(0) == None
+        
+    def test_find_stock_count(self, get_books_inventory):
+        inventory = get_books_inventory
+        assert inventory.find_stock_count(25742454) == 3
+        assert inventory.find_stock_count(27036539) == 6
+        assert inventory.find_stock_count(18955715) == 8
+        assert inventory.find_stock_count(0) == None
+
+    def test_search_book_by_title(self, get_books_inventory):
+        inventory = get_books_inventory
+        assert str(inventory.search_book_by_title("The Switchblade Mamma")) == "<Book The Switchblade Mamma, book id = 25742454>"
+        assert str(inventory.search_book_by_title("War Stories, Volume 4")) == "<Book War Stories, Volume 4, book id = 27036539>"
+        assert str(inventory.search_book_by_title("D.Gray-man, Vol. 16: Blood & Chains")) == "<Book D.Gray-man, Vol. 16: Blood & Chains, book id = 18955715>"
+        assert inventory.search_book_by_title("Book should not exist") == None
 
 class TestBooksInventory:
 
