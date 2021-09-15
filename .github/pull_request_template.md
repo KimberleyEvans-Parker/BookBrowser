@@ -1,15 +1,15 @@
 ## GitHub Issue Solved:
 
-closes # <!--Reference the number of the solved issue-->
+Closes #5
 
 ## Current behaviour
 
-<!--Short description of the current behaviour-->
+Menu nav bar, currently redirects to all required pages except for register and login page which still need to be defined. 
 
 ## Changed behaviour
 
-<!--Short description of the behaviour after the PR has been merged-->
+User will be able to use nav bar to traverse to different webpages on the website, each button has a hovering effect.
 
 ## Notes
 
-<!--You may add screenshots or other information if you think it's relevant-->
+Need to check how the nav bar will react when a user is logged in as there is a Hello, {{User}} implementation for the nav bar. 
