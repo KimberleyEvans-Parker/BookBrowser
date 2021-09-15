@@ -1,9 +1,12 @@
 import json
 from typing import List
+import math
 
 from library.domain.model import BooksInventory, Publisher, Author, Book
 
 book_dataset = None
+
+BOOKS_PER_PAGE = 12
 
 class BooksJSONReader:
 
@@ -13,6 +16,11 @@ class BooksJSONReader:
         self.__inventory_file_name = inventory_file_name
         self.__dataset_of_books = []
         self.__books_inventory = BooksInventory()
+        self.__indexes = {"home": 0, "books_by_date": 0, "authors": 0, "publishers": 0}
+
+    @property
+    def indexes(self):
+        return self.__indexes
 
     @property
     def dataset_of_books(self) -> List[Book]:
@@ -51,6 +59,26 @@ class BooksJSONReader:
             if book.book_id == book_id:
                 return book
         return None
+
+    def get_page_by_index(self, page):
+        print("PAGE:", page, "index:", self.__indexes[page])
+        return self.__dataset_of_books[self.__indexes[page]: self.__indexes[page] + BOOKS_PER_PAGE]
+
+    def get_highest_index(self) -> int:
+        return (math.ceil(len(self.dataset_of_books) / BOOKS_PER_PAGE) - 1) * BOOKS_PER_PAGE
+
+    def first(self, page):
+        self.__indexes[page] = 0
+
+    def last(self, page):
+        self.__indexes[page] = self.get_highest_index()
+
+    def previous(self, page):
+        self.__indexes[page] = max(0, self.__indexes[page] - BOOKS_PER_PAGE)
+
+    def next(self, page):
+        self.__indexes[page] = min(self.__indexes[page] + 12, self.get_highest_index())
+        print("NEXT: new", page, " index:", self.__indexes[page])
 
     def read_json_files(self):
         authors_json = self.read_authors_file()

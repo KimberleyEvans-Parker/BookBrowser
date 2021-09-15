@@ -66,6 +66,12 @@ button:hover {
     transition-duration: 1s;
 }
 
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .float-left {
     float: left;
 }
