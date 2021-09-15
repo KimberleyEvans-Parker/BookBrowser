@@ -2,9 +2,9 @@
 
 from pathlib import Path
 from flask import Flask, render_template
-from A2.compsci235_assignment2_a.library.adapters import jsondatareader
+from library.adapters import jsondatareader
 
-from A2.compsci235_assignment2_a.library.adapters.jsondatareader import BooksJSONReader
+from library.adapters.jsondatareader import BooksJSONReader
 
 def create_app(test_config=None):
     app = Flask(__name__)
