@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, url_for
 
-import A2.compsci235_assignment2_a.library.adapters.jsondatareader as repo
+import library.adapters.jsondatareader as repo
 
 books_blueprint = Blueprint(
     'books_bp', __name__
