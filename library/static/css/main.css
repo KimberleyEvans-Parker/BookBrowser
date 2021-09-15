@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Prata&display=swap');
+
 body {
     background-color: rgb(141, 77, 34);
     background-image: url("../img/wood-background.jpg");
@@ -18,12 +20,26 @@ h1 {
     margin: 15px;
 }
 
+button {
+    padding: 9px 25px;
+    background: #8a8a8abf;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+}
+
+button:hover {
+    background: rgba(0, 136, 169, 0.8);
+}
+
 .browse-container {
     margin: 0px 150px;
     height: 100%;
 }
 
 .browse-header {
+    color: antiquewhite;
     height: 120px;
     width: 100%;
     /* position: fixed; */
@@ -36,9 +52,9 @@ h1 {
 }
 
 .change-page {
+    color: antiquewhite;
     padding: 10px;
     border: none;
-    background-color: #efefef;
     font-family: 'Times New Roman', Times, serif;
     font-size: large;
     margin: 10px 15px;
@@ -259,4 +275,62 @@ h1 {
     font-weight: 100;
     font-size: small;
     padding-top: 20px;
+}
+/* ------------------------- navigation --------------------------- */
+.nav {
+    position: fixed;
+    top: -7px;
+}
+.nav_list, .btn_nav {
+    font-family: "Prata", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: antiquewhite;
+    text-decoration: none;
+}
+.nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 205px;
+    font-family: "Prata", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: antiquewhite;
+    text-decoration: none;
+}
+.logo {
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    padding-left: 221px;
+
+}
+.nav_links {
+    list-style: none;
+    margin-bottom: 16px;
+    border-bottom-width: 10px;
+    padding-left: 225px;
+}
+
+.nav_links li {
+    display: inline-block;
+    padding: 0px 20px;
+}
+
+.nav_links li a {
+    transition: all 0.3s ease 0s;
+}
+
+.nav_links li a:hover {
+    color: rgba(0, 136, 169, 1);
+}
+
+/* ------------------------- header ------------------------------- */
+.header {
+    color: antiquewhite;
+    font-weight: bolder;
+    font-size: xxx-large;
+    text-align: center;
+    padding-top: 87px;
 }
