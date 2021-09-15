@@ -1,7 +1,7 @@
 import json
 from typing import List
 
-from A2.compsci235_assignment2_a.library.domain.model import BooksInventory, Publisher, Author, Book
+from library.domain.model import BooksInventory, Publisher, Author, Book
 
 book_dataset = None
 
