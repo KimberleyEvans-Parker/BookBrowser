@@ -1,11 +1,4 @@
-\<nav class="nav">
-<!--    <h2 class="nav-header">-->
-<!--      {% if 'user_name' in session %} Hello, {{ session['user_name'] }}-->
-<!--        {% else %}-->
-<!--        Welcome-->
-<!--        {% endif %}-->
-<!--    </h2>-->
-
+<nav class="nav">
     <ul class="nav_links">
         <li class="nav-header">{% if 'user_name' in session %} Hello, {{ session['user_name'] }}
         {% else %}
@@ -22,76 +15,3 @@
         <img class="logo" src="{{ url_for('static', filename='book_icon.png') }}" /></li>
     </ul>
   </nav>
-
-<!--<div>-->
-<!--      <h3>-->
-<!--        <a class="btn-nav" href="{{ url_for('books_bp.home') }}">-->
-<!--          Home-->
-<!--        </a>-->
-<!--      </h3>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <h3>-->
-<!--        <a class="btn-nav" href="{{ url_for('books_bp.register') }}">-->
-<!--          Register-->
-<!--        </a>-->
-<!--      </h3>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <h3>-->
-<!--        <a class="btn-nav" href="{{ url_for('books_bp.login') }}">-->
-<!--          Login-->
-<!--        </a>-->
-<!--      </h3>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <h3>-->
-<!--        <a class="btn-nav" href="{{ url_for('books_bp.profile') }}">-->
-<!--          Profile-->
-<!--        </a>-->
-<!--      </h3>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <h3>-->
-<!--        <a class="btn-nav" href="{{ url_for('books_bp.reading_list') }}">-->
-<!--          Reading list-->
-<!--        </a>-->
-<!--      </h3>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <h3>-->
-<!--        <a class="btn-nav" href="{{ url_for('books_bp.books_by_date') }}">-->
-<!--          Browse by date-->
-<!--        </a>-->
-<!--      </h3>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <h3>-->
-<!--        <a class="btn-nav" href="{{ url_for('books_bp.authors') }}">-->
-<!--          Browse by author-->
-<!--        </a>-->
-<!--      </h3>-->
-<!--    </div>-->
-
-<!--      <div>-->
-<!--      <h3>-->
-<!--        <a class="btn-nav" href="{{ url_for('books_bp.publishers') }}">-->
-<!--          Browse by publisher-->
-<!--        </a>-->
-<!--      </h3>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <h4>-->
-<!--        <a class="btn-nav">-->
-<!--            COMPSCI 235 Team A-->
-<!--        </a>-->
-<!--        </h4>-->
-<!--    </div>-->
-<!--  </nav>-->

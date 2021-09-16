@@ -2,7 +2,6 @@
 
 {% extends 'layout.html' %} {% block content %}
 <main id="main" class="browse-container">
-
   <div class="browse-header">
     <h1>Browse books</h1>
     <div>
@@ -26,6 +25,5 @@
       {{ book_macro.book_item(book, inventory.find_price(book.book_id), inventory.find_stock_count(book.book_id)) }}
     {% endfor %}
   </div>
-
 </main>
 {% endblock %}

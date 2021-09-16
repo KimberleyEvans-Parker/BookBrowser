@@ -1,169 +1,110 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<main id="main">
-    <div class="single-book">
-        <header>
-            <h1>{{ book.title}}</h1>
-        </header>
-        <body>
-        {% if book.authors == none %}
-        <p>By (author): Unknown</p>
-        {%else%}
-        <p>By (author): {{ book.authors[0].full_name }}</p>
-        {%endif%}
-        {% if book.ebook %}
-        <p>Hardback | Ebook</p>
-        {%else%}
-        <p>Hardback only</p>
-        {% endif %}
-        <ul class="social-media">
-            <li class="share"><strong>Share</strong></li>
-            <li class="social-media-li"><img class="social-media-icons" src="{{ url_for('static', filename='social_media_icons/fb_icon.png') }}"/></li>
-            <li class="social-media-li"><img class="social-media-icons" src="{{ url_for('static', filename='social_media_icons/google_icon.png') }}"/></li>
-            <li class="social-media-li"><img class="social-media-icons" src="{{ url_for('static', filename='social_media_icons/mail-icon.png') }}"/></li>
-            <li class="social-media-li"><img class="social-media-icons" src="{{ url_for('static', filename='social_media_icons/twitter-icon.png') }}"/></li>
-        </ul>
-        <p>Description: {{ book.description }}</p>
-        </body>
-    </div>
-<!--        <a href="{{ url_for('books_bp.book', id=book.book_id) }}">-->
-<div class="book-item">
-    {% set cover = ['red-book', 'blue-book', 'brown-book', 'green-book'] | random %}
-    <div class="book">
-        <div class="back {{ cover }}" + ></div>
-        <div class="page6">
-          <div class="page-container description">
-              {{ book.description }}
-          </div></div>
-        <div class="page5"></div>
-        <div class="page4"></div>
-        <div class="page3"></div>
-        <div class="page2"></div>
-        <div class="page1"></div>
-        <div class="front {{ cover }}">
-            <div class="page-container title">
-                <h2>{{ book.title }}</h2>
-            </div>
-            <div class="page-container authors">
-                <h3>
-                    {% for author in book.authors %}
-                        {{ author.full_name }}{{ ", " if not loop.last else "" }}
-                    {% endfor %}
-                </h3>
-            </div>
-            <div class="page-container publisher">
-                {% if book.publisher.name != "N/A" %}
-                    <h3>{{ book.publisher.name }}</h3>
+<main id="main" xmlns="http://www.w3.org/1999/html">
+    <div class="single-book-container">
+        <div class="book-details1">
+            <div class="single-book">
+                <header>
+                    <h1>{{ book.title}}</h1>
+                </header>
+                <body>
+                {% if book.authors == none %}
+                <p><strong>By:</strong> Unknown</p>
+                {%else%}
+                <p><strong>By:</strong> {{ book.authors[0].full_name }}</p>
+                {%endif%}
+                {% if book.ebook %}
+                <p><strong>Hardback | Ebook</strong></p>
+                {%else%}
+                <p><strong>Hardback only</strong></p>
                 {% endif %}
+                <ul class="social-media">
+                    <li class="share"><strong>Share: </strong></li>
+                    <li class="social-media-li"><img class="social-media-icons"
+                                                     src="{{ url_for('static', filename='social_media_icons/fb_icon.png') }}"/>
+                    </li>
+                    <li class="social-media-li"><img class="social-media-icons"
+                                                     src="{{ url_for('static', filename='social_media_icons/google_icon.png') }}"/>
+                    </li>
+                    <li class="social-media-li"><img class="social-media-icons"
+                                                     src="{{ url_for('static', filename='social_media_icons/mail-icon.png') }}"/>
+                    </li>
+                    <li class="social-media-li"><img class="social-media-icons"
+                                                     src="{{ url_for('static', filename='social_media_icons/twitter-icon.png') }}"/>
+                    </li>
+                </ul>
+                <p>Description: {{ book.description }}</p>
+                </body>
             </div>
-            <div class="page-container">
-                {% if book.release_year != none %}<h4 class="release-year">{{book.release_year}}</h4>{% endif %}
-                {% if book.num_pages != none %}<h4 class="num-pages">{{book.num_pages}} pgs</h4>{% endif %}
-            </div>
-            <div class="page-container">
-                {% if book.ebook %}<h5>This comes as an ebook</h5>{% endif %}
+            <div class="book-item">
+                {% set cover = ['red-book', 'blue-book', 'brown-book', 'green-book'] | random %}
+                <div class="book">
+                    <div class="back {{ cover }}" +></div>
+                    <div class="page6">
+                        <div class="page-container description">
+                            {{ book.description }}
+                        </div>
+                    </div>
+                    <div class="page5"></div>
+                    <div class="page4"></div>
+                    <div class="page3"></div>
+                    <div class="page2"></div>
+                    <div class="page1"></div>
+                    <div class="front {{ cover }}">
+                        <div class="page-container title">
+                            <h2>{{ book.title }}</h2>
+                        </div>
+                        <div class="page-container authors">
+                            <h3>
+                                {% for author in book.authors %}
+                                {{ author.full_name }}{{ ", " if not loop.last else "" }}
+                                {% endfor %}
+                            </h3>
+                        </div>
+                        <div class="page-container publisher">
+                            {% if book.publisher.name != "N/A" %}
+                            <h3>{{ book.publisher.name }}</h3>
+                            {% endif %}
+                        </div>
+                        <div class="page-container">
+                            {% if book.release_year != none %}<h4 class="release-year">{{book.release_year}}</h4>{%
+                            endif %}
+                            {% if book.num_pages != none %}<h4 class="num-pages">{{book.num_pages}} pgs</h4>{% endif %}
+                        </div>
+                        <div class="page-container">
+                            {% if book.ebook %}<h5>This comes as an ebook</h5>{% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-    <div class="book-specs">
-        <h2 class="product-details">Product details</h2>
-        <ul class="book-info">
-            <li class="book-info-list">{% if book.num_pages != none %}Number of pages: {{book.num_pages}}pgs{%else%}Number of pages: Unknown{%endif%}</li>
-            <li class="book-info-list">{% if book.publisher.name != "N/A" %}Publisher: {{book.publisher.name}}{%else%}}Publisher: Unknown{%endif%}</li>
-            <li class="book-info-list">{% if book.release_year != none %}Publication date: {{book.release_year}}{%else%}Publication date: Unknown{%endif%}</li>
-            <li class="book-info-list">{% if book.ebook %}Format: Hardback and Ebook {%else%}Format: Hardback only{%endif%}</li>
-            <li class="book-info-list">Price: $</li>
-            <li class="book-info-list">Stock: 0</li>
-        </ul>
-    </div>
-    <div class="book-reviews-div">
-        <h1 class="reviews-header">Reviews</h1>
-        <p>BOOK REVIEWS HERE</p>
+        <div class="book-specs">
+            <h1 class="product-details">Product details</h1>
+            <ul class="book-info">
+                <li class="book-info-list">{% if book.num_pages != none %}<strong>Number of pages:</strong>
+                    {{book.num_pages}}pgs{%else%}<strong>Number of pages:</strong> Unknown{%endif%}
+                </li>
+                <li class="book-info-list">{% if book.publisher.name != "N/A" %}<strong>Publisher:</strong>
+                    {{book.publisher.name}}{%else%}<strong>Publisher:</strong> Unknown{%endif%}
+                </li>
+                <li class="book-info-list">{% if book.release_year != none %}<strong>Publication date:</strong>
+                    {{book.release_year}}{%else%}<strong>Publication date:</strong> Unknown{%endif%}
+                </li>
+                <li class="book-info-list">{% if book.ebook %}<strong>Format:</strong> Hardback and Ebook
+                    {%else%}<strong>Format:</strong> Hardback only{%endif%}
+                </li>
+                <li class="book-info-list"><strong>Price:</strong> $</li>
+                <li class="book-info-list"><strong>Stock:</strong> 0</li>
+                <li class="book-info-list"><strong>Genre:</strong> 0</li>
+                <li class="book-info-list"><strong>ISBN:</strong> 0</li>
+                <li class="book-info-list"><strong>Rank:</strong> 0</li>
+            </ul>
+        </div>
+        <div class="book-reviews-div">
+            <h1 class="reviews-header">Reviews</h1>
+            <p>BOOK REVIEWS HERE</p>
+        </div>
     </div>
 </main>
-<!--&lt;!&ndash;    {% if cost != none %}&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="price-tag book-tag"><p>${{cost}}</p></div>&ndash;&gt;-->
-<!--&lt;!&ndash;    {% endif %}&ndash;&gt;-->
-<!--&lt;!&ndash;    {% if stock != none %}&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="stock-tag book-tag">&ndash;&gt;-->
-<!--&lt;!&ndash;            <p>{{stock}}</p>&ndash;&gt;-->
-<!--&lt;!&ndash;            <p class="small">left</p>&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--&lt;!&ndash;    {% endif %}&ndash;&gt;-->
-
-<!--</div>-->
-<!--</a>-->
-<!--&lt;!&ndash;        <body>&ndash;&gt;-->
-<!--&lt;!&ndash;        <p>Release year: <b>{{ book.release_year }}</b></p>&ndash;&gt;-->
-<!--&lt;!&ndash;        <p>Description: {{ book.description }}</p>&ndash;&gt;-->
-<!--&lt;!&ndash;        </body>&ndash;&gt;-->
-<!--</main>-->
-<!--{% endblock %}-->
-<!--<div class="biblio-info-wrap">-->
-<!--                <h2 class="biblio-title">-->
-<!--                    Product details</h2>-->
-<!--                <ul class="biblio-info">-->
-
-<!--                    <li>-->
-<!--                            <label>Format</label>-->
-<!--                            <span>-->
-<!--                                Hardback-->
-<!--                                    | <span itemprop="numberOfPages">64 pages-->
-<!--</span>-->
-<!--                                </span>-->
-<!--                        </li>-->
-<!--                    <li>-->
-<!--                            <label>Dimensions</label>-->
-<!--                            <span>-->
-<!--                                184-->
-<!--                                    x 248-->
-<!--                                    x 13.97mm-->
-
-<!--                                    | 385.55g-->
-<!--                                </span>-->
-<!--                        </li>-->
-<!--                    <li>-->
-<!--                            <label>Publication date</label>-->
-<!--                            <span itemprop="datePublished">31 Aug 2021</span>-->
-<!--                        </li>-->
-<!--                    <li>-->
-<!--                            <label>Publisher</label>-->
-<!--                            <span itemprop="publisher" itemtype="http://schema.org/Organization" itemscope="Gibbs M. Smith Inc">-->
-<!--                                <a href="/publishers/Gibbs-M-Smith-Inc" itemprop="url">-->
-<!--                                    <span itemprop="name">-->
-<!--                                        Gibbs M. Smith Inc</span>-->
-<!--                                </a>-->
-<!--                            </span>-->
-<!--                        </li>-->
-<!--                    <li>-->
-<!--                            <label>Publication City/Country</label>-->
-<!--                            <span>-->
-<!--                                Layton, UT, United States</span>-->
-<!--                        </li>-->
-<!--                    <li>-->
-<!--                            <label>Language</label>-->
-<!--                            <span>-->
-<!--                                English</span>-->
-<!--                        </li>-->
-<!--                    <li>-->
-<!--                            <label>Illustrations note</label>-->
-<!--                            <span>1/c illustrations throughout</span>-->
-<!--                        </li>-->
-<!--                    <li>-->
-<!--                            <label>ISBN10</label>-->
-<!--                            <span>1423658345</span>-->
-<!--                        </li>-->
-<!--                    <li>-->
-<!--                        <label>ISBN13</label>-->
-<!--                        <span itemprop="isbn">9781423658344</span>-->
-<!--                    </li>-->
-
-<!--                    <li>-->
-<!--                            <label>Bestsellers rank</label>-->
-<!--                            <span>-->
-<!--                                224</span>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--            </div>-->
+{% endblock %}

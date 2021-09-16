@@ -1,37 +1,34 @@
 <!DOCTYPE html>
 
 <html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Book browsing web application</title>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Book browsing web application</title>
 
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='./css/main.css') }}"
-    />
+  <link
+          rel="stylesheet"
+          href="{{ url_for('static', filename='./css/main.css') }}"
+  />
 
-  </head>
+</head>
+<body>
+<div id="body">
+  <!-- Include navigation partial. -->
+  {% include 'navigation.html' %}
 
-  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+  <div id="content-2">
+    <!-- Include header partial. -->
+    {% include 'header.html' %}
 
-  <body>
-    <div id="body">
-      <!-- Include navigation partial. -->
-      {% include 'navigation.html' %}
+    <div id="container">
+      <!-- Main content block to be supplied by page. -->
+      {% block content %} {% endblock %}
 
-      <div id="content-2">
-        <!-- Include header partial. -->
-        {% include 'header.html' %}
-
-        <div id="container">
-          <!-- Main content block to be supplied by page. -->
-          {% block content %} {% endblock %}
-
-          <div id="footer">
-            {% include 'footer.html' %}
-          </div>
-        </div>
+      <div id="footer">
+        {% include 'footer.html' %}
       </div>
     </div>
-  </body>
+  </div>
+</div>
+</body>
 </html>
