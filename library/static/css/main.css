@@ -345,12 +345,12 @@ button:hover {
 .footer {
     text-align: center;
     padding-top: 7px;
+    padding-right: 30px;
     clear: both;
     position: relative;
     margin-top: -200px;
     justify-content: space-between;
     align-items: center;
-    padding-right: 205px;
     font-family: "Prata", sans-serif;
     font-weight: 500;
     font-size: 16px;
