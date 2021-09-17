@@ -1,6 +1,6 @@
 ## GitHub Issue Solved:
 
-closes # 5<!--Reference the number of the solved issue-->
+closes #2 <!--Reference the number of the solved issue-->
 
 ## Current behaviour
 
