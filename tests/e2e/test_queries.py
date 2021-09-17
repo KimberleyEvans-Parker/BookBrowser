@@ -68,21 +68,17 @@ def test_home(client):
     assert b'DC Comics' in response.data
     assert b'Yuu Asami' in response.data
     assert b'2012' in response.data
-    assert b'230 pgs' in response.data
+    assert b'146 pgs' in response.data
     assert b'This comes as an ebook' in response.data
 
 
 def test_book(client):
-    response = client.get('/book/<11827783>')
+    response = client.get('/book/11827783')
     assert response.status_code == 200
     assert b'Sherlock Holmes: Year One' in response.data # title
     assert b'Dynamite Entertainment' in response.data # publisher
     assert b'144' in response.data # number of pages
-    assert b"Sir Arthur Conan Doyle's dauntless detective returns in an all-new series of adventures exploring the \
-        sleuth's untold origins! Join Dr. John Watson as he meets young Sherlock Holmes in a fateful encounter that \
-        will forever shape both men's destinies! Mysteries and murders most foul abound as we discover clues that \
-        reveal just how Holmes became the world's most famous detective.\nCollecting the 6-issue series in one volume, \
-        plus bonus material and a complete cover gallery." in response.data # description
+    assert b"Sir Arthur Conan Doyle's dauntless detective returns in an all-new series of adventures exploring the sleuth's untold origins!" in response.data # description
     assert b'Scott Beatty' in response.data # author 1
     assert b'Danie Indro' in response.data # author 2
     assert b'2011' in response.data # publication year
