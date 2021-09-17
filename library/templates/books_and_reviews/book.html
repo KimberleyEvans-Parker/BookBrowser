@@ -1,3 +1,5 @@
+{% import "macros/book_item.html" as book_macro %}
+
 {% extends 'layout.html' %}
 
 {% block content %}
@@ -38,45 +40,7 @@
                 </body>
             </div>
             <div class="book-item">
-                {% set cover = ['red-book', 'blue-book', 'brown-book', 'green-book'] | random %}
-                <div class="book">
-                    <div class="back {{ cover }}" +></div>
-                    <div class="page6">
-                        <div class="page-container description">
-                            {{ book.description }}
-                        </div>
-                    </div>
-                    <div class="page5"></div>
-                    <div class="page4"></div>
-                    <div class="page3"></div>
-                    <div class="page2"></div>
-                    <div class="page1"></div>
-                    <div class="front {{ cover }}">
-                        <div class="page-container title">
-                            <h2>{{ book.title }}</h2>
-                        </div>
-                        <div class="page-container authors">
-                            <h3>
-                                {% for author in book.authors %}
-                                {{ author.full_name }}{{ ", " if not loop.last else "" }}
-                                {% endfor %}
-                            </h3>
-                        </div>
-                        <div class="page-container publisher">
-                            {% if book.publisher.name != "N/A" %}
-                            <h3>{{ book.publisher.name }}</h3>
-                            {% endif %}
-                        </div>
-                        <div class="page-container">
-                            {% if book.release_year != none %}<h4 class="release-year">{{book.release_year}}</h4>{%
-                            endif %}
-                            {% if book.num_pages != none %}<h4 class="num-pages">{{book.num_pages}} pgs</h4>{% endif %}
-                        </div>
-                        <div class="page-container">
-                            {% if book.ebook %}<h5>This comes as an ebook</h5>{% endif %}
-                        </div>
-                    </div>
-                </div>
+                {{ book_macro.book_item(book) }}
             </div>
         </div>
         <div class="book-specs">
@@ -94,11 +58,11 @@
                 <li class="book-info-list">{% if book.ebook %}<strong>Format:</strong> Hardback and Ebook
                     {%else%}<strong>Format:</strong> Hardback only{%endif%}
                 </li>
-                <li class="book-info-list"><strong>Price:</strong> $</li>
-                <li class="book-info-list"><strong>Stock:</strong> 0</li>
-                <li class="book-info-list"><strong>Genre:</strong> 0</li>
-                <li class="book-info-list"><strong>ISBN:</strong> 0</li>
-                <li class="book-info-list"><strong>Rank:</strong> 0</li>
+                <li class="book-info-list"><strong>Price:</strong> $-1</li>
+                <li class="book-info-list"><strong>Stock:</strong> -1</li>
+                <li class="book-info-list"><strong>Genre:</strong> Unknown</li>
+                <li class="book-info-list"><strong>ISBN:</strong> {{book.book_id}}</li>
+                <li class="book-info-list"><strong>Rank:</strong> {{ range(1, 21) | random }}</li>
             </ul>
         </div>
         <div class="book-reviews-div">
