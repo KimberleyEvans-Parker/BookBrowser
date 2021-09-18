@@ -1,8 +1,8 @@
 <nav class="nav">
     <ul class="nav_links">
-        <li class="nav-header">{% if 'user_name' in session %} Hello, {{ session['user_name'] }}
+        <li class="nav_list nav-header">{% if 'user_name' in session %} Hello, {{ session['user_name'] }}
         {% else %}
-        Welcome
+        Welcome...
         {% endif %}</li>
         <li class="nav_list"><a class="btn-nav" href="{{ url_for('books_bp.home') }}">Home</a></li>
         <li class="nav_list"><a class="btn-nav" href="{{ url_for('books_bp.register') }}">Register</a></li>
@@ -12,6 +12,6 @@
         <li class="nav_list"><a class="btn-nav" href="{{ url_for('books_bp.books_by_date') }}">Browse by date</a></li>
         <li class="nav_list"><a class="btn-nav" href="{{ url_for('books_bp.authors') }}">Browse by author</a></li>
         <li class="nav_list"><a class="btn-nav" href="{{ url_for('books_bp.publishers') }}">Browse by publisher</a></li>
-        <img class="logo" src="{{ url_for('static', filename='book_icon.png') }}" /></li>
+        <li class="nav_list"><img class="logo" src="{{ url_for('static', filename='book_icon.png') }}" /></li>
     </ul>
   </nav>
