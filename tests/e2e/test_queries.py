@@ -78,13 +78,15 @@ def test_book(client):
     assert b'Sherlock Holmes: Year One' in response.data # title
     assert b'Dynamite Entertainment' in response.data # publisher
     assert b'144' in response.data # number of pages
-    assert b"Sir Arthur Conan Doyle's dauntless detective returns in an all-new series of adventures exploring the sleuth's untold origins!" in response.data # description
+    assert b"Join Dr. John Watson as he meets young Sherlock Holmes in a fateful encounter" in response.data # description
     assert b'Scott Beatty' in response.data # author 1
-    assert b'Danie Indro' in response.data # author 2
+    assert b'Daniel Indro' in response.data # author 2
     assert b'2011' in response.data # publication year
     assert b'3.16' in response.data # average rating
     assert b'114' in response.data # ratings count
     assert b'https://www.goodreads.com/book/show/11827783-sherlock-holmes' in response.data # link/url
+    assert b'$5' in response.data # price
+    assert b'3' in response.data # stock
 
 
 # def test_login_required_to_comment(client):
