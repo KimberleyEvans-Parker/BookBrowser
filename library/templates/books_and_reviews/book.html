@@ -20,6 +20,7 @@
                     {% endfor %}
                 </p>
                 {%endif%}
+                <p><strong>{{book.average_rating}}</strong> average based on <strong>{{book.ratings_count}}</strong> ratings.</p>
                 {% if book.ebook %}
                 <p><strong>Hardback | Ebook</strong></p>
                 {%else%}
@@ -27,31 +28,38 @@
                 {% endif %}
                 <ul class="social-media">
                     <li class="share"><strong>Share: </strong></li>
-                    <li class="social-media-li"><img class="social-media-icons"
-                                                     src="{{ url_for('static', filename='social_media_icons/fb_icon.png') }}"/>
+                    <li class="social-media-li">
+                        <img class="social-media-icons"
+                             src="{{ url_for('static', filename='social_media_icons/fb_icon.png') }}"/>
                     </li>
-                    <li class="social-media-li"><img class="social-media-icons"
-                                                     src="{{ url_for('static', filename='social_media_icons/google_icon.png') }}"/>
+                    <li class="social-media-li">
+                        <img class="social-media-icons"
+                             src="{{ url_for('static', filename='social_media_icons/google_icon.png') }}"/>
                     </li>
-                    <li class="social-media-li"><img class="social-media-icons"
-                                                     src="{{ url_for('static', filename='social_media_icons/mail-icon.png') }}"/>
+                    <li class="social-media-li">
+                        <img class="social-media-icons"
+                             src="{{ url_for('static', filename='social_media_icons/mail-icon.png') }}"/>
                     </li>
-                    <li class="social-media-li"><img class="social-media-icons"
-                                                     src="{{ url_for('static', filename='social_media_icons/twitter-icon.png') }}"/>
+                    <li class="social-media-li">
+                        <img class="social-media-icons"
+                             src="{{ url_for('static', filename='social_media_icons/twitter-icon.png') }}"/>
                     </li>
                 </ul>
                 <p>Description: {{ book.description }}</p>
+                <a href={{book.url}} class="link">View on goodreads</a>
                 </body>
             </div>
+
             <div class="book-item">
-                {{ book_macro.book_item(book) }}
+                {{ book_macro.book_item(book, price, stock) }}
             </div>
+
         </div>
         <div class="book-specs">
             <h1 class="product-details">Product details</h1>
             <ul class="book-info">
                 <li class="book-info-list">{% if book.num_pages != none %}<strong>Number of pages:</strong>
-                    {{book.num_pages}}pgs{%else%}<strong>Number of pages:</strong> Unknown{%endif%}
+                    {{book.num_pages}} pgs{%else%}<strong>Number of pages:</strong> Unknown{%endif%}
                 </li>
                 <li class="book-info-list">{% if book.publisher.name != "N/A" %}<strong>Publisher:</strong>
                     {{book.publisher.name}}{%else%}<strong>Publisher:</strong> Unknown{%endif%}
@@ -62,11 +70,11 @@
                 <li class="book-info-list">{% if book.ebook %}<strong>Format:</strong> Hardback and Ebook
                     {%else%}<strong>Format:</strong> Hardback only{%endif%}
                 </li>
-                <li class="book-info-list"><strong>Price:</strong> $-1</li>
-                <li class="book-info-list"><strong>Stock:</strong> -1</li>
-                <li class="book-info-list"><strong>Genre:</strong> Unknown</li>
+                <li class="book-info-list"><strong>Price:</strong> ${{price}}</li>
+                <li class="book-info-list"><strong>Stock:</strong> {{stock}}</li>
                 <li class="book-info-list"><strong>ISBN:</strong> {{book.book_id}}</li>
-                <li class="book-info-list"><strong>Rank:</strong> {{ range(1, 21) | random }}</li>
+                <li class="book-info-list"><strong>Stars:</strong> {{book.average_rating}}</li>
+                <li class="book-info-list"><strong>Number of Ratings:</strong> {{ book.ratings_count }}</li>
             </ul>
         </div>
         <div class="book-reviews-div">
