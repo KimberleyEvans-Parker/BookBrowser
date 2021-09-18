@@ -88,7 +88,7 @@ button:hover {
     align-items: center;
     perspective: 1200px;
     float: left;
-    margin: 15px;
+    margin: 20px;
 }
 .book-item h2 {
     color: white;
@@ -260,7 +260,7 @@ button:hover {
 }
 .stock-tag {
     background-image: url("../img/stock-tag.png");
-    left: 170px;
+    left: 180px;
     top: 80px;
     width: 60px;
     height: 100px;
