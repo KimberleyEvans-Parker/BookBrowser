@@ -47,9 +47,12 @@ def last(function):
 
 @books_blueprint.route('/book/<id>')
 def book(id):
+    id = int(id)
+    print(repo.book_dataset.books_inventory.find_price(id))
+    print(repo.book_dataset.books_inventory.find_stock_count(id))
     return render_template(
         'books_and_reviews/book.html',
-        book=repo.book_dataset.get_book_by_id(int(id)),
+        book=repo.book_dataset.get_book_by_id(id),
         price = repo.book_dataset.books_inventory.find_price(id),
         stock = repo.book_dataset.books_inventory.find_stock_count(id)
     )
