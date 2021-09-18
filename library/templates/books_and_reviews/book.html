@@ -14,7 +14,11 @@
                 {% if book.authors == none %}
                 <p><strong>By:</strong> Unknown</p>
                 {%else%}
-                <p><strong>By:</strong> {{ book.authors[0].full_name }}</p>
+                <p><strong>By:</strong>
+                    {% for author in book.authors %}
+                        {{ author.full_name }}{{ ", " if not loop.last else "" }}
+                    {% endfor %}
+                </p>
                 {%endif%}
                 {% if book.ebook %}
                 <p><strong>Hardback | Ebook</strong></p>
