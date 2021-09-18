@@ -98,6 +98,9 @@ class BooksJSONReader:
             book_instance.description = book_json['description']
             if book_json['num_pages'] != "":
                 book_instance.num_pages = int(book_json['num_pages'])
+            book_instance.ratings_count = int(book_json["ratings_count"])
+            book_instance.average_rating = float(book_json["average_rating"])
+            book_instance.url = book_json["url"]
 
             # extract the author ids:
             list_of_authors_ids = book_json['authors']
