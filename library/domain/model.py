@@ -116,6 +116,9 @@ class Book:
         self.__release_year = None
         self.__ebook = None
         self.__num_pages = None
+        self.__average_rating = None
+        self.__ratings_count = None
+        self.__url = None
 
 
     @property
@@ -136,6 +139,30 @@ class Book:
                 raise ValueError
         else:
             raise ValueError
+
+    @property
+    def url(self) -> float:
+        return self.__url
+
+    @url.setter
+    def url(self, url: float):
+        self.__url = url
+
+    @property
+    def average_rating(self) -> float:
+        return self.__average_rating
+
+    @average_rating.setter
+    def average_rating(self, average_rating: float):
+        self.__average_rating = average_rating
+
+    @property
+    def ratings_count(self) -> int:
+        return self.__ratings_count
+
+    @ratings_count.setter
+    def ratings_count(self, ratings_count: float):
+        self.__ratings_count = ratings_count
 
     @property
     def release_year(self) -> int:

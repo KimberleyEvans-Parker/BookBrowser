@@ -16,6 +16,17 @@ a {
     text-decoration: none;
 }
 
+.link {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.link:hover{
+    opacity: 0.5;
+    transition-duration: 1s;
+}
+
 h1 {
     margin: 15px;
 }
@@ -31,6 +42,11 @@ button {
 
 button:hover {
     background: rgba(0, 136, 169, 0.8);
+}
+
+.content-container {
+    position: relative;
+    top: 5em;
 }
 
 .browse-container {
@@ -88,7 +104,7 @@ button:hover {
     align-items: center;
     perspective: 1200px;
     float: left;
-    margin: 15px;
+    margin: 20px;
 }
 .book-item h2 {
     color: white;
@@ -260,7 +276,7 @@ button:hover {
 }
 .stock-tag {
     background-image: url("../img/stock-tag.png");
-    left: 170px;
+    left: 180px;
     top: 80px;
     width: 60px;
     height: 100px;
@@ -284,51 +300,41 @@ button:hover {
 }
 /* ------------------------- navigation --------------------------- */
 .nav {
-    position: relative;
-    top: -7px;
+    top: 0px;
+    left: 0px;
+    z-index: 20;
+    width: 100%;
+    position: fixed;
+    background-color: antiquewhite;
 }
 .nav_list, .btn_nav {
     font-family: "Prata", sans-serif;
     font-weight: 500;
     font-size: 16px;
-    color: antiquewhite;
     text-decoration: none;
 }
 .nav-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 205px;
-    font-family: "Prata", sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    color: antiquewhite;
-    text-decoration: none;
+    color: grey;
 }
 .logo {
     cursor: pointer;
-    width: 60px;
-    height: 60px;
-    padding-left: 221px;
+    width: 15px;
+    height: 15px;
 }
 .nav_links {
     list-style: none;
-    margin-bottom: 16px;
-    border-bottom-width: 10px;
-    padding-left: 225px;
+    margin: 0;
 }
-
 .nav_links li {
     display: inline-block;
-    padding: 0px 20px;
+    padding: 10px;
 }
-
-.nav_links li a {
+.nav_links li {
     transition: all 0.3s ease 0s;
 }
-
-.nav_links li a:hover {
+.nav_links li:hover {
     color: rgba(0, 136, 169, 1);
+    background-color: rgb(255, 218, 170);
 }
 
 /* ------------------------- header ------------------------------- */
@@ -344,10 +350,10 @@ button:hover {
 .footer {
     text-align: center;
     padding-top: 7px;
+    padding-bottom: 30px;
     padding-right: 30px;
     clear: both;
     position: relative;
-    margin-top: -200px;
     justify-content: space-between;
     align-items: center;
     font-family: "Prata", sans-serif;
@@ -357,10 +363,6 @@ button:hover {
     text-decoration: none;
 }
 /* ------------------------- single book item ------------------------------- */
-.single-book-container {
-    position: relative;
-    top: 5em;
-}
 
 .social-media {
     list-style: none;
