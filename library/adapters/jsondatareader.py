@@ -9,7 +9,6 @@ book_dataset = None
 BOOKS_PER_PAGE = 12
 
 class BooksJSONReader:
-
     def __init__(self, books_file_name: str, authors_file_name: str, inventory_file_name: str):
         self.__books_file_name = books_file_name
         self.__authors_file_name = authors_file_name
