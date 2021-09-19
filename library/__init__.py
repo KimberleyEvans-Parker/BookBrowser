@@ -20,7 +20,7 @@ def create_app(test_config=None):
 
     # Initialise repo
     jsondatareader.book_dataset = BooksJSONReader(data_path/"comic_books_excerpt.json", 
-        data_path/"book_authors_excerpt.json", data_path/"book_inventory.json")
+        data_path/"book_authors_excerpt.json", data_path/"book_inventory.json", data_path/"reviews.json")
 
     jsondatareader.book_dataset.read_json_files()
 

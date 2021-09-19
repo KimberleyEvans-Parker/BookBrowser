@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, time
 from typing import List
 
 
@@ -96,6 +96,61 @@ class Author:
         return hash(self.unique_id)
 
 
+
+class Review:
+
+    def __init__(self, book_id: int, review_text: str, rating: int, user = None, review_id: int = None, timestamp = None):
+        self.__book_id = book_id
+
+        if isinstance(review_text, str):
+            self.__review_text = review_text.strip()
+        else:
+            self.__review_text = "N/A"
+
+        if isinstance(rating, int) and rating >= 1 and rating <= 5:
+            self.__rating = rating
+        else:
+            raise ValueError
+
+        if timestamp == None:
+            self.__timestamp = datetime.now()
+        else:
+            self.__timestamp = datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+
+        self.__user = user
+        self.__id = review_id
+
+    @property
+    def book_id(self) -> int:
+        return self.__book_id
+
+    @property
+    def review_text(self) -> str:
+        return self.__review_text
+
+    @property
+    def user(self) -> str:
+        return "Unknown" # TODO: when user implemented, get name
+
+    @property
+    def rating(self) -> int:
+        return self.__rating
+
+    @property
+    def timestamp(self) -> datetime:
+        return self.__timestamp
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+
+        return other.book_id == self.book_id and other.review_text == self.review_text \
+               and other.rating == self.rating and other.timestamp == self.timestamp
+
+    def __repr__(self):
+        return f'<Review by {self.user}, rating = {self.rating}, timestamp = {self.timestamp}>'
+
+
 class Book:
 
     def __init__(self, book_id: int, book_title: str):
@@ -119,6 +174,7 @@ class Book:
         self.__average_rating = None
         self.__ratings_count = None
         self.__url = None
+        self.__reviews = []
 
 
     @property
@@ -216,6 +272,19 @@ class Book:
             self.__authors.remove(author)
 
     @property
+    def reviews(self) -> List[Review]:
+        return self.__reviews
+
+    def add_review(self, review: Review):
+        if not isinstance(review, Review):
+            return
+
+        if review in self.__reviews:
+            return
+
+        self.__reviews.append(review)
+
+    @property
     def ebook(self) -> bool:
         return self.__ebook
 
@@ -246,53 +315,6 @@ class Book:
 
     def __hash__(self):
         return hash(self.book_id)
-
-
-class Review:
-
-    def __init__(self, book: Book, review_text: str, rating: int):
-        if isinstance(book, Book):
-            self.__book = book
-        else:
-            self.__book = None
-
-        if isinstance(review_text, str):
-            self.__review_text = review_text.strip()
-        else:
-            self.__review_text = "N/A"
-
-        if isinstance(rating, int) and rating >= 1 and rating <= 5:
-            self.__rating = rating
-        else:
-            raise ValueError
-
-        self.__timestamp = datetime.now()
-
-    @property
-    def book(self) -> Book:
-        return self.__book
-
-    @property
-    def review_text(self) -> str:
-        return self.__review_text
-
-    @property
-    def rating(self) -> int:
-        return self.__rating
-
-    @property
-    def timestamp(self) -> datetime:
-        return self.__timestamp
-
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
-
-        return other.book == self.book and other.review_text == self.review_text \
-               and other.rating == self.rating and other.timestamp == self.timestamp
-
-    def __repr__(self):
-        return f'<Review of book {self.book}, rating = {self.rating}, timestamp = {self.timestamp}>'
 
 
 class User:
