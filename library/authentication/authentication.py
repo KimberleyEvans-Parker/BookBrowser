@@ -3,7 +3,9 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, ValidationError
 from password_validator import PasswordValidator
 
+
 class PasswordValid:
+
     def __init__(self, message=None):
         if not message:
             message = u'Your password must be at least 8 characters, and contain an upper case letter,\

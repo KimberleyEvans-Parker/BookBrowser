@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from  A2.compsci235_assignment2_a.library.domain.model import User
+from library.domain.model import User
 
 class NameNotUniqueException(Exception):
     pass
