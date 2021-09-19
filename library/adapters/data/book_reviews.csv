@@ -1,0 +1,11 @@
+id,author-id,book-id,rating,review-text,timestamp
+1,2,13571772, 4,"Great book - loved it!",2020-02-28 14:31:26
+1,2,13340336, 3,"It was okay",2020-05-28 14:31:26
+2,1,27036536, 4,"Exciting, kept me on my toes",2020-02-28 14:39:51
+3,3,12349665, 5,"Brilliantly written!",2020-02-29 08:12:08
+1,2,25742454, 5,"One word: Epic.",2020-02-18 14:31:26
+2,1,27036539, 4,"I adore this novel",2020-03-28 14:39:51
+3,3,18955715, 5,"Absolutely fell in love with the characters",2020-02-29 08:12:08
+1,2,2168737, 2,"Not really my kind of book :(",2020-02-24 14:31:26
+2,1,707611, 1,"Just not realistic",2020-02-18 14:39:51
+3,3,2250580, 2,"The writing could have been better",2020-12-29 08:12:08
