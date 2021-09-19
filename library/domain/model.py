@@ -115,7 +115,7 @@ class Review:
         if timestamp == None:
             self.__timestamp = datetime.now()
         else:
-            self.__timestamp = datetime.datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+            self.__timestamp = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
 
         self.__user = user
         self.__id = review_id

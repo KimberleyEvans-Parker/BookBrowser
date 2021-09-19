@@ -20,6 +20,8 @@ class BooksJSONReader:
         self.__books_inventory = BooksInventory()
         self.__indexes = {"home": 0, "books_by_date": 0, "authors": 0, "publishers": 0}
 
+        self.read_json_files()
+
     @property
     def indexes(self):
         return self.__indexes
@@ -103,7 +105,7 @@ class BooksJSONReader:
         self.__indexes[page] = min(self.__indexes[page] + 12, self.get_highest_index())
         print("NEXT: new", page, " index:", self.__indexes[page])
 
-    def read_csv_file(filename: str):
+    def read_csv_file(self, filename: str):
         with open(filename, encoding='utf-8-sig') as infile:
             reader = csv.reader(infile)
 
