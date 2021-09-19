@@ -63,13 +63,55 @@ def test_home(client):
     response = client.get('/')
     assert response.status_code == 200
     assert b'Book browsing web application' in response.data
-    assert b'Sherlock Holmes: Year One' in response.data
+    assert b'Browse books by title' in response.data
+    assert b'Captain America' in response.data
+    assert b'Cruelle' in response.data
+    assert response.data.index(b'Captain America') < response.data.index(b'Cruelle')
     assert b'Comics horror veteran Mike Wolfer writes and illustrates a powerful new chapter' in response.data
-    assert b'DC Comics' in response.data
+    assert b'Avatar Press' in response.data
     assert b'Yuu Asami' in response.data
     assert b'2012' in response.data
     assert b'146 pgs' in response.data
     assert b'This comes as an ebook' in response.data
+
+def test_books_by_date(client):
+    response = client.get('/books_by_date')
+    assert response.status_code == 200
+    assert b'Book browsing web application' in response.data
+    assert b'Browse books by date' in response.data
+    assert b'Superman' in response.data
+    assert response.data.index(b'1997') < response.data.index(b'2006')
+    assert b'These are the stories that catapulted Superman' in response.data
+    assert b'DC Comics' in response.data
+    assert b'Yuu Asami' in response.data
+    assert b'2006' in response.data
+    assert b'272 pgs' in response.data
+
+def test_author(client):
+    response = client.get('/authors')
+    assert response.status_code == 200
+    assert b'Book browsing web application' in response.data
+    assert b'Browse books by author' in response.data
+    assert b'Cruelle' in response.data
+    assert response.data.index(b'Ed Brubaker') < response.data.index(b'Garth Ennis')
+    assert b'The questions plaguing Captain America' in response.data
+    assert b'DC Comics' in response.data
+    assert b'Ed Brubaker' in response.data
+    assert b'2006' in response.data
+    assert b'272 pgs' in response.data
+
+def test_publisher(client):
+    response = client.get('/publishers')
+    assert response.status_code == 200
+    assert b'Book browsing web application' in response.data
+    assert b'Browse books by publisher' in response.data
+    assert b'Cruelle' in response.data
+    assert response.data.index(b'Avatar Press') < response.data.index(b'Marvel')
+    assert b'The questions plaguing Captain America' in response.data
+    assert b'DC Comics' in response.data
+    assert b'Ed Brubaker' in response.data
+    assert b'2006' in response.data
+    assert b'272 pgs' in response.data
 
 
 def test_book(client):

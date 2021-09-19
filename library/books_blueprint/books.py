@@ -6,23 +6,26 @@ books_blueprint = Blueprint(
     'books_bp', __name__
 )
 
+def is_left_button_inactive(function):
+    if repo.book_dataset.indexes[function] == 0:
+        return "disabled"
+    return ""
+
+def is_right_button_inactive(function):
+    if repo.book_dataset.indexes[function] == repo.book_dataset.get_highest_index():
+        return "disabled"
+    return ""
+
 @books_blueprint.route('/')
 def home():
-    left_inactive = ""
-    right_inactive = ""
-
-    if repo.book_dataset.indexes["home"] == 0:
-        left_inactive = "disabled"
-    if repo.book_dataset.indexes["home"] == repo.book_dataset.get_highest_index():
-        right_inactive = "disabled"
-
     return render_template(
         'home/home.html',
+        title = "Browse books by title",
         books = repo.book_dataset.get_page_by_index("home"),
         inventory = repo.book_dataset.books_inventory,
         function = "home",
-        left_inactive = left_inactive,
-        right_inactive = right_inactive
+        left_inactive = is_left_button_inactive("home"),
+        right_inactive = is_right_button_inactive("home")
     )
 
 @books_blueprint.route('/first/<function>')
@@ -83,58 +86,37 @@ def reading_list():
 
 @books_blueprint.route('/books_by_date')
 def books_by_date():
-    left_inactive = ""
-    right_inactive = ""
-
-    if repo.book_dataset.indexes["books_by_date"] == 0:
-        left_inactive = "disabled"
-    if repo.book_dataset.indexes["books_by_date"] == repo.book_dataset.get_highest_index():
-        right_inactive = "disabled"
-
     return render_template(
         'home/home.html',
+        title = "Browse books by date",
         books = repo.book_dataset.get_page_by_index("books_by_date"),
         inventory = repo.book_dataset.books_inventory,
         function = "books_by_date",
-        left_inactive = left_inactive,
-        right_inactive = right_inactive
+        left_inactive = is_left_button_inactive("books_by_date"),
+        right_inactive = is_right_button_inactive("books_by_date")
     )
 
 @books_blueprint.route('/authors')
 def authors():
-    left_inactive = ""
-    right_inactive = ""
-
-    if repo.book_dataset.indexes["authors"] == 0:
-        left_inactive = "disabled"
-    if repo.book_dataset.indexes["authors"] == repo.book_dataset.get_highest_index():
-        right_inactive = "disabled"
-
     return render_template(
         'home/home.html',
+        title = "Browse books by author",
         books = repo.book_dataset.get_page_by_index("authors"),
         inventory = repo.book_dataset.books_inventory,
         function = "authors",
-        left_inactive = left_inactive,
-        right_inactive = right_inactive
+        left_inactive = is_left_button_inactive("authors"),
+        right_inactive = is_right_button_inactive("authors")
     )
 
 @books_blueprint.route('/publishers')
 def publishers():
-    left_inactive = ""
-    right_inactive = ""
-
-    if repo.book_dataset.indexes["publishers"] == 0:
-        left_inactive = "disabled"
-    if repo.book_dataset.indexes["publishers"] == repo.book_dataset.get_highest_index():
-        right_inactive = "disabled"
-
     return render_template(
         'home/home.html',
+        title = "Browse books by publisher",
         books = repo.book_dataset.get_page_by_index("publishers"),
         inventory = repo.book_dataset.books_inventory,
         function = "publishers",
-        left_inactive = left_inactive,
-        right_inactive = right_inactive
+        left_inactive = is_left_button_inactive("publishers"),
+        right_inactive = is_right_button_inactive("publishers")
     )
 
