@@ -107,7 +107,7 @@ class Review:
         else:
             self.__review_text = "N/A"
 
-        if isinstance(rating, int) and rating >= 1 and rating <= 5:
+        if isinstance(rating, int) and rating >= 0 and rating <= 5:
             self.__rating = rating
         else:
             raise ValueError
