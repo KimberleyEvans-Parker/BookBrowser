@@ -1,0 +1,11 @@
+
+{% macro stars(num_stars) %}
+
+<div class="star-rating">
+    <span class="fa fa-star {% if num_stars > 0.5 %} checked {% endif %}"></span>
+    <span class="fa fa-star {% if num_stars > 1.5 %} checked {% endif %}"></span>
+    <span class="fa fa-star {% if num_stars > 2.5 %} checked {% endif %}"></span>
+    <span class="fa fa-star {% if num_stars > 3.5 %} checked {% endif %}"></span>
+    <span class="fa fa-star {% if num_stars > 4.5 %} checked {% endif %}"></span>
+</div>
+{% endmacro %}
