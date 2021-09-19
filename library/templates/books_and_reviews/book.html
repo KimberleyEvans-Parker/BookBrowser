@@ -1,15 +1,18 @@
 {% import "macros/book_item.html" as book_macro %}
+{% import "macros/review_item.html" as review_macro %}
+{% import "macros/stars.html" as stars_macro %}
 
 {% extends 'layout.html' %}
 
 {% block content %}
 <main id="main" xmlns="http://www.w3.org/1999/html">
     <div class="single-book-container">
-        <div class="book-details1">
+        <div class="book-section">
             <div class="single-book">
                 <header>
                     <h1>{{ book.title}}</h1>
                 </header>
+
                 <body>
                 {% if book.authors == none %}
                 <p><strong>By:</strong> Unknown</p>
@@ -20,7 +23,10 @@
                     {% endfor %}
                 </p>
                 {%endif%}
+
+                {{ stars_macro.stars(book.average_rating) }}
                 <p><strong>{{book.average_rating}}</strong> average based on <strong>{{book.ratings_count}}</strong> ratings.</p>
+                
                 {% if book.ebook %}
                 <p><strong>Hardback | Ebook</strong></p>
                 {%else%}
@@ -45,7 +51,7 @@
                              src="{{ url_for('static', filename='social_media_icons/twitter-icon.png') }}"/>
                     </li>
                 </ul>
-                <p>Description: {{ book.description }}</p>
+                <p><strong>Description:</strong> {{ book.description }}</p>
                 <a href={{book.url}} class="link">View on goodreads</a>
                 </body>
             </div>
@@ -55,8 +61,9 @@
             </div>
 
         </div>
-        <div class="book-specs">
-            <h1 class="product-details">Product details</h1>
+
+        <div class="book-section">
+            <h1 class="book-section-header">Product details</h1>
             <ul class="book-info">
                 <li class="book-info-list">{% if book.num_pages != none %}<strong>Number of pages:</strong>
                     {{book.num_pages}} pgs{%else%}<strong>Number of pages:</strong> Unknown{%endif%}
@@ -77,9 +84,16 @@
                 <li class="book-info-list"><strong>Number of Ratings:</strong> {{ book.ratings_count }}</li>
             </ul>
         </div>
-        <div class="book-reviews-div">
-            <h1 class="reviews-header">Reviews</h1>
-            <p>BOOK REVIEWS HERE</p>
+
+        <div class="book-section">
+            <h1 class="book-section-header">Reviews</h1>
+            {% if book.reviews == [] %}
+            <p style="padding-left: 25px;">No reviews have been written for this book yet</p>
+            {% else %}
+                {% for review in book.reviews %}
+                    {{ review_macro.review_item(review) }}
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 </main>

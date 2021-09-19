@@ -95,6 +95,37 @@ button:hover {
     float: right;
 }
 
+/* ------------------------- review --------------------------- */
+
+.review-item {
+    margin: 20px;
+    padding: 10px;
+    width: 92%;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.review-item h3 {
+    margin: 0;
+}
+
+.review-item h4 {
+    float: right;
+    margin: 0px;
+    margin-top: -20px;
+    font-style: italic;
+}
+
+/* ------------------------- rating --------------------------- */
+.star-rating {
+    float: left;
+    padding-right: 10px;
+}
+
+.checked {
+    color: orange;
+  }
+
 /* ------------------------- book item --------------------------- */
 .book-item {
     width: 200px;
@@ -349,9 +380,7 @@ button:hover {
 /* ------------------------- footer --------------------------- */
 .footer {
     text-align: center;
-    padding-top: 7px;
-    padding-bottom: 30px;
-    padding-right: 30px;
+    padding: 30px;
     clear: both;
     position: relative;
     justify-content: space-between;
@@ -404,28 +433,15 @@ button:hover {
     font-size: x-large;
 }
 
-.book-details1 {
+.book-section {
     width: 70%;
+    margin: auto;
     position: relative;
-    left: 13%;
     background: antiquewhite;
-      box-shadow:
-       inset 0 -3em 3em rgba(0,0,0,0.1),
-             0 0  0 2px rgb(255,255,255),
-             0.3em 0.3em 1em rgba(0,0,0,0.3);
-    padding-bottom: 20px;
-}
-
-.book-specs {
-    width: 69.42%;
-    padding-left: 10px;
-    position: relative;
-    left: 13%;
-    top: -17px;
-    background: antiquewhite;
-    box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1),
-    0 0 0 2px rgb(255, 255, 255),
-    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+    box-shadow:
+    inset 0 -3em 3em rgba(0,0,0,0.1),
+            0 0  0 2px rgb(255,255,255),
+            0.3em 0.3em 1em rgba(0,0,0,0.3);
     padding-bottom: 10px;
 }
 
@@ -438,28 +454,9 @@ button:hover {
     padding-bottom: 10px;
 }
 
-.product-details {
-    position: relative;
-    left: 0.5%;
-    padding-top: 10px;
-}
-
-.book-reviews-div {
-    width: 70%;
-    position: relative;
-    left: 13%;
-    background: antiquewhite;
-      box-shadow:
-       inset 0 -3em 3em rgba(0,0,0,0.1),
-             0 0  0 2px rgb(255,255,255),
-             0.3em 0.3em 1em rgba(0,0,0,0.3);
-    top: -30px;
-    padding-bottom: 10px;
-}
-
-.reviews-header {
-    position: relative;
-    left: 1%;
+.book-section-header {
+    padding: 10px;
+    padding-top: 20px;
 }
 
 
