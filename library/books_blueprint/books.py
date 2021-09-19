@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, redirect, url_for, session, request
 from functools import wraps
+from library.authentication import services
+from library.authentication.authentication import RegistrationForm
+from library.authentication.authentication import LoginForm
+
 import library.adapters.jsondatareader as repo
-from A2.compsci235_assignment2_a.library.authentication import services
-from A2.compsci235_assignment2_a.library.authentication.authentication import RegistrationForm
-from A2.compsci235_assignment2_a.library.authentication.authentication import LoginForm
 
 books_blueprint = Blueprint(
     'books_bp', __name__
@@ -99,7 +100,7 @@ def login():
             # Initialise session and redirect the user to the home page.
             session.clear()
             session['user_name'] = user['user_name']
-            return redirect(url_for('home_bp.home'))
+            return redirect(url_for('books_bp.home'))
 
         except services.UnknownUserException:
             # User name not known to the system, set a suitable error message.
@@ -121,7 +122,7 @@ def login():
 @books_blueprint.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('home_bp.home'))
+    return redirect(url_for('books_bp.home'))
 
 
 def login_required(view):
