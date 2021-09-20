@@ -482,6 +482,24 @@ button:hover {
     text-align: center;
 }
 
+/* ------------------------- authentication ------------------------------- */
+.formwrapper {
+    width: 70%;
+    position: relative;
+    left: 13%;
+    background: antiquewhite;
+      box-shadow:
+       inset 0 -3em 3em rgba(0,0,0,0.1),
+             0 0  0 2px rgb(255,255,255),
+             0.3em 0.3em 1em rgba(0,0,0,0.3);
+    top: 1em;
+    padding-bottom: 10px;
+}
+
+.title {
+    text-align: center;
+}
+
 .form-field {
     text-align: center;
     width: 95%;
