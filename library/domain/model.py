@@ -1,7 +1,6 @@
 from datetime import datetime, time
 from typing import List
 
-
 class Publisher:
 
     def __init__(self, publisher_name: str):
