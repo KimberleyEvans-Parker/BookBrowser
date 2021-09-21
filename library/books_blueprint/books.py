@@ -1,8 +1,15 @@
+from wtforms.fields.core import IntegerField
+from library.domain.model import Book, Review
 from flask import Blueprint, render_template, redirect, url_for, session, request
 from functools import wraps
 from library.authentication import services
 from library.authentication.authentication import RegistrationForm
 from library.authentication.authentication import LoginForm
+
+from better_profanity import profanity
+from flask_wtf import FlaskForm
+from wtforms import TextAreaField, HiddenField, SubmitField
+from wtforms.validators import DataRequired, Length, NumberRange, ValidationError
 
 import library.adapters.jsondatareader as repo
 
@@ -181,3 +188,57 @@ def publishers():
         right_inactive = is_right_button_inactive("publishers")
     )
 
+# ------------------------------ Review Query Section -----------------------------
+
+
+@books_blueprint.route('/write_review/<id>', methods=['GET', 'POST'])
+# @login_required
+def write_review(id):
+    book_id = int(id) # get article id from url
+    book: Book = repo.book_dataset.get_book_by_id(book_id)
+
+    # user_name = session['user_name'] # Get uersname of person logged in
+
+    # Create form. This maintains state, e.g. when this method is called with a HTTP GET request and populates the
+    # form with an article id, when subsequently called with a HTTP POST request
+    form = ReviewForm()
+
+    if form.validate_on_submit(): # Successful POST, i.e. the comment text has passed data validation.
+
+        review: Review = Review(book_id, form.review.data, int(form.rating.data))
+        book.add_review(review)
+
+        # Cause the web browser to display the page of all articles that have the same date as the commented article,
+        # and display all comments, including the new comment.
+        return redirect(url_for('books_bp.book', id=book_id))
+
+    # For a GET or an unsuccessful POST, retrieve the article to comment in dict form, and return a Web page that allows
+    # the user to enter a comment. The generated Web page includes a form object.
+    return render_template(
+        'books_and_reviews/write_review.html',
+        title='Write a Review',
+        book=book,
+        form=form,
+        handler_url=url_for('books_bp.write_review', id=id)
+    )
+
+
+class ProfanityFree:
+    def __init__(self, message=None):
+        if not message:
+            message = u'Field must not contain profanity'
+        self.message = message
+
+    def __call__(self, form, field):
+        if profanity.contains_profanity(field.data):
+            raise ValidationError(self.message)
+
+
+class ReviewForm(FlaskForm):
+    rating = IntegerField('Number',validators=[
+        DataRequired(), NumberRange(min=0, max=5, message='Your rating must be between 0 and 5')])
+    review = TextAreaField('Review', [
+        DataRequired(),
+        Length(min=4, message='Your review is too short'),
+        ProfanityFree(message='Your review must not contain profanity')])
+    submit = SubmitField('Submit')
