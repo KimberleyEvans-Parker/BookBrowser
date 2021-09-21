@@ -173,23 +173,19 @@ button:hover {
     font-size: large;
 }
 
-.form-wrapper{}
-
 .rating-field{
     width: 100%;
+    margin-bottom: 20px;
+    font-size: large;
 }
 
 .review-field{
     width: 100%;
+    margin-bottom: 20px;
+    font-size: large;
 }
-
-.review-errors{}
 
 .textarea{
-    width: 100%;
-}
-
-.submit-button{
     width: 100%;
 }
 
@@ -558,14 +554,14 @@ button:hover {
 
 input[type=text] {
     width: 100%;
-    padding: 5px 20px;
+    padding: 5px;
     margin: 0px 0;
     box-sizing: border-box;
 }
 
 input[type=password] {
     width: 100%;
-    padding: 5px 20px;
+    padding: 5px;
     margin: 0px 0;
     box-sizing: border-box;
     margin-top: 10px;
@@ -577,7 +573,7 @@ input[type=password] {
 input[type=submit] {
     text-align: center;
     width: 100%;
-    padding: 5px 20px;
+    padding: 5px;
     margin: 0px 0;
     box-sizing: border-box;
 }
@@ -594,4 +590,5 @@ input[type=submit] {
 .errors {
     text-align: center;
     list-style: none;
+    color: red;
 }
