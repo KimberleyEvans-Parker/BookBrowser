@@ -5,64 +5,60 @@
 {% block content %}
 
 <main id="main">
-    <header>
-        <h1>{{date}}</h1>
-    </header>
 
     <div class="single-book-container">
         <div class="book-section flex-container">
+            <header class="heading">
+                <h1>Review {{ book.title}}</h1>
+            </header>
 
             <div class="book-item flex-item-left">
-                {{ book_macro.book_item(book, price, stock) }}
+                {{ book_macro.book_item(book) }}
             </div>
             
             <div class="single-book flex-item-right">
-                <header>
-                    <h1>{{ book.title}}</h1>
-                </header>
 
                 <body>
-                {% if book.authors == none %}
-                <p><strong>By:</strong> Unknown</p>
-                {%else%}
-                <p><strong>By:</strong>
-                    {% for author in book.authors %}
-                        {{ author.full_name }}{{ ", " if not loop.last else "" }}
-                    {% endfor %}
-                </p>
-                {%endif%}
+                    {% if book.authors == none %}
+                    <p><strong>By:</strong> Unknown</p>
+                    {%else%}
+                    <p><strong>By:</strong>
+                        {% for author in book.authors %}
+                            {{ author.full_name }}{{ ", " if not loop.last else "" }}
+                        {% endfor %}
+                    </p>
+                    {%endif%}
 
-                <p><strong>Description:</strong> {{ book.description }}</p>
-                <a href={{book.url}} class="link">View on goodreads</a>
+                    <p><strong>Description:</strong> {{ book.description }}</p>
+
+                    <div class="form-wrapper">
+                        <form action="{{handler_url}}" method="post">
+                            {{form.csrf_token}} <!-- Need to include this token - Flask WTForms requires it. -->
+                            <br>
+                            <div class="rating-field">{{form.rating.label}} <br>
+                                {{form.rating(size = 1, placeholder="rating", class="textarea", wrap="hard")}}
+                                {% if form.rating.errors %}
+                                    <ul class="review-errors">
+                                    {% for error in form.rating.errors %}
+                                        <li>{{error}}</li>
+                                    {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                            <div class="review-field">{{form.review.label}} <br>
+                                {{form.review(size = 100, placeholder="type your review", rows="6", class="textarea", wrap="hard")}}
+                                {% if form.review.errors %}
+                                    <ul class="review-errors">
+                                    {% for error in form.review.errors %}
+                                        <li>{{error}}</li>
+                                    {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                            {{ form.submit(class="submit-button") }}
+                        </form>
+                    </div>
                 </body>
-
-                <div class="form-wrapper">
-                    <form action="{{handler_url}}" method="post">
-                        {{form.csrf_token}} <!-- Need to include this token - Flask WTForms requires it. -->
-                        <br>
-                        <div class="rating-field">{{form.rating.label}} <br>
-                            {{form.rating(size = 1, placeholder="rating", class="textarea", cols="1", rows="1", wrap="hard")}}
-                            {% if form.rating.errors %}
-                                <ul class="review-errors">
-                                {% for error in form.rating.errors %}
-                                    <li>{{error}}</li>
-                                {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </div>
-                        <div class="review-field">{{form.review.label}} <br>
-                            {{form.review(size = 100, placeholder="type your review", class="textarea",  wrap="hard")}}
-                            {% if form.review.errors %}
-                                <ul class="review-errors">
-                                {% for error in form.review.errors %}
-                                    <li>{{error}}</li>
-                                {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </div>
-                        {{ form.submit }}
-                    </form>
-                </div>
             </div>
         </div>
     </div>

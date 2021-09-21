@@ -235,7 +235,7 @@ class ProfanityFree:
 
 
 class ReviewForm(FlaskForm):
-    rating = IntegerField('Number',validators=[
+    rating = IntegerField('Rating',validators=[
         DataRequired(), NumberRange(min=0, max=5, message='Your rating must be between 0 and 5')])
     review = TextAreaField('Review', [
         DataRequired(),
