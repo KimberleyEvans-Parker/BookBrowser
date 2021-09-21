@@ -7,57 +7,58 @@
 {% block content %}
 <main id="main" xmlns="http://www.w3.org/1999/html">
     <div class="single-book-container">
-        <div class="book-section">
-            <div class="single-book">
-                <header>
-                    <h1>{{ book.title}}</h1>
-                </header>
+        <div class="book-section flex-container">
+            <header>
+                <h1>{{ book.title}}</h1>
+            </header>
+
+            <div class="book-item flex-item-left">
+                {{ book_macro.book_item(book, price, stock) }}
+            </div>
+            
+            <div class="single-book flex-item-right">
 
                 <body>
-                {% if book.authors == none %}
-                <p><strong>By:</strong> Unknown</p>
-                {%else%}
-                <p><strong>By:</strong>
-                    {% for author in book.authors %}
-                        {{ author.full_name }}{{ ", " if not loop.last else "" }}
-                    {% endfor %}
-                </p>
-                {%endif%}
+                    {% if book.authors == none %}
+                    <p><strong>By:</strong> Unknown</p>
+                    {%else%}
+                    <p><strong>By:</strong>
+                        {% for author in book.authors %}
+                            {{ author.full_name }}{{ ", " if not loop.last else "" }}
+                        {% endfor %}
+                    </p>
+                    {%endif%}
 
-                {{ stars_macro.stars(book.average_rating) }}
-                <p><strong>{{book.average_rating}}</strong> average based on <strong>{{book.ratings_count}}</strong> ratings.</p>
-                
-                {% if book.ebook %}
-                <p><strong>Hardback | Ebook</strong></p>
-                {%else%}
-                <p><strong>Hardback only</strong></p>
-                {% endif %}
-                <ul class="social-media">
-                    <li class="share"><strong>Share: </strong></li>
-                    <li class="social-media-li">
-                        <img class="social-media-icons"
-                             src="{{ url_for('static', filename='social_media_icons/fb_icon.png') }}"/>
-                    </li>
-                    <li class="social-media-li">
-                        <img class="social-media-icons"
-                             src="{{ url_for('static', filename='social_media_icons/google_icon.png') }}"/>
-                    </li>
-                    <li class="social-media-li">
-                        <img class="social-media-icons"
-                             src="{{ url_for('static', filename='social_media_icons/mail-icon.png') }}"/>
-                    </li>
-                    <li class="social-media-li">
-                        <img class="social-media-icons"
-                             src="{{ url_for('static', filename='social_media_icons/twitter-icon.png') }}"/>
-                    </li>
-                </ul>
-                <p><strong>Description:</strong> {{ book.description }}</p>
-                <a href={{book.url}} class="link">View on goodreads</a>
+                    {{ stars_macro.stars(book.average_rating) }}
+                    <p><strong>{{book.average_rating}}</strong> average based on <strong>{{book.ratings_count}}</strong> ratings.</p>
+                    
+                    {% if book.ebook %}
+                    <p><strong>Hardback | Ebook</strong></p>
+                    {%else%}
+                    <p><strong>Hardback only</strong></p>
+                    {% endif %}
+                    <ul class="social-media">
+                        <li class="share"><strong>Share: </strong></li>
+                        <li class="social-media-li">
+                            <img class="social-media-icons"
+                                src="{{ url_for('static', filename='social_media_icons/fb_icon.png') }}"/>
+                        </li>
+                        <li class="social-media-li">
+                            <img class="social-media-icons"
+                                src="{{ url_for('static', filename='social_media_icons/google_icon.png') }}"/>
+                        </li>
+                        <li class="social-media-li">
+                            <img class="social-media-icons"
+                                src="{{ url_for('static', filename='social_media_icons/mail-icon.png') }}"/>
+                        </li>
+                        <li class="social-media-li">
+                            <img class="social-media-icons"
+                                src="{{ url_for('static', filename='social_media_icons/twitter-icon.png') }}"/>
+                        </li>
+                    </ul>
+                    <p><strong>Description:</strong> {{ book.description }}</p>
+                    <a href={{book.url}} class="link">View on goodreads</a>
                 </body>
-            </div>
-
-            <div class="book-item">
-                {{ book_macro.book_item(book, price, stock) }}
             </div>
 
         </div>
@@ -94,6 +95,9 @@
                     {{ review_macro.review_item(review) }}
                 {% endfor %}
             {% endif %}
+            <a  href="{{ url_for('books_bp.write_review', id=book.book_id) }}" >
+                <button class="write-review-button">Write a Review</button>
+            </a>
         </div>
     </div>
 </main>
