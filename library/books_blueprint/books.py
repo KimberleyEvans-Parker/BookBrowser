@@ -78,7 +78,7 @@ def register():
     user_name_not_unique = None
     if form.validate_on_submit():
         try:
-            services.add_user(form.user_name.data, form.password.data, repo_instance)
+            services.add_user(form.user_name.data, form.password.data, repo)
             return redirect(url_for('books_bp.login'))
         except services.NameNotUniqueException:
             user_name_not_unique = "Your user name is already taken - please supply another"
@@ -101,10 +101,10 @@ def login():
         # Successful POST, i.e. the user name and password have passed validation checking.
         # Use the service layer to lookup the user.
         try:
-            user = services.get_user(form.user_name.data, repo_instance)
+            user = services.get_user(form.user_name.data, repo)
 
             # Authenticate user.
-            services.authenticate_user(user['user_name'], form.password.data, repo_instance)
+            services.authenticate_user(user['user_name'], form.password.data, repo)
 
             # Initialise session and redirect the user to the home page.
             session.clear()
