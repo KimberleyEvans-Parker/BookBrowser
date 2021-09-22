@@ -22,32 +22,33 @@ def add_user(user_name: str, password: str, repo):
     # Encrypt password so that the database doesn't store passwords 'in the clear'.
     password_hash = generate_password_hash(password)
 
-    def get_user(user_name: str):
-        user = repo.get_user(user_name)
-        if user is None:
-            raise UnknownUserException
+    # Create and store the new User, with password encrypted.
+    user = User(user_name, password_hash)
+    repo.add_user(user)
 
-        return user_to_dict(user)
+def get_user(user_name: str, repo):
+    user = repo.get_user(user_name)
+    if user is None:
+        raise UnknownUserException
 
-    def authenticate_user(user_name: str, password: str):
-        authenticated = False
+    return user_to_dict(user)
 
-        user = repo.get_user(user_name)
-        if user is not None:
-            authenticated = check_password_hash(user.password, password)
-        if not authenticated:
-            raise AuthenticationException
+def authenticate_user(user_name: str, password: str, repo):
+    authenticated = False
+
+    user = repo.get_user(user_name)
+    if user is not None:
+        authenticated = check_password_hash(user.password, password)
+    if not authenticated:
+        raise AuthenticationException
 
     # ===================================================
     # Functions to convert model entities to dictionaries
     # ===================================================
 
-    def user_to_dict(user: User):
-        user_dict = {
-            'user_name': user.user_name,
-            'password': user.password
-        }
-        return user_dict
-    # Create and store the new User, with password encrypted.
-    user = User(user_name, password_hash)
-    repo.add_user(user)
+def user_to_dict(user: User):
+    user_dict = {
+        'user_name': user.user_name,
+        'password': user.password
+    }
+    return user_dict
