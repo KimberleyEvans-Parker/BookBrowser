@@ -13,7 +13,7 @@ class AuthenticationException(Exception):
     pass
 
 
-def add_user(user_name: str, password: str):
+def add_user(user_name: str, password: str, repo):
     # Check that the given user name is available.
     user = repo.get_user(user_name)
     if user is not None:
