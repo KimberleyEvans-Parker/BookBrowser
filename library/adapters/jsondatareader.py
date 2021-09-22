@@ -80,24 +80,29 @@ class BooksJSONReader:
             return math.inf
         return book.release_year
 
-    def get_page_by_index(self, page, text = None):
+    def get_page_by_index(self, page, text: str = None):
         if text is None:
             books = self.dataset_of_books
+        elif text.strip() == "":
+            text = None
+            books = self.dataset_of_books
+        else:
+            text = text.lower().strip()
 
         if page == "home":
             if text is not None:
-                books = [b for b in self.dataset_of_books if text in b.title]
+                books = [b for b in self.dataset_of_books if text in b.title.lower()]
             books.sort(key = self.get_title)
         elif page == "publishers":
             if text is not None:
-                books = [b for b in self.dataset_of_books if text in b.publishers]
+                books = [b for b in self.dataset_of_books if text in b.publisher.name.lower()]
             books.sort(key = self.get_publisher)
         elif page == "authors":
             if text is not None:
                 books = []
                 for b in self.dataset_of_books:
                     for a in b.authors:
-                        if text in a:
+                        if text in a.full_name.lower():
                             books.append(b)
                             break
             books.sort(key = self.get_first_author)

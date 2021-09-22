@@ -163,7 +163,7 @@ def reading_list():
         'home/home.html', # TODO: create reading_list.html
     )
 
-@books_blueprint.route('/books_by_date')
+@books_blueprint.route('/books_by_date', methods=['GET', 'POST'])
 def books_by_date():
     form = TextSearchForm()
     search_text = None
@@ -182,7 +182,7 @@ def books_by_date():
         right_inactive = is_right_button_inactive("books_by_date")
     )
 
-@books_blueprint.route('/authors')
+@books_blueprint.route('/authors', methods=['GET', 'POST'])
 def authors():
     form = TextSearchForm()
     search_text = None
