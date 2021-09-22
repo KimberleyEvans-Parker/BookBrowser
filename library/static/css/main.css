@@ -71,7 +71,7 @@ button:hover {
 
 .browse-header {
     color: antiquewhite;
-    height: 120px;
+    height: 160px;
     width: 100%;
     /* position: fixed; */
 }
@@ -110,6 +110,29 @@ button:hover {
       flex: 100%;
     }
   }
+
+/* ------------------------- Search form --------------------------- */
+
+.search-form {
+    width: 100%;
+    height: 40px;
+    display: flex;
+}
+.search-heading {
+    width: max-content;
+    margin: 0px;
+}
+.search-text{
+    width: 200px;
+    margin: 5px 10px;
+    font-size: large;
+}
+.search-text-box{
+    width: 100%;
+}
+.search-submit{
+    width: 130px;
+}
 
 /* ------------------------- change page buttons --------------------------- */
 
