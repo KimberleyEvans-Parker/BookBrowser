@@ -82,13 +82,14 @@ def book(id):
         stock = repo.book_dataset.books_inventory.find_stock_count(id)
     )
 
+# Need to fix None instance errors for get_user
 @books_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     user_name_not_unique = None
     if form.validate_on_submit():
         try:
-            services.add_user(form.user_name.data, form.password.data, repo.repo_instance)
+            services.add_user(form.user_name.data, form.password.data, repo_instance)
             return redirect(url_for('books_bp.login'))
         except services.NameNotUniqueException:
             user_name_not_unique = "Your user name is already taken - please supply another"
@@ -100,6 +101,7 @@ def register():
         handler_url=url_for('books_bp.register'),
     )
 
+# Need to fix None instance errors for get_user
 @books_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -110,10 +112,10 @@ def login():
         # Successful POST, i.e. the user name and password have passed validation checking.
         # Use the service layer to lookup the user.
         try:
-            user = services.get_user(form.user_name.data, repo.repo_instance)
+            user = services.get_user(form.user_name.data, repo_instance)
 
             # Authenticate user.
-            services.authenticate_user(user['user_name'], form.password.data, repo.repo_instance)
+            services.authenticate_user(user['user_name'], form.password.data, repo_instance)
 
             # Initialise session and redirect the user to the home page.
             session.clear()
@@ -154,13 +156,15 @@ def login_required(view):
 @books_blueprint.route('/profile')
 def profile():
     return render_template(
-        'home/home.html', # TODO: create profile.html
+        'authentication/profile.html',
+        handler_url=url_for('books_bp.profile'),
     )
 
 @books_blueprint.route('/reading_list')
 def reading_list():
     return render_template(
-        'home/home.html', # TODO: create reading_list.html
+        'authentication/reading_list.html',
+        handler_url=url_for('books_bp.reading_list'),
     )
 
 @books_blueprint.route('/books_by_date', methods=['GET', 'POST'])
