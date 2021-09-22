@@ -21,8 +21,14 @@ class BooksJSONReader:
         self.__dataset_of_books = []
         self.__books_inventory = BooksInventory()
         self.__indexes = {"home": 0, "books_by_date": 0, "authors": 0, "publishers": 0}
-
+        self.__users = list()
         self.read_json_files()
+
+    def add_user(self, user):
+        self.__users.append(user)
+
+    def get_user(self, user_name):
+        return next((user for user in self.__users if user.user_name == user_name), None)
 
     @property
     def indexes(self):
@@ -195,3 +201,5 @@ class BooksJSONReader:
             book: Book = self.get_book_by_id(book_id)
             review: Review = Review(book_id, review_text, rating, review_id=id, timestamp=timestamp)
             book.add_review(review)
+
+
