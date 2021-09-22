@@ -26,15 +26,26 @@ def is_right_button_inactive(function):
     if repo.book_dataset.indexes[function] == repo.book_dataset.get_highest_index():
         return "disabled"
     return ""
+    
+class TextSearchForm(FlaskForm):
+    text = TextAreaField("Text to find")
+    submit = SubmitField("Find")
 
-@books_blueprint.route('/')
+@books_blueprint.route('/', methods=['GET', 'POST'])
 def home():
+    form = TextSearchForm()
+    search_text = None
+
+    if form.validate_on_submit():
+        search_text = form.text.data
+
     return render_template(
         'home/home.html',
-        title = "Browse books by title",
-        books = repo.book_dataset.get_page_by_index("home"),
+        title = "title",
+        books = repo.book_dataset.get_page_by_index("home", search_text),
         inventory = repo.book_dataset.books_inventory,
         function = "home",
+        form = form,
         left_inactive = is_left_button_inactive("home"),
         right_inactive = is_right_button_inactive("home")
     )
@@ -152,41 +163,65 @@ def reading_list():
         'home/home.html', # TODO: create reading_list.html
     )
 
-@books_blueprint.route('/books_by_date')
+@books_blueprint.route('/books_by_date', methods=['GET', 'POST'])
 def books_by_date():
+    form = TextSearchForm()
+    search_text = None
+
+    if form.validate_on_submit():
+        search_text = form.text.data
+
     return render_template(
         'home/home.html',
-        title = "Browse books by date",
-        books = repo.book_dataset.get_page_by_index("books_by_date"),
+        title = "date",
+        books = repo.book_dataset.get_page_by_index("books_by_date", search_text),
         inventory = repo.book_dataset.books_inventory,
         function = "books_by_date",
+        form = form,
         left_inactive = is_left_button_inactive("books_by_date"),
         right_inactive = is_right_button_inactive("books_by_date")
     )
 
-@books_blueprint.route('/authors')
+@books_blueprint.route('/authors', methods=['GET', 'POST'])
 def authors():
+    form = TextSearchForm()
+    search_text = None
+
+    if form.validate_on_submit():
+        search_text = form.text.data
+
     return render_template(
         'home/home.html',
-        title = "Browse books by author",
-        books = repo.book_dataset.get_page_by_index("authors"),
+        title = "author",
+        books = repo.book_dataset.get_page_by_index("authors", search_text),
         inventory = repo.book_dataset.books_inventory,
         function = "authors",
+        form = form,
         left_inactive = is_left_button_inactive("authors"),
         right_inactive = is_right_button_inactive("authors")
     )
 
-@books_blueprint.route('/publishers')
+
+
+@books_blueprint.route('/publishers', methods=['GET', 'POST'])
 def publishers():
+    form = TextSearchForm()
+    search_text = None
+
+    if form.validate_on_submit():
+        search_text = form.text.data
+
     return render_template(
         'home/home.html',
-        title = "Browse books by publisher",
-        books = repo.book_dataset.get_page_by_index("publishers"),
+        title = "publisher",
+        books = repo.book_dataset.get_page_by_index("publishers", search_text),
+        form = form,
         inventory = repo.book_dataset.books_inventory,
         function = "publishers",
         left_inactive = is_left_button_inactive("publishers"),
         right_inactive = is_right_button_inactive("publishers")
     )
+
 
 # ------------------------------ Review Query Section -----------------------------
 
@@ -243,3 +278,5 @@ class ReviewForm(FlaskForm):
         Length(min=4, message='Your review is too short'),
         ProfanityFree(message='Your review must not contain profanity')])
     submit = SubmitField('Submit')
+
+

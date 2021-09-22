@@ -3,7 +3,19 @@
 {% extends 'layout.html' %} {% block content %}
 <main id="main" class="browse-container">
   <div class="browse-header">
-    <h1>{{title}}</h1>
+    <h1>Browse books by {{title}}...</h1>
+
+    <form method="POST" action="{{handler_url}}" class="search-form">
+      <h2 class="search-heading">Search by {{title}}</h2>
+      {{form.csrf_token}}
+      <div class="search-text">
+          {{form.text(placeholder="text to search", rows="1", class="textarea")}}
+      </div>
+      <div class="search-submit">
+        {{form.submit}}
+      </div>
+    </form>
+
     <div>
       <a href="{{ url_for('books_bp.first', function=function) }}">
         <button class="change-page float-left {{ left_inactive }}">First Page</button>

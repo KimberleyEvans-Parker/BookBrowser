@@ -71,13 +71,13 @@ button:hover {
 
 .browse-header {
     color: antiquewhite;
-    height: 120px;
+    height: 160px;
     width: 100%;
     /* position: fixed; */
 }
 .browse-content {
     position: relative;
-    height: 100%;
+    height: max-content;
 }
 
 
@@ -110,6 +110,30 @@ button:hover {
       flex: 100%;
     }
   }
+
+/* ------------------------- Search form --------------------------- */
+
+.search-form {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    margin-left: 20px;
+}
+.search-heading {
+    width: max-content;
+    margin: 0px;
+}
+.search-text{
+    width: 200px;
+    margin: 5px 10px;
+    font-size: large;
+}
+.search-text-box{
+    width: 100%;
+}
+.search-submit{
+    width: 130px;
+}
 
 /* ------------------------- change page buttons --------------------------- */
 
@@ -209,6 +233,8 @@ button:hover {
     perspective: 1200px;
     float: left;
     margin: 20px;
+    /* margin-top: 0px; */
+    padding-bottom: 80px;
 }
 .book-item h2 {
     color: white;
