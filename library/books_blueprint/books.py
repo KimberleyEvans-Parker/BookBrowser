@@ -28,7 +28,7 @@ def is_right_button_inactive(function):
     return ""
     
 class TextSearchForm(FlaskForm):
-    text = TextAreaField("Text to find", [DataRequired()])
+    text = TextAreaField("Text to find")
     submit = SubmitField("Find")
 
 @books_blueprint.route('/', methods=['GET', 'POST'])
