@@ -288,16 +288,16 @@ class TestReview:
         book = Book(2675376, "Harry Potter")
         review_text = "  This book was very enjoyable.   "
         rating = 4
-        review = Review(book, review_text, rating)
+        review = Review(book.title, review_text, rating, None)
 
-        assert str(review.book) == "<Book Harry Potter, book id = 2675376>"
+        assert str(review.book_id) == "Harry Potter"
         assert str(review.review_text) == "This book was very enjoyable."
         assert review.rating == 4
 
     def test_attributes_access(self):
         book = Book(2675376, "Harry Potter")
-        review = Review(book, 42, 3)
-        assert str(review.book) == "<Book Harry Potter, book id = 2675376>"
+        review = Review(book.title, 42, 3, None)
+        assert str(review.book_id) == "Harry Potter"
         assert str(review.review_text) == "N/A"
         assert review.rating == 3
 
@@ -306,25 +306,25 @@ class TestReview:
         review_text = "This book was very enjoyable."
 
         with pytest.raises(ValueError):
-            review = Review(book, review_text, -1)
+            review = Review(book.title, review_text, -1, None)
 
         with pytest.raises(ValueError):
-            review = Review(book, review_text, 6)
+            review = Review(book.title, review_text, 6, None)
 
     def test_set_of_reviews(self):
         book1 = Book(2675376, "Harry Potter")
         book2 = Book(874658, "Lord of the Rings")
-        review1 = Review(book1, "I liked this book", 4)
-        review2 = Review(book2, "This book was ok", 3)
-        review3 = Review(book1, "This book was exceptional", 5)
+        review1 = Review(book1.title, "I liked this book", 4, None)
+        review2 = Review(book2.title, "This book was ok", 3, None)
+        review3 = Review(book1.title, "This book was exceptional", 5, None)
         assert review1 != review2
         assert review1 != review3
         assert review3 != review2
 
     def test_wrong_book_object(self):
         publisher = Publisher("DC Comics")
-        review = Review(publisher, "I liked this book", 4)
-        assert review.book is None
+        review = Review("I liked this book", publisher, 4, None)
+        assert review.review_text == "N/A"
 
 class TestUser:
 
@@ -333,14 +333,14 @@ class TestUser:
         user1 = User('Shyamli', 'pw12345')
         user2 = User('Martin', 'pw67890')
         user3 = User('Daniel', 'pw87465')
-        assert str(user1) == "<User shyamli>"
-        assert str(user2) == "<User martin>"
-        assert str(user3) == "<User daniel>"
+        assert str(user1) == "<User Shyamli>"
+        assert str(user2) == "<User Martin>"
+        assert str(user3) == "<User Daniel>"
 
     def test_sort_ordering(self):
         user1 = User("Shyamli", "pw12345")
         user2 = User("Martin", "pw67890")
-        user3 = User("daniel", "pw12345")
+        user3 = User("Daniel", "pw12345")
         assert user1 > user2
         assert user1 > user3
         assert user2 > user3
@@ -348,7 +348,7 @@ class TestUser:
     def test_comparison(self):
         user1 = User("Martin", "pw12345")
         user2 = User("Shyamli", "pw67890")
-        user3 = User("martin", "pw45673")
+        user3 = User("Martin", "pw45673")
         assert user1 == user3
         assert user1 != user2
         assert user3 != user2
@@ -361,7 +361,7 @@ class TestUser:
         set_of_users.add(user1)
         set_of_users.add(user2)
         set_of_users.add(user3)
-        assert str(sorted(set_of_users)) == "[<User daniel>, <User martin>, <User shyamli>]"
+        assert str(sorted(set_of_users)) == "[<User Daniel>, <User Martin>, <User Shyamli>]"
 
     def test_reading_a_book(self):
         books = [Book(874658, "Harry Potter"), Book(89576, "Lord of the Rings")]
@@ -379,8 +379,8 @@ class TestUser:
         books = [Book(874658, "Harry Potter"), Book(89576, "Lord of the Rings")]
         user = User("Martin", "pw12345")
         assert user.reviews == []
-        review1 = Review(books[0], "I liked this book", 4)
-        review2 = Review(books[1], "This book was ok", 2)
+        review1 = Review(books[0].title, "I liked this book", 4, user.user_name)
+        review2 = Review(books[1].title, "This book was ok", 2, user.user_name)
         user.add_review(review1)
         user.add_review(review2)
         assert str(user.reviews[0].review_text) == "I liked this book"
@@ -391,9 +391,9 @@ class TestUser:
     def test_passwords(self):
         user1 = User('  Shyamli   ', 'pw12345')
         user2 = User('Martin', 'p90')
-        assert str(user1) == "<User shyamli>"
+        assert str(user1) == "<User Shyamli>"
         assert str(user1.password) == "pw12345"
-        assert str(user2) == "<User martin>"
+        assert str(user2) == "<User Martin>"
         assert user2.password is None
 
 
@@ -402,6 +402,8 @@ def read_books_and_authors():
     books_file_name = 'comic_books_excerpt.json'
     authors_file_name = 'book_authors_excerpt.json'
     inventory_file_name = 'book_inventory.json'
+    reviews_file_name = 'book_reviews.csv'
+    users_file_name = 'users.json'
 
     # we use a method from a utils file in the root folder to figure out the root
     # this way testing code is always finding the right path to the data files
@@ -410,7 +412,9 @@ def read_books_and_authors():
     path_to_books_file = str(root_folder / data_folder / books_file_name)
     path_to_authors_file = str(root_folder / data_folder / authors_file_name)
     path_to_inventory_file = str(root_folder / data_folder / inventory_file_name)
-    reader = BooksJSONReader(path_to_books_file, path_to_authors_file, path_to_inventory_file)
+    path_to_reviews_file = str(root_folder / data_folder / reviews_file_name)
+    path_to_users_file = str(root_folder / data_folder / users_file_name)
+    reader = BooksJSONReader(path_to_books_file, path_to_authors_file, path_to_inventory_file, path_to_reviews_file, path_to_users_file)
     reader.read_json_files()
     return reader.dataset_of_books
 
@@ -454,6 +458,8 @@ def get_books_inventory():
     books_file_name = 'comic_books_excerpt.json'
     authors_file_name = 'book_authors_excerpt.json'
     inventory_file_name = 'book_inventory.json'
+    reviews_file_name = 'book_reviews.csv'
+    users_file_name = 'users.json'
 
     # we use a method from a utils file in the root folder to figure out the root
     # this way testing code is always finding the right path to the data files
@@ -462,7 +468,9 @@ def get_books_inventory():
     path_to_books_file = str(root_folder / data_folder / books_file_name)
     path_to_authors_file = str(root_folder / data_folder / authors_file_name)
     path_to_inventory_file = str(root_folder / data_folder / inventory_file_name)
-    reader = BooksJSONReader(path_to_books_file, path_to_authors_file, path_to_inventory_file)
+    path_to_reviews_file = str(root_folder / data_folder / reviews_file_name)
+    path_to_users_file = str(root_folder / data_folder / users_file_name)
+    reader = BooksJSONReader(path_to_books_file, path_to_authors_file, path_to_inventory_file, path_to_reviews_file, path_to_users_file)
     reader.read_json_files()
     return reader.books_inventory
 
