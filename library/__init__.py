@@ -19,8 +19,12 @@ def create_app(test_config=None):
         # data_path = app.config['TEST_DATA_PATH']
 
     # Initialise repo
-    jsondatareader.book_dataset = BooksJSONReader(data_path/"comic_books_excerpt.json", 
-        data_path/"book_authors_excerpt.json", data_path/"book_inventory.json", data_path/"book_reviews.csv")
+    jsondatareader.book_dataset = BooksJSONReader(
+        data_path/"comic_books_excerpt.json", 
+        data_path/"book_authors_excerpt.json", 
+        data_path/"book_inventory.json", 
+        data_path/"book_reviews.csv",
+        data_path/"users.json")
     
     with app.app_context():
         from .books_blueprint import books

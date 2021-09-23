@@ -73,8 +73,6 @@ def last(function):
 @books_blueprint.route('/book/<id>')
 def book(id):
     id = int(id)
-    print(repo.book_dataset.books_inventory.find_price(id))
-    print(repo.book_dataset.books_inventory.find_stock_count(id))
     return render_template(
         'books_and_reviews/book.html',
         book=repo.book_dataset.get_book_by_id(id),
@@ -149,7 +147,7 @@ def login_required(view):
     @wraps(view)
     def wrapped_view(**kwargs):
         if 'user_name' not in session:
-            return redirect(url_for('books_blueprint.login'))
+            return redirect(url_for('books_bp.login'))
         return view(**kwargs)
     return wrapped_view
 
@@ -231,12 +229,12 @@ def publishers():
 
 
 @books_blueprint.route('/write_review/<id>', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def write_review(id):
     book_id = int(id) # get article id from url
     book: Book = repo.book_dataset.get_book_by_id(book_id)
 
-    # user_name = session['user_name'] # Get uersname of person logged in
+    user_name = session['user_name'] # Get uersname of person logged in
 
     # Create form. This maintains state, e.g. when this method is called with a HTTP GET request and populates the
     # form with an article id, when subsequently called with a HTTP POST request
@@ -244,7 +242,7 @@ def write_review(id):
 
     if form.validate_on_submit(): # Successful POST, i.e. the comment text has passed data validation.
 
-        review: Review = Review(book_id, form.review.data, int(form.rating.data))
+        review: Review = Review(book_id, form.review.data, int(form.rating.data), user_name)
         book.add_review(review)
 
         # Cause the web browser to display the page of all articles that have the same date as the commented article,
