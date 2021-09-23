@@ -1,11 +1,23 @@
+{% import "macros/book_item.html" as book_macro %}
+
 {% extends 'layout.html' %}
 
 {% block content %}
 
-<main id="main">
-    <h1 class="profile-greeting">{% if 'user_name' in session %} Hello, {{ session['user_name'] }}</h1>
-        <div class="users-reviews">
-            <h2>Your reading list:</h2>
+<main id="main" class="browse-container">
+    {% if 'user_name' in session %}
+        <h1 class="profile-greeting">
+            Hello, {{ session['user_name'] }}
+        </h1>
+        <div class="browse-content">
+            <h2 class="white-text">Your reading list:</h2>
+            {% if books == [] %}
+                <p class="white-text">You have no books in your reading list</p>
+            {% else %}
+                {% for book in books %}
+                    {{ book_macro.book_item(book, inventory.find_price(book.book_id), inventory.find_stock_count(book.book_id)) }}
+                {% endfor %}
+            {% endif %}
         </div>
     {%else%}
     <h1 class="profile-greeting">Hi, You are not logged in...</h1>

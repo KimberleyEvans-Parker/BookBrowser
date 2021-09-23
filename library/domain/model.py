@@ -318,7 +318,7 @@ class Book:
 
 class User:
 
-    def __init__(self, user_name: str, password: str, liked_books = None):
+    def __init__(self, user_name: str, password: str, reading_list = None):
         if user_name == "" or not isinstance(user_name, str):
             self.__user_name = None
         else:
@@ -332,10 +332,10 @@ class User:
         self.__read_books = []
         self.__reviews = []
         self.__pages_read = 0
-        if liked_books is None:
-            self.__liked_books = []
+        if reading_list is None:
+            self.__reading_list = []
         else:
-            self.__liked_books = liked_books
+            self.__reading_list = reading_list
 
     @property
     def user_name(self) -> str:
@@ -346,8 +346,8 @@ class User:
         return self.__password
 
     @property
-    def liked_books(self) -> List[Book]:
-        return self.__liked_books
+    def reading_list(self) -> List[Book]:
+        return self.__reading_list
 
     @property
     def read_books(self) -> List[Book]:
@@ -367,13 +367,16 @@ class User:
             if book.num_pages is not None:
                 self.__pages_read += book.num_pages
 
-    def like_a_book(self, book: Book):
-        if isinstance(book, Book) and book not in self.__liked_books:
-            self.__liked_books.append(book)
+    def is_in_reading_list(self, book:Book):
+        return book in self.__reading_list
 
-    def unlike_a_book(self, book: Book):
-        if isinstance(book, Book) and book in self.__liked_books:
-                self.__liked_books.remove(book)
+    def add_to_reading_list(self, book: Book):
+        if isinstance(book, Book) and book not in self.__reading_list:
+            self.__reading_list.append(book)
+
+    def remove_from_reading_list(self, book: Book):
+        if isinstance(book, Book) and book in self.__reading_list:
+                self.__reading_list.remove(book)
 
     def add_review(self, review: Review):
         if isinstance(review, Review):
