@@ -98,7 +98,7 @@
             <p style="padding-left: 25px;">No reviews have been written for this book yet</p>
             {% else %}
                 {% for review in book.reviews %}
-                    {{ review_macro.review_item(review) }}
+                    {{ review_macro.review_item(review, false) }}
                 {% endfor %}
             {% endif %}
             <a  href="{{ url_for('books_bp.write_review', id=book.book_id) }}" >

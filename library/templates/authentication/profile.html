@@ -1,16 +1,30 @@
+{% import "macros/review_item.html" as review_macro %}
+
 {% extends 'layout.html' %}
 
 {% block content %}
 
 <main id="main">
-    <h1 class="profile-greeting">{% if 'user_name' in session %} Hello, {{ session['user_name'] }}</h1>
-        <div class="users-reviews">
-            <h2>Your reviews:</h2>
+    {% if 'user_name' in session %}
+        <h1 class="profile-greeting">Hello, {{ session['user_name'] }}</h1>
+            <div class="single-book-container">
+                <div class="book-section">
+                <h2 class="reviews-header">Your reviews:</h2>
+                {% if reviews == [] %}
+                    <p class="white-text">You have not written any reviews</p>
+                {% else %}
+                    {% for review in reviews %}
+                        {{ review_macro.review_item(review, true) }}
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
     {%else%}
-    <h1 class="profile-greeting">Hi, You are not logged in...</h1>
-    <div class="profile-img-wrap">
-    <a href="/login"><img class="profile-book" src="{{ url_for('static', filename='profile_books_img.jpg') }}" /></a>
+        <h1 class="profile-greeting">Hi, You are not logged in...</h1>
+        <div class="profile-img-wrap">
+            <a href="/login">
+                <img class="profile-book" src="{{ url_for('static', filename='profile_books_img.jpg') }}" />
+            </a>
         </div>
     {%endif%}
 </main>
