@@ -96,6 +96,7 @@ button:hover {
   
   .flex-item-left {
     padding: 10px;
+    padding-top: 100px;
     flex: 20%;
   }
   

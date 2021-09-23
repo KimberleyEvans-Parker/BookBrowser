@@ -98,7 +98,7 @@ class Author:
 
 class Review:
 
-    def __init__(self, book_id: int, review_text: str, rating: int, user = None, review_id: int = None, timestamp = None):
+    def __init__(self, book_id: int, review_text: str, rating: int, user_name: str, review_id: int = None, timestamp = None):
         self.__book_id = book_id
 
         if isinstance(review_text, str):
@@ -116,7 +116,7 @@ class Review:
         else:
             self.__timestamp = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
 
-        self.__user = user
+        self.__user_name = user_name
         self.__id = review_id
 
     @property
@@ -128,8 +128,8 @@ class Review:
         return self.__review_text
 
     @property
-    def user(self) -> str:
-        return "Unknown" # TODO: when user implemented, get name
+    def user_name(self) -> str:
+        return self.__user_name
 
     @property
     def rating(self) -> int:

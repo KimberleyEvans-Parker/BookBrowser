@@ -3,7 +3,7 @@
 {% import "macros/stars.html" as stars_macro %}
 
 <div class="review-item">
-    <h3>{{ stars_macro.stars(review.rating) }} by {{review.user}}</h3>
+    <h3>{{ stars_macro.stars(review.rating) }} by {{review.user_name}}</h3>
     <h4>{{review.timestamp}}</h4>
     <p>{{review.review_text}}</p>
 
