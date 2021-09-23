@@ -1,9 +1,13 @@
 
-{% macro review_item(review) %}
+{% macro review_item(review, show_title) %}
 {% import "macros/stars.html" as stars_macro %}
 
 <div class="review-item">
-    <h3>{{ stars_macro.stars(review.rating) }} by {{review.user_name}}</h3>
+    {% if show_title %}
+        <h3>{{ stars_macro.stars(review.rating) }} for {{review.book_title}}</h3>
+    {% else %}
+        <h3>{{ stars_macro.stars(review.rating) }} by {{review.user_name}}</h3>
+    {% endif %}
     <h4>{{review.timestamp}}</h4>
     <p>{{review.review_text}}</p>
 

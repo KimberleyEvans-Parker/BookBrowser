@@ -98,8 +98,8 @@ class Author:
 
 class Review:
 
-    def __init__(self, book_id: int, review_text: str, rating: int, user_name: str, review_id: int = None, timestamp = None):
-        self.__book_id = book_id
+    def __init__(self, book_title: str, review_text: str, rating: int, user_name: str, review_id: int = None, timestamp = None):
+        self.__book_title = book_title
 
         if isinstance(review_text, str):
             self.__review_text = review_text.strip()
@@ -120,8 +120,8 @@ class Review:
         self.__id = review_id
 
     @property
-    def book_id(self) -> int:
-        return self.__book_id
+    def book_title(self) -> int:
+        return self.__book_title
 
     @property
     def review_text(self) -> str:
@@ -143,7 +143,7 @@ class Review:
         if not isinstance(other, self.__class__):
             return False
 
-        return other.book_id == self.book_id and other.review_text == self.review_text \
+        return other.book_title == self.book_title and other.review_text == self.review_text \
                and other.rating == self.rating and other.timestamp == self.timestamp
 
     def __repr__(self):

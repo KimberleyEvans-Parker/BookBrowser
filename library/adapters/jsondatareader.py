@@ -187,10 +187,16 @@ class BooksJSONReader:
             rating: int = int(data_row[3])
             review_text: str = data_row[4]
             timestamp:str = data_row[5]
-            
+
             book: Book = self.get_book_by_id(book_id)
-            review: Review = Review(book_id, review_text, rating, user_name, review_id=id, timestamp=timestamp)
+            
+            review: Review = Review(book.title, review_text, rating, user_name, review_id=id, timestamp=timestamp)
+
             book.add_review(review)
+
+            user: User = self.get_user(user_name)
+            if isinstance(user, User):
+                user.add_review(review)
 
 
 

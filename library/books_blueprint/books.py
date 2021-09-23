@@ -161,9 +161,16 @@ def login_required(view):
 
 @books_blueprint.route('/profile')
 def profile():
+    reviews = []
+    if 'user_name' in session:
+        user: User = repo.book_dataset.get_user(session["user_name"])
+        if isinstance(user, User):
+            reviews = user.reviews
+
     return render_template(
         'authentication/profile.html',
         handler_url=url_for('books_bp.profile'),
+        reviews = reviews
     )
 
 @books_blueprint.route('/reading_list')
@@ -280,6 +287,9 @@ def write_review(id):
     if form.validate_on_submit(): # Successful POST, i.e. the comment text has passed data validation.
 
         review: Review = Review(book_id, form.review.data, int(form.rating.data), user_name)
+        user: User = repo.book_dataset.get_user(session["user_name"])
+        if isinstance(user, User):
+            user.add_review(review)
         book.add_review(review)
 
         # Cause the web browser to display the page of all articles that have the same date as the commented article,

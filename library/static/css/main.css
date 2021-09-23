@@ -217,6 +217,10 @@ button:hover {
     width: 100%;
 }
 
+.reviews-header{
+    padding: 20px;
+}
+
 /* ------------------------- rating --------------------------- */
 .star-rating {
     float: left;
