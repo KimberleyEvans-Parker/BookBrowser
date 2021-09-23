@@ -57,6 +57,12 @@
                         </li>
                     </ul>
                     <p><strong>Description:</strong> {{ book.description }}</p>
+                    {% if in_reading_list %}
+                        <a href="{{ url_for('books_bp.remove_from_reading_list', id=book.book_id) }}" class="link">Remove from reading list</a>
+                    {% else %}
+                        <a href="{{ url_for('books_bp.add_to_reading_list', id=book.book_id) }}" class="link">Add to reading list</a>
+                    {% endif %}
+                    <br>
                     <a href={{book.url}} class="link">View on goodreads</a>
                 </body>
             </div>

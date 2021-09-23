@@ -174,10 +174,10 @@ class BooksJSONReader:
                 self.__books_inventory.add_book(book, inventory_item_json["price"], inventory_item_json["stock"])
 
         for user_item_json in users_json:
-            liked_books = []
-            for book_id in user_item_json["liked_books"]:
-                liked_books.append(self.get_book_by_id(int(book_id)))
-            user:User = User(user_item_json["user_name"], user_item_json["password"], liked_books)
+            reading_list = []
+            for book_id in user_item_json["reading_list"]:
+                reading_list.append(self.get_book_by_id(int(book_id)))
+            user:User = User(user_item_json["user_name"], user_item_json["password"], reading_list)
             self.__users.append(user)
         
         for data_row in self.read_csv_file(self.__reviews_file_name):

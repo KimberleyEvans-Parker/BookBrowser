@@ -19,6 +19,9 @@ body {
     position:relative;
 }
 
+.white-text{
+    color: antiquewhite;
+}
 
 a {
     color: inherit;

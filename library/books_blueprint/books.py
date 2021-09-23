@@ -1,5 +1,5 @@
 from wtforms.fields.core import IntegerField
-from library.domain.model import Book, Review
+from library.domain.model import Book, Review, User
 from flask import Blueprint, render_template, redirect, url_for, session, request
 from functools import wraps
 from library.authentication import services
@@ -73,11 +73,20 @@ def last(function):
 @books_blueprint.route('/book/<id>')
 def book(id):
     id = int(id)
+    book = repo.book_dataset.get_book_by_id(id)
+    in_reading_list = False
+
+    if 'user_name' in session:
+        user: User = repo.book_dataset.get_user(session["user_name"])
+        if isinstance(user, User):
+            in_reading_list = user.is_in_reading_list(book)
+
     return render_template(
         'books_and_reviews/book.html',
-        book=repo.book_dataset.get_book_by_id(id),
+        book = book,
         price = repo.book_dataset.books_inventory.find_price(id),
-        stock = repo.book_dataset.books_inventory.find_stock_count(id)
+        stock = repo.book_dataset.books_inventory.find_stock_count(id),
+        in_reading_list = in_reading_list
     )
 
 # Need to fix None instance errors for get_user
@@ -142,7 +151,6 @@ def logout():
     session.clear()
     return redirect(url_for('books_bp.home'))
 
-
 def login_required(view):
     @wraps(view)
     def wrapped_view(**kwargs):
@@ -160,9 +168,17 @@ def profile():
 
 @books_blueprint.route('/reading_list')
 def reading_list():
+    books = []
+    if 'user_name' in session:
+        user: User = repo.book_dataset.get_user(session["user_name"])
+        if isinstance(user, User):
+            books = user.reading_list
+
     return render_template(
         'authentication/reading_list.html',
         handler_url=url_for('books_bp.reading_list'),
+        books = books,
+        inventory = repo.book_dataset.books_inventory
     )
 
 @books_blueprint.route('/books_by_date', methods=['GET', 'POST'])
@@ -204,7 +220,6 @@ def authors():
     )
 
 
-
 @books_blueprint.route('/publishers', methods=['GET', 'POST'])
 def publishers():
     form = TextSearchForm()
@@ -224,6 +239,28 @@ def publishers():
         right_inactive = is_right_button_inactive("publishers")
     )
 
+
+@books_blueprint.route('/add_to_reading_list/<id>')
+@login_required
+def add_to_reading_list(id):
+    book=repo.book_dataset.get_book_by_id(int(id))
+    if 'user_name' in session:
+        user: User = repo.book_dataset.get_user(session["user_name"])
+        if isinstance(user, User):
+            user.add_to_reading_list(book)
+    
+    return redirect(url_for('books_bp.book', id=id))
+
+@books_blueprint.route('/remove_from_reading_list/<id>')
+@login_required
+def remove_from_reading_list(id):
+    book=repo.book_dataset.get_book_by_id(int(id))
+    if 'user_name' in session:
+        user: User = repo.book_dataset.get_user(session["user_name"])
+        if isinstance(user, User):
+            user.remove_from_reading_list(book)
+    
+    return redirect(url_for('books_bp.book', id=id))
 
 # ------------------------------ Review Query Section -----------------------------
 
