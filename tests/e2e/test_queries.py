@@ -355,3 +355,32 @@ def test_add_to_reading_list_not_logged_in(client):
     assert b'Add to reading list' in response.data
     response = client.get('/add_to_reading_list/707611')
     assert response.headers['Location'] == 'http://localhost/login'
+
+def test_navbar_logged_in(client, auth):
+    auth.login()
+    response = client.get('/')
+    assert response.status_code == 200
+    assert b'Hello, Belle' in response.data
+    assert b'Home' in response.data
+    assert b'Logout' in response.data
+    assert b'Profile' in response.data
+    assert b'Reading list' in response.data
+    assert b'Browse by date' in response.data
+    assert b'Browse by author' in response.data
+    assert b'Browse by publisher' in response.data
+    assert b'Login' not in response.data
+    assert b'Register' not in response.data
+
+def test_navbar_not_logged_in(client):
+    response = client.get('/')
+    assert response.status_code == 200
+    assert b'Welcome...' in response.data
+    assert b'Home' in response.data
+    assert b'Logout' not in response.data
+    assert b'Profile' not in response.data
+    assert b'Reading list' in response.data
+    assert b'Browse by date' in response.data
+    assert b'Browse by author' in response.data
+    assert b'Browse by publisher' in response.data
+    assert b'Login' in response.data
+    assert b'Register' in response.data
