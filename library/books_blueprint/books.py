@@ -89,7 +89,7 @@ def book(id):
         in_reading_list = in_reading_list
     )
 
-# Need to fix None instance errors for get_user
+
 @books_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -108,7 +108,7 @@ def register():
         handler_url=url_for('books_bp.register'),
     )
 
-# Need to fix None instance errors for get_user
+
 @books_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()

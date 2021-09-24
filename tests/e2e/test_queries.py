@@ -7,6 +7,8 @@ from library.authentication import services
 from library.authentication.services import NameNotUniqueException, UnknownUserException, AuthenticationException
 
 
+@pytest.fixture()
+
 def test_register(client):
     # Check that we retrieve the register page.
     response_code = client.get('/register').status_code
@@ -22,6 +24,7 @@ def test_register(client):
 
 @pytest.mark.parametrize(('user_name', 'password', 'message'), (
         ('', '', b'Your user name is required'),
+        ('', 'ABCde12', b'Your user name is required'),
         ('a', '', b'Your user name is too short'),
         ('ab', '', b'Your user name is too short'),
         ('test', '', b'Your password is required'),
@@ -61,15 +64,33 @@ def test_logout(client, auth):
         auth.logout()
         assert 'user_id' not in session
 
-@pytest.fixture()
+@pytest.mark.parametrize(('review', 'messages'), (
+        ('f***k this book?', (b'Your review must not contain profanity')),
+        ('ass', (b'Your review must not contain profanity')),
+))
+
+def test_review_with_invalid_input(client, auth, review, messages):
+    # Login a user.
+    auth.login()
+
+    # Attempt to review on an book.
+    response = client.post(
+        '/review',
+        data={'review': review, 'book_id': 2}
+    )
+    # Check that supplying invalid review text generates appropriate error messages.
+    for message in messages:
+        assert message in response.data
+
 def user():
     return User('dbowie', '1234567890')
 
-def test_user_construction(user):
-    assert user.user_name == 'dbowie'
-    assert user.password == '1234567890'
-    assert repr(user) == '<User dbowie>'
-    assert user.password == '1234567890'
+def test_user_construction():
+    user1 = user()
+    assert user1.user_name == 'dbowie'
+    assert user1.password == '1234567890'
+    assert repr(user1) == '<User dbowie>'
+    assert user1.password == '1234567890'
 
 def test_repository_can_add_a_user():
     user = User('dave', '123456789')
@@ -214,7 +235,6 @@ def test_comment(client, auth):
 
     response = client.get('/profile')
     assert b'10/10 would recommend' in response.data
-
 
 @pytest.mark.parametrize(('review', 'messages'), (
         ('Who thinks Trump is a f***wit?', (b'Your review must not contain profanity')),
