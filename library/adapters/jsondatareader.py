@@ -77,6 +77,7 @@ class BooksJSONReader:
             books = self.dataset_of_books
         else:
             text = text.lower().strip()
+            self.indexes[page] = 0
 
         if page == "home":
             if text is not None:
