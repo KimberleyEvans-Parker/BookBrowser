@@ -384,3 +384,47 @@ def test_navbar_not_logged_in(client):
     assert b'Browse by publisher' in response.data
     assert b'Login' in response.data
     assert b'Register' in response.data
+
+def test_find_title(client):
+    response_code = client.get('/').status_code
+    assert response_code == 200
+
+    # Check that we can register a user successfully, supplying a valid user name and password.
+    response = client.post('/', data={'text': 'mA'})
+    assert b'Superman' in response.data
+    assert b'Mamma' in response.data
+    assert b'Revolution' not in response.data
+
+def test_find_date(client):
+    response_code = client.get('/books_by_date').status_code
+    assert response_code == 200
+
+    response = client.post('/books_by_date', data={'text': '2006'})
+    assert b'2006' in response.data
+    assert b'20th Century' in response.data
+    assert b'Dan Slott' in response.data
+    assert b'The Thing' in response.data
+    assert b'Superman' not in response.data
+    assert b'2012' not in response.data
+
+def test_find_author(client):
+    response_code = client.get('/authors').status_code
+    assert response_code == 200
+
+    response = client.post('/authors', data={'text': 'nA'})
+    assert b'Fernando' in response.data
+    assert b'Naoki' in response.data
+    assert b'Minami' in response.data
+    assert b'Ed' not in response.data
+    assert b'Dan' not in response.data
+
+def test_find_publisher(client):
+    response_code = client.get('/publishers').status_code
+    assert response_code == 200
+
+    response = client.post('/publishers', data={'text': 'avatar'})
+    assert b'Avatar Press' in response.data
+    assert b'War Stories' in response.data
+    assert b'Crossed' in response.data
+    assert b'DC Comics' not in response.data
+    assert b'Dargaud' not in response.data
