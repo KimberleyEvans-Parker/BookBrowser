@@ -222,8 +222,7 @@ def test_comment(client, auth):
         ('ass', (b'Your review is too short', b'Your review must not contain profanity')),
 ))
 def test_review_with_invalid_input(client, auth, review, messages):
-    # Login a user.
-    auth.login()
+    auth.login() # login
 
     # Attempt to write a review
     response = client.post(
@@ -242,8 +241,7 @@ def test_review_with_invalid_input(client, auth, review, messages):
         ('3.5', (b'You must give an integer rating')),
 ))
 def test_review_with_invalid_input(client, auth, rating, messages):
-    # Login a user.
-    auth.login()
+    auth.login() # login
 
     # Attempt to write a review
     response = client.post(
@@ -268,7 +266,7 @@ def test_book_with_comments(client):
     assert b'Adding this to my list of fandoms' in response.data
     assert b'Bargain!' in response.data
     assert b'by John Smith' in response.data
-    assert b'by Bella' in response.data
+    assert b'by Belle' in response.data
     assert b'by Hermione Granger' in response.data
     assert b'by The Doctor' in response.data
     assert b'by Klark Kent' in response.data
@@ -278,13 +276,82 @@ def test_book_with_comments(client):
     assert b'2021-03-22 08:17:03' in response.data
     assert b'2021-04-29 02:17:15' in response.data
 
+def test_profile(client, auth):
+    auth.login() # login
+    response = client.get('/profile') # retrieve profile page 
+    assert response.status_code == 200
+    assert b'Hello, Belle' in response.data
+    assert b'Your reviews:' in response.data
+    assert b'for Sherlock Holmes: Year One' in response.data
+    assert b'2020-02-29 08:12:08' in response.data
+    assert b'Sir Conan Doyle truly delivers another great adventure' in response.data
+    assert b'for Superman Archives, Vol. 2' in response.data
+    assert b'2020-02-29 08:12:08' in response.data
+    assert b'for The Switchblade Mamma' in response.data
+    assert b'2020-02-18 14:39:51' in response.data
+    assert b'2021-03-29 08:17:08' in response.data
+    assert b'There were just so many things I hated about this book - it only had one redeeming character' in response.data
+    assert b'for The Thing: Idol of Millions' in response.data
+    assert b'2021-09-29 18:16:52' in response.data
 
-# def test_articles_with_tag(client):
-#     # Check that we can retrieve the articles page.
-#     response = client.get('/articles_by_tag?tag=Health')
-#     assert response.status_code == 200
+def test_profile_not_logged_in(client, auth):
+    response = client.get('/profile') # retrieve profile page 
+    assert b'Hi, You are not logged in...' in response.data
 
-#     # Check that all articles tagged with 'Health' are included on the page.
-#     assert b'Articles tagged by Health' in response.data
-#     assert b'Coronavirus: First case of virus in New Zealand' in response.data
-#     assert b'Covid 19 coronavirus: US deaths double in two days, Trump says quarantine not necessary' in response.data
+def test_reading_list(client, auth):
+    auth.login() # login
+    response = client.get('/reading_list') # retrieve reading list
+    assert response.status_code == 200
+    assert b'Hello, Belle' in response.data
+    assert b'Your reading list:' in response.data
+    assert b'Bounty Hunter' in response.data
+    assert b'176 pgs' in response.data
+    assert b'This comes as an ebook' in response.data
+    assert b'Jason' in response.data
+    assert b'Takashi' in response.data
+    assert b'Shi Bao' in response.data
+    assert b'$23' in response.data
+    assert b'0' in response.data
+    assert b'$27' in response.data
+    assert b'12' in response.data
+    assert b'2011' in response.data
+
+def test_reading_list_not_logged_in(client, auth):
+    response = client.get('/profile') # retrieve reading list 
+    assert b'Hi, You are not logged in...' in response.data
+
+def test_remove_from_reading_list(client, auth):
+    auth.login()
+    response = client.get('/book/35452242')
+    assert response.status_code == 200
+    assert b'Remove from reading list' in response.data
+
+    response = client.get('/remove_from_reading_list/35452242')
+    assert response.headers['Location'] == 'http://localhost/book/35452242'
+    
+    response = client.get('/book/35452242')
+    assert b'Add to reading list' in response.data
+    
+    response = client.get('/reading_list')
+    assert b'Bounty Hunter' not in response.data
+
+def test_add_to_reading_list(client, auth):
+    auth.login()
+    response = client.get('/book/707611')
+    assert response.status_code == 200
+    assert b'Add to reading list' in response.data
+    response = client.get('/add_to_reading_list/707611')
+    assert response.headers['Location'] == 'http://localhost/book/707611'
+    
+    response = client.get('/book/707611')
+    assert b'Remove from reading list' in response.data
+    
+    response = client.get('/reading_list')
+    assert b'Superman Archives' in response.data
+
+def test_add_to_reading_list_not_logged_in(client):
+    response = client.get('/book/707611')
+    assert response.status_code == 200
+    assert b'Add to reading list' in response.data
+    response = client.get('/add_to_reading_list/707611')
+    assert response.headers['Location'] == 'http://localhost/login'
