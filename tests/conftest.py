@@ -30,12 +30,6 @@ class AuthenticationManager:
             data={'user_name': user_name, 'password': password}
         )
 
-    # def login(self, user_name='thorke', password='cLQ^C#oFXloS'):
-    #     return self.__client.post(
-    #         'login',
-    #         data={'user_name': user_name, 'password': password}
-    #     )
-
     def logout(self):
         return self.__client.get('/logout')
 

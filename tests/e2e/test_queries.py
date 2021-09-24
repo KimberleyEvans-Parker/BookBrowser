@@ -219,7 +219,7 @@ def test_login_required_to_write_review(client):
     response = client.post('/write_review/27036537')
     assert response.headers['Location'] == 'http://localhost/login'
 
-def test_comment(client, auth):
+def test_review(client, auth):
     auth.login() # login
     response = client.get('/write_review/25742454') # retrieve write review page 
 
@@ -272,12 +272,12 @@ def test_review_with_invalid_input(client, auth, rating, messages):
     for message in messages:
         assert message in response.data
 
-def test_book_with_no_comment(client):
+def test_book_with_no_reviews(client):
     response = client.get('/book/27036537')
     assert response.status_code == 200
     assert b'No reviews have been written for this book yet' in response.data
 
-def test_book_with_comments(client):
+def test_book_with_reviews(client):
     response = client.get('/book/11827783')
     assert response.status_code == 200
     assert b'One of the best detective novels of all time.' in response.data

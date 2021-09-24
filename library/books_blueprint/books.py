@@ -275,16 +275,16 @@ def remove_from_reading_list(id):
 @books_blueprint.route('/write_review/<id>', methods=['GET', 'POST'])
 @login_required
 def write_review(id):
-    book_id = int(id) # get article id from url
+    book_id = int(id) # get book id from url
     book: Book = repo.book_dataset.get_book_by_id(book_id)
 
     user_name = session['user_name'] # Get uersname of person logged in
 
     # Create form. This maintains state, e.g. when this method is called with a HTTP GET request and populates the
-    # form with an article id, when subsequently called with a HTTP POST request
+    # form with an book id, when subsequently called with a HTTP POST request
     form = ReviewForm()
 
-    if form.validate_on_submit(): # Successful POST, i.e. the comment text has passed data validation.
+    if form.validate_on_submit(): # Successful POST, i.e. the review text has passed data validation.
 
         review: Review = Review(book_id, form.review.data, int(form.rating.data), user_name)
         user: User = repo.book_dataset.get_user(session["user_name"])
@@ -292,12 +292,10 @@ def write_review(id):
             user.add_review(review)
         book.add_review(review)
 
-        # Cause the web browser to display the page of all articles that have the same date as the commented article,
-        # and display all comments, including the new comment.
         return redirect(url_for('books_bp.book', id=book_id))
 
-    # For a GET or an unsuccessful POST, retrieve the article to comment in dict form, and return a Web page that allows
-    # the user to enter a comment. The generated Web page includes a form object.
+    # For a GET or an unsuccessful POST, retrieve the book to review in dict form, and return a Web page that allows
+    # the user to enter a review. The generated Web page includes a form object.
     return render_template(
         'books_and_reviews/write_review.html',
         title='Write a Review',
