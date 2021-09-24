@@ -200,65 +200,83 @@ def test_login_required_to_write_review(client):
 
 def test_comment(client, auth):
     auth.login() # login
-    response = client.get('/write_review/27036537') # retrieve write review page 
+    response = client.get('/write_review/25742454') # retrieve write review page 
 
     response = client.post(
-        'write_review/27036537',
+        'write_review/25742454',
         data={'rating': 5, 'review': '10/10 would recommend'}
     )
-    assert response.headers['Location'] == 'http://localhost/book/27036537'
-    response = client.get('/book/27036537')
+    assert response.headers['Location'] == 'http://localhost/book/25742454'
+    
+    response = client.get('/book/25742454')
     assert b'10/10 would recommend' in response.data
     assert b'Belle' in response.data
 
-
-# @pytest.mark.parametrize(('comment', 'messages'), (
-#         ('Who thinks Trump is a f***wit?', (b'Your comment must not contain profanity')),
-#         ('Hey', (b'Your comment is too short')),
-#         ('ass', (b'Your comment is too short', b'Your comment must not contain profanity')),
-# ))
-# def test_comment_with_invalid_input(client, auth, comment, messages):
-#     # Login a user.
-#     auth.login()
-
-#     # Attempt to comment on an article.
-#     response = client.post(
-#         '/comment',
-#         data={'comment': comment, 'article_id': 2}
-#     )
-#     # Check that supplying invalid comment text generates appropriate error messages.
-#     for message in messages:
-#         assert message in response.data
+    response = client.get('/profile')
+    assert b'10/10 would recommend' in response.data
 
 
-# def test_articles_without_date(client):
-#     # Check that we can retrieve the articles page.
-#     response = client.get('/articles_by_date')
-#     assert response.status_code == 200
+@pytest.mark.parametrize(('review', 'messages'), (
+        ('Who thinks Trump is a f***wit?', (b'Your review must not contain profanity')),
+        ('Hey', (b'Your review is too short')),
+        ('ass', (b'Your review is too short', b'Your review must not contain profanity')),
+))
+def test_review_with_invalid_input(client, auth, review, messages):
+    # Login a user.
+    auth.login()
 
-#     # Check that without providing a date query parameter the page includes the first article.
-#     assert b'Friday February 28 2020' in response.data
-#     assert b'Coronavirus: First case of virus in New Zealand' in response.data
+    # Attempt to write a review
+    response = client.post(
+        'write_review/27036537',
+        data={'rating': 0, 'review': review}
+    )
+    # Check that supplying invalid review text generates appropriate error messages.
+    for message in messages:
+        assert message in response.data
 
 
-# def test_articles_with_date(client):
-#     # Check that we can retrieve the articles page.
-#     response = client.get('/articles_by_date?date=2020-02-29')
-#     assert response.status_code == 200
+@pytest.mark.parametrize(('rating', 'messages'), (
+        ('-1', (b'Your rating must be between 0 and 5')),
+        ('6', (b'Your rating must be between 0 and 5')),
+        ('a', (b'You must give an integer rating')),
+        ('3.5', (b'You must give an integer rating')),
+))
+def test_review_with_invalid_input(client, auth, rating, messages):
+    # Login a user.
+    auth.login()
 
-#     # Check that all articles on the requested date are included on the page.
-#     assert b'Saturday February 29 2020' in response.data
-#     assert b'Covid 19 coronavirus: US deaths double in two days, Trump says quarantine not necessary' in response.data
+    # Attempt to write a review
+    response = client.post(
+        'write_review/27036537',
+        data={'rating': rating, 'review': "blank review"}
+    )
+    # Check that supplying invalid review text generates appropriate error messages.
+    for message in messages:
+        assert message in response.data
 
+def test_book_with_no_comment(client):
+    response = client.get('/book/27036537')
+    assert response.status_code == 200
+    assert b'No reviews have been written for this book yet' in response.data
 
-# def test_articles_with_comment(client):
-#     # Check that we can retrieve the articles page.
-#     response = client.get('/articles_by_date?date=2020-02-28&view_comments_for=1')
-#     assert response.status_code == 200
-
-#     # Check that all comments for specified article are included on the page.
-#     assert b'Oh no, COVID-19 has hit New Zealand' in response.data
-#     assert b'Yeah Freddie, bad news' in response.data
+def test_book_with_comments(client):
+    response = client.get('/book/11827783')
+    assert response.status_code == 200
+    assert b'One of the best detective novels of all time.' in response.data
+    assert b'Sir Conan Doyle truly delivers another great adventure' in response.data
+    assert b'Words cannot adequately describe what an amazing book this is.' in response.data
+    assert b'Adding this to my list of fandoms' in response.data
+    assert b'Bargain!' in response.data
+    assert b'by John Smith' in response.data
+    assert b'by Bella' in response.data
+    assert b'by Hermione Granger' in response.data
+    assert b'by The Doctor' in response.data
+    assert b'by Klark Kent' in response.data
+    assert b'2020-02-28 14:31:26' in response.data
+    assert b'2020-02-29 08:12:08' in response.data
+    assert b'2020-02-29 08:12:08' in response.data
+    assert b'2021-03-22 08:17:03' in response.data
+    assert b'2021-04-29 02:17:15' in response.data
 
 
 # def test_articles_with_tag(client):
