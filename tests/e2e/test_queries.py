@@ -27,10 +27,7 @@ def test_register(client):
         ('test', '', b'Your password is required'),
         ('test', 'test', b'Your password must be at least 8 characters, and contain an upper case letter,\
             a lower case letter and a digit'),
-        # Throws random error?
-        # ('goku', 'cLQ^C#oFXloS', b'Your user name is already taken - please supply another'),
 ))
-
 def test_register_with_invalid_input(client, user_name, password, message):
     # Check that attempting to register with invalid combinations of user name and password generate appropriate error
     # messages.
@@ -46,17 +43,14 @@ def test_login(client, auth):
     status_code = client.get('/login').status_code
     assert status_code == 200
 
-    # Throws key error?
-    # # Check that a session has been created for the logged-in user.
-    # with client:
-    #     client.get('/')
-    #     assert session['user_name'] == 'goku'
+    # Check that a successful login generates a redirect to the homepage.
+    response = auth.login()
+    assert response.headers['Location'] == 'http://localhost/'
 
-    # Throws 400 bad request error?
-    # # Check that a successful login generates a redirect to the homepage.
-    # response = auth.login()
-    # assert response.headers['Location'] == 'http://localhost/'
-
+    # Check that a session has been created for the logged-in user.
+    with client:
+        client.get('/')
+        assert session['user_name'] == 'Belle'
 
 def test_logout(client, auth):
     # Login a user.
@@ -103,7 +97,6 @@ def test_can_add_user():
     # Check that password has been encrypted.
     assert user_as_dict['password'].startswith('pbkdf2:sha256:')
 
-
 def test_cannot_add_user_with_existing_name():
     user_name = 'raditz'
     password = 'Namek12345'
@@ -120,7 +113,6 @@ def test_authentication_with_valid_credentials():
     except AuthenticationException:
         assert False
 
-
 def test_authentication_with_invalid_credentials():
     new_user_name = 'pmccartney'
     new_password = 'abcd1A23'
@@ -129,7 +121,6 @@ def test_authentication_with_invalid_credentials():
         services.authenticate_user(new_user_name, new_password, repo.book_dataset)
     except AuthenticationException:
         assert True
-
 
 def test_home(client):
     response = client.get('/')
@@ -203,23 +194,22 @@ def test_book(client):
     assert b'3' in response.data # stock
 
 
-# def test_login_required_to_comment(client):
-#     response = client.post('/comment')
-#     assert response.headers['Location'] == 'http://localhost/authentication/login'
+def test_login_required_to_write_review(client):
+    response = client.post('/write_review/27036537')
+    assert response.headers['Location'] == 'http://localhost/login'
 
+def test_comment(client, auth):
+    auth.login() # login
+    response = client.get('/write_review/27036537') # retrieve write review page 
 
-# def test_comment(client, auth):
-#     # Login a user.
-#     auth.login()
-
-#     # Check that we can retrieve the comment page.
-#     response = client.get('/comment?article=2')
-
-#     response = client.post(
-#         '/comment',
-#         data={'comment': 'Who needs quarantine?', 'article_id': 2}
-#     )
-#     assert response.headers['Location'] == 'http://localhost/articles_by_date?date=2020-02-29&view_comments_for=2'
+    response = client.post(
+        'write_review/27036537',
+        data={'rating': 5, 'review': '10/10 would recommend'}
+    )
+    assert response.headers['Location'] == 'http://localhost/book/27036537'
+    response = client.get('/book/27036537')
+    assert b'10/10 would recommend' in response.data
+    assert b'Belle' in response.data
 
 
 # @pytest.mark.parametrize(('comment', 'messages'), (
