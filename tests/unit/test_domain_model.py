@@ -290,14 +290,14 @@ class TestReview:
         rating = 4
         review = Review(book.title, review_text, rating, None)
 
-        assert str(review.book_id) == "Harry Potter"
+        assert str(review.book_title) == "Harry Potter"
         assert str(review.review_text) == "This book was very enjoyable."
         assert review.rating == 4
 
     def test_attributes_access(self):
         book = Book(2675376, "Harry Potter")
         review = Review(book.title, 42, 3, None)
-        assert str(review.book_id) == "Harry Potter"
+        assert str(review.book_title) == "Harry Potter"
         assert str(review.review_text) == "N/A"
         assert review.rating == 3
 
