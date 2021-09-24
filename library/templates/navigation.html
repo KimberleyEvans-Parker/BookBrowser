@@ -8,7 +8,6 @@
         <li class="nav_list"><a class="btn-nav" href="{{ url_for('books_bp.books_by_date') }}">Browse by date</a></li>
         <li class="nav_list"><a class="btn-nav" href="{{ url_for('books_bp.authors') }}">Browse by author</a></li>
         <li class="nav_list"><a class="btn-nav" href="{{ url_for('books_bp.publishers') }}">Browse by publisher</a></li>
-        <a href="/"><img class="logo" src="{{ url_for('static', filename='book_icon.png') }}" /></a></li>
         {% else %}
         Welcome...
         <li class="nav_list"><a class="btn-nav" href="{{ url_for('books_bp.home') }}">Home</a></li>
@@ -18,7 +17,6 @@
         <li class="nav_list"><a class="btn-nav" href="{{ url_for('books_bp.books_by_date') }}">Browse by date</a></li>
         <li class="nav_list"><a class="btn-nav" href="{{ url_for('books_bp.authors') }}">Browse by author</a></li>
         <li class="nav_list"><a class="btn-nav" href="{{ url_for('books_bp.publishers') }}">Browse by publisher</a></li>
-        <a href="/"><img class="logo" src="{{ url_for('static', filename='book_icon.png') }}" /></a></li>
         {% endif %}</li>
     </ul>
   </nav>
