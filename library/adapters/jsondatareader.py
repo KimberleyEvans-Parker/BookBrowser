@@ -36,6 +36,10 @@ class BooksJSONReader(AbstractRepository):
         return self.__data_path
 
     @property
+    def data_path(self):
+        return self.__data_path
+
+    @property
     def indexes(self):
         return self.__indexes
 
