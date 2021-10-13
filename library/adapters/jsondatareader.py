@@ -25,6 +25,12 @@ class BooksJSONReader(AbstractRepository):
     def get_user(self, user_name):
         return next((user for user in self.__users if user.user_name == user_name), None)
 
+    def add_review(self, user_name: str, book: Book, review: Review):
+        user: User = self.get_user(user_name)
+        if isinstance(user, User):
+            user.add_review(review)
+        book.add_review(review)
+
     @property
     def data_path(self):
         return self.__data_path
@@ -44,6 +50,12 @@ class BooksJSONReader(AbstractRepository):
     @property
     def books_inventory(self) -> BooksInventory:
         return self.__books_inventory
+
+    def add_book(self, book: Book):
+        self.__dataset_of_books.append(book)
+
+    def get_number_of_books(self) -> int:
+        return len(self.__dataset_of_books)
 
     def get_book_by_id(self, book_id) -> Book:
         for book in self.__dataset_of_books:

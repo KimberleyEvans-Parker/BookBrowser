@@ -75,7 +75,7 @@ class SqlAlchemyRepository(AbstractRepository):
             scm.session.add(book)
             scm.commit()
         
-    def get_book(self, book_id: int) -> Book:
+    def get_book_by_id(self, book_id: int) -> Book:
         book = None
         try:
             book = self._session_cm.session.query(Book).filter(Book._Book__id == book_id).one()
@@ -88,26 +88,6 @@ class SqlAlchemyRepository(AbstractRepository):
         number_of_books = self._session_cm.session.query(Book).count()
         return number_of_books
 
-    # def get_articles_by_date(self, target_date: date) -> List[Article]:
-    #     if target_date is None:
-    #         articles = self._session_cm.session.query(Article).all()
-    #         return articles
-    #     else:
-    #         # Return articles matching target_date; return an empty list if there are no matches.
-    #         articles = self._session_cm.session.query(Article).filter(Article._Article__date == target_date).all()
-    #         return articles
-
-    # def get_first_article(self):
-    #     article = self._session_cm.session.query(Article).first()
-    #     return article
-
-    # def get_last_article(self):
-    #     article = self._session_cm.session.query(Article).order_by(desc(Article._Article__id)).first()
-    #     return article
-
-    # def get_articles_by_id(self, id_list: List[int]):
-    #     articles = self._session_cm.session.query(Article).filter(Article._Article__id.in_(id_list)).all()
-    #     return articles
 
     # def get_article_ids_for_tag(self, tag_name: str):
     #     article_ids = []
@@ -128,37 +108,6 @@ class SqlAlchemyRepository(AbstractRepository):
     #         article_ids = [id[0] for id in article_ids]
 
     #     return article_ids
-
-    # def get_date_of_previous_article(self, article: Article):
-    #     result = None
-    #     prev_article = self._session_cm.session.query(Article).filter(Article._Article__date < article.date).order_by(desc(Article._Article__date)).first()
-
-    #     if prev_article is not None:
-    #         result = prev_article.date
-
-    #     return result
-
-    # def get_date_of_next_article(self, article: Article):
-    #     result = None
-    #     next_article = self._session_cm.session.query(Article).filter(Article._Article__date > article.date).order_by(asc(Article._Article__date)).first()
-
-    #     if next_article is not None:
-    #         result = next_article.date
-
-    #     return result
-
-    # def get_tags(self) -> List[Tag]:
-    #     tags = self._session_cm.session.query(Tag).all()
-    #     return tags
-
-    # def add_tag(self, tag: Tag):
-    #     with self._session_cm as scm:
-    #         scm.session.add(tag)
-    #         scm.commit()
-
-    def get_reviews(self) -> List[Review]:
-        reviews = self._session_cm.session.query(Review).all()
-        return reviews
 
     def add_review(self, review: Review):
         super().add_review(review)

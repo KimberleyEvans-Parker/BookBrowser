@@ -285,12 +285,8 @@ def write_review(id):
     form = ReviewForm()
 
     if form.validate_on_submit(): # Successful POST, i.e. the review text has passed data validation.
-
         review: Review = Review(book_id, form.review.data, int(form.rating.data), user_name)
-        user: User = repo.book_dataset.get_user(session["user_name"])
-        if isinstance(user, User):
-            user.add_review(review)
-        book.add_review(review)
+        repo.book_dataset.add_review(session["user_name"], book, review)
 
         return redirect(url_for('books_bp.book', id=book_id))
 
