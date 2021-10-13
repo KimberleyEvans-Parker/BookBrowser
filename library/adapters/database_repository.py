@@ -1,5 +1,6 @@
 from datetime import date
 from typing import List
+import math
 
 from sqlalchemy import desc, asc
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
@@ -70,12 +71,21 @@ class SqlAlchemyRepository(AbstractRepository):
 
         return user
 
-    def add_book(self, book: Book):
-        with self._session_cm as scm:
-            scm.session.add(book)
-            scm.commit()
-        
-    def get_book_by_id(self, book_id: int) -> Book:
+    def indexes(self):
+        """ Indexes property for repo. """
+        raise NotImplementedError
+
+    def dataset_of_books(self) -> List[Book]:
+        """ Returns dataset of books from the repository.
+        """
+        raise NotImplementedError
+
+    def books_inventory(self) -> BooksInventory:
+        """ Returns a BooksInventory Object
+        """
+        raise NotImplementedError
+
+    def get_book_by_id(self, book_id) -> Book:
         book = None
         try:
             book = self._session_cm.session.query(Book).filter(Book._Book__id == book_id).one()
@@ -84,33 +94,60 @@ class SqlAlchemyRepository(AbstractRepository):
 
         return book
 
+    def get_title(self, book: Book) -> str:
+        return book.title
+
+    def get_publisher(self, book: Book) -> str:
+        return book.publisher
+
+    def get_first_author(self, book: Book) -> str:
+        return book.authors[0].full_name
+
+    def get_date(self, book: Book) -> int:
+        if book.release_year == None:
+            return math.inf
+        return book.release_year
+
+    def get_page_by_index(self, page, text: str = None):
+        """ Returns page of a book depending on the given index.
+        """
+        raise NotImplementedError
+
+    def get_highest_index(self) -> int:
+        """ Returns the book with highest index value in dataset of books.
+        """
+        raise NotImplementedError
+
+    def first(self, page):
+        """ Returns first page of book. """
+        raise NotImplementedError
+
+    def last(self, page):
+        """ Returns last page of book. """
+        raise NotImplementedError
+
+    def previous(self, page):
+        """ Returns previous page of book.
+        """
+        raise NotImplementedError
+
+    def add_book(self, book: Book):
+        with self._session_cm as scm:
+            scm.session.add(book)
+            scm.commit()
+
     def get_number_of_books(self):
         number_of_books = self._session_cm.session.query(Book).count()
         return number_of_books
 
+    def add_review(self, user_name: str, book: Book, review: Review):
+        user: User = self.get_user(user_name)
+        if isinstance(user, User):
+            user.add_review(review)
+        book.add_review(review)
 
-    # def get_article_ids_for_tag(self, tag_name: str):
-    #     article_ids = []
-
-    #     # Use native SQL to retrieve article ids, since there is no mapped class for the article_tags table.
-    #     row = self._session_cm.session.execute('SELECT id FROM tags WHERE tag_name = :tag_name', {'tag_name': tag_name}).fetchone()
-
-    #     if row is None:
-    #         # No tag with the name tag_name - create an empty list.
-    #         article_ids = list()
-    #     else:
-    #         tag_id = row[0]
-    #         # Retrieve article ids of articles associated with the tag.
-    #         article_ids = self._session_cm.session.execute(
-    #                 'SELECT article_id FROM article_tags WHERE tag_id = :tag_id ORDER BY article_id ASC',
-    #                 {'tag_id': tag_id}
-    #         ).fetchall()
-    #         article_ids = [id[0] for id in article_ids]
-
-    #     return article_ids
-
-    def add_review(self, review: Review):
-        super().add_review(review)
-        with self._session_cm as scm:
-            scm.session.add(review)
-            scm.commit()
+        # super().add_review(review)
+        # with self._session_cm as scm:
+        #     scm.session.add(review)
+        #     scm.commit()
+        

@@ -105,6 +105,7 @@ class AbstractRepository(abc.ABC):
         """ Returns previous page of book.
         """
         raise NotImplementedError
+        
     def add_book(self, book: Book):
         """ Adds an Book to the repository. """
         raise NotImplementedError
