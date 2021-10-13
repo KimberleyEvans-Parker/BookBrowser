@@ -5,14 +5,17 @@ from typing import List
 import math
 
 from library.domain.model import BooksInventory, Publisher, Author, Book, Review, User
+from library.adapters.repository import AbstractRepository, RepositoryException
 
 book_dataset = None
 
 BOOKS_PER_PAGE = 12
 
-class BooksJSONReader:
 
-    def __init__(self, books_file_name: str, authors_file_name: str, inventory_file_name: str, reviews_file_name: str, users_file_name: str):
+class BooksJSONReader(AbstractRepository):
+
+    def __init__(self, books_file_name: str, authors_file_name: str, inventory_file_name: str, reviews_file_name: str,
+                 users_file_name: str):
         self.__books_file_name = books_file_name
         self.__authors_file_name = authors_file_name
         self.__inventory_file_name = inventory_file_name
@@ -57,7 +60,7 @@ class BooksJSONReader:
 
     def get_title(self, book: Book) -> str:
         return book.title
-        
+
     def get_publisher(self, book: Book) -> str:
         return book.publisher
 
@@ -82,11 +85,11 @@ class BooksJSONReader:
         if page == "home":
             if text is not None:
                 books = [b for b in self.dataset_of_books if text in b.title.lower()]
-            books.sort(key = self.get_title)
+            books.sort(key=self.get_title)
         elif page == "publishers":
             if text is not None:
                 books = [b for b in self.dataset_of_books if text in b.publisher.name.lower()]
-            books.sort(key = self.get_publisher)
+            books.sort(key=self.get_publisher)
         elif page == "authors":
             if text is not None:
                 books = []
@@ -95,11 +98,11 @@ class BooksJSONReader:
                         if text in a.full_name.lower():
                             books.append(b)
                             break
-            books.sort(key = self.get_first_author)
+            books.sort(key=self.get_first_author)
         elif page == "books_by_date":
             if text is not None:
                 books = [b for b in self.dataset_of_books if text in str(b.release_year)]
-            books.sort(key = self.get_date)
+            books.sort(key=self.get_date)
         return books[self.__indexes[page]: self.__indexes[page] + BOOKS_PER_PAGE]
 
     def get_highest_index(self) -> int:
@@ -170,7 +173,7 @@ class BooksJSONReader:
             self.__dataset_of_books.append(book_instance)
 
         for inventory_item_json in inventory_json:
-            book:Book = self.get_book_by_id(int(inventory_item_json["book_id"]))
+            book: Book = self.get_book_by_id(int(inventory_item_json["book_id"]))
             if book is not None:
                 self.__books_inventory.add_book(book, inventory_item_json["price"], inventory_item_json["stock"])
 
@@ -178,19 +181,19 @@ class BooksJSONReader:
             reading_list = []
             for book_id in user_item_json["reading_list"]:
                 reading_list.append(self.get_book_by_id(int(book_id)))
-            user:User = User(user_item_json["user_name"], user_item_json["password"], reading_list)
+            user: User = User(user_item_json["user_name"], user_item_json["password"], reading_list)
             self.__users.append(user)
-        
+
         for data_row in self.read_csv_file(self.__reviews_file_name):
             id: int = int(data_row[0])
             user_name: str = data_row[1]
             book_id: int = int(data_row[2])
             rating: int = int(data_row[3])
             review_text: str = data_row[4]
-            timestamp:str = data_row[5]
+            timestamp: str = data_row[5]
 
             book: Book = self.get_book_by_id(book_id)
-            
+
             review: Review = Review(book.title, review_text, rating, user_name, review_id=id, timestamp=timestamp)
 
             book.add_review(review)
@@ -198,7 +201,3 @@ class BooksJSONReader:
             user: User = self.get_user(user_name)
             if isinstance(user, User):
                 user.add_review(review)
-
-
-
-
