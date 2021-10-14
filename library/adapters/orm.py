@@ -18,7 +18,12 @@ users_table = Table(
     Column('reading_list', String(255)), # TODO: Should this be multiple book objects?
 )
 
-#id,user-name,book-id,rating,review-text,timestamp
+authors_table = Table(
+    'authors', metadata,
+    Column('author_id', Integer, primary_key=True, autoincrement=True),
+    Column('full-name', String(255), nullable=False)
+)
+
 reviews_table = Table(
     'reviews', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
