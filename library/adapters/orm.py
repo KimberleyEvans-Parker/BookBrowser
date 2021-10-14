@@ -18,23 +18,36 @@ users_table = Table(
     Column('reading_list', String(255)), # TODO: Should this be multiple book objects?
 )
 
+# Books and authors have a one to many relationship.
+# One book can have many authors.
 authors_table = Table(
     'authors', metadata,
-    Column('author_id', Integer, primary_key=True, autoincrement=True),
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('author_id', ForeignKey('books.id')),
     Column('full-name', String(255), nullable=False)
+)
+
+publishers_table = Table(
+    'publishers', metadata,
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('name', String(255), nullable=False)
 )
 
 reviews_table = Table(
     'reviews', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user_name', String(255), nullable=False),
-    # Column('user_id', ForeignKey('users.id')),
-    Column('book_id', ForeignKey('books.id'), nullable=False),
+    Column('user_id', ForeignKey('users.id')),
+    Column('book_id', ForeignKey('books.id')),
     Column('rating', Integer, nullable=False),
     Column('review', String(1024), nullable=False),
     Column('timestamp', DateTime, nullable=False)
 )
 
+# One book can have multiple publishers, authors and reviews.
+# Therefore book and author, review and publisher have one-to-many relationships
+# as a single book object can one multiple author, review or publisher objects.
+# To form this relationship we use the ForeignKey functionality.
 books_table = Table(
     'books', metadata,
     Column('book_id', Integer, primary_key=True, autoincrement=True),
@@ -48,7 +61,8 @@ books_table = Table(
     Column('average_rating', Float),
     Column('ratings_count', Integer),
     Column('url', String(255)),
-    Column('reviews', String(255)) # TODO: Should this be multiple review objects?
+    Column('reviews', String(255)), # TODO: Should this be multiple review objects?
+    Column('user_id', ForeignKey('users.id'))
 )
 
 tags_table = Table(
@@ -69,6 +83,8 @@ def map_model_to_tables():
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
         '_User__reviews': relationship(model.Review, backref='_Review__user')
+
+        # '_User__reading_list:' relationship(model.Book, backref='_')
     })
     mapper(model.Review, reviews_table, properties={
         '_Review__review': reviews_table.c.review,
