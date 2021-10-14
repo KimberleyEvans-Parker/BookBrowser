@@ -1,8 +1,9 @@
 from sqlalchemy import (
     Table, MetaData, Column, Integer, String, Date, DateTime,
-    ForeignKey
+    ForeignKey, Boolean
 )
 from sqlalchemy.orm import mapper, relationship, synonym
+from sqlalchemy.sql.sqltypes import Float
 
 from library.domain import model
 
@@ -13,26 +14,36 @@ users_table = Table(
     'users', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user_name', String(255), unique=True, nullable=False),
-    Column('password', String(255), nullable=False)
+    Column('password', String(255), nullable=False),
+    Column('reading_list', String(255)), # TODO: Should this be multiple book objects?
 )
 
+#id,user-name,book-id,rating,review-text,timestamp
 reviews_table = Table(
     'reviews', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('user_id', ForeignKey('users.id')),
-    Column('book_id', ForeignKey('books.id')),
+    Column('user_name', String(255), nullable=False),
+    # Column('user_id', ForeignKey('users.id')),
+    Column('book_id', ForeignKey('books.id'), nullable=False),
+    Column('rating', Integer, nullable=False),
     Column('review', String(1024), nullable=False),
     Column('timestamp', DateTime, nullable=False)
 )
 
 books_table = Table(
     'books', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('date', Date, nullable=False),
+    Column('book_id', Integer, primary_key=True, autoincrement=True),
     Column('title', String(255), nullable=False),
-    Column('first_paragraph', String(1024), nullable=False),
-    Column('hyperlink', String(255), nullable=False),
-    Column('image_hyperlink', String(255), nullable=False)
+    Column('description', String(1024), nullable=False),
+    Column('publisher', String(1024)), # TODO: Should this be a publisher object?
+    Column('authors', String(1024)), # TODO: Should this be multiple author objects?
+    Column('release_year', Date),
+    Column('ebook', Boolean),
+    Column('num_pages', String(63)),
+    Column('average_rating', Float),
+    Column('ratings_count', Integer),
+    Column('url', String(255)),
+    Column('reviews', String(255)) # TODO: Should this be multiple review objects?
 )
 
 tags_table = Table(

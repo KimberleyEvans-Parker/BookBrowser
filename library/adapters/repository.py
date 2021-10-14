@@ -7,6 +7,8 @@ from library.domain.model import BooksInventory, Publisher, Author, Book, Review
 
 repo_instance = None
 
+BOOKS_PER_PAGE = 12
+
 
 class RepositoryException(Exception):
 
@@ -86,7 +88,7 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def get_highest_index(self) -> int:
-        """ Returns the book with highest index value in dataset of books.
+        """ Returns the highest possible page index given the number of books.
         """
         raise NotImplementedError
 

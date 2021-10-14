@@ -4,11 +4,9 @@ import math
 from pathlib import Path
 
 from library.domain.model import BooksInventory, Publisher, Author, Book, Review, User
-from library.adapters.repository import AbstractRepository, RepositoryException
+from library.adapters.repository import AbstractRepository, RepositoryException, BOOKS_PER_PAGE
 
 book_dataset = None
-
-BOOKS_PER_PAGE = 12
 
 
 class BooksJSONReader(AbstractRepository):
@@ -128,5 +126,4 @@ class BooksJSONReader(AbstractRepository):
 
     def next(self, page):
         self.__indexes[page] = min(self.__indexes[page] + 12, self.get_highest_index())
-        print("NEXT: new", page, " index:", self.__indexes[page])
 

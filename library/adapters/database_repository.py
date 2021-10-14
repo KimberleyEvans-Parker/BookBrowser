@@ -10,7 +10,7 @@ from flask import _app_ctx_stack
 
 # from library.domain.model import User, Article, Comment, Tag
 from library.domain.model import BooksInventory, Publisher, Author, Book, Review, User
-from library.adapters.repository import AbstractRepository
+from library.adapters.repository import AbstractRepository, BOOKS_PER_PAGE
 
 
 class SessionContextManager:
@@ -49,6 +49,7 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def __init__(self, session_factory):
         self._session_cm = SessionContextManager(session_factory)
+        self.__indexes = {"home": 0, "books_by_date": 0, "authors": 0, "publishers": 0}
 
     def close_session(self):
         self._session_cm.close_current_session()
@@ -72,13 +73,10 @@ class SqlAlchemyRepository(AbstractRepository):
         return user
 
     def indexes(self):
-        """ Indexes property for repo. """
-        raise NotImplementedError
+        return self.__indexes
 
     def dataset_of_books(self) -> List[Book]:
-        """ Returns dataset of books from the repository.
-        """
-        raise NotImplementedError
+        return self._session_cm.session.query(Book).all()
 
     def books_inventory(self) -> BooksInventory:
         """ Returns a BooksInventory Object
@@ -109,27 +107,51 @@ class SqlAlchemyRepository(AbstractRepository):
         return book.release_year
 
     def get_page_by_index(self, page, text: str = None):
-        """ Returns page of a book depending on the given index.
-        """
-        raise NotImplementedError
+        if text is None or text.strip() == "":
+            if page == "home":
+                # Query to get all books, sort by first title
+                books = self._session_cm.session.query(Book).order_by(Book.title.lower()).all()
+            elif page == "publishers": 
+                # Query to get all books, sort by publisher
+                books = self._session_cm.session.query(Book).order_by(Book.publisher.name.lower()).all()
+            elif page == "authors": 
+                # Query to get all books, sort by first author
+                books = self._session_cm.session.query(Book).order_by(Book.authors[0].lower()).all()
+            else: 
+                # Query to get all books, sort by date
+                books = self._session_cm.session.query(Book).order_by(Book.release_year).all()
+        else:
+            text = text.lower().strip()
+            self.indexes[page] = 0
+            if page == "home":
+                # Query to get all books with text in title, sort by title
+                books = self._session_cm.session.query(Book).filter(text in Book.title).order_by(Book.title.lower()).all()
+            elif page == "publishers":
+                # Query to get all books with text in publisher, sort by publisher.name.lower
+                books = self._session_cm.session.query(Book).filter(text in Book.publisher.name).order_by(Book.publisher.name.lower()).all()
+            elif page == "authors":
+                # Query to get all books with text in any author's name, sort by first author
+                books = self._session_cm.session.query(Book).filter(text in "".join(Book.authors)).order_by(Book.authors[0].lower()).all()
+            else:
+                # Query to get all books with text in date, sort by first date
+                books = self._session_cm.session.query(Book).filter(text in Book.release_year).order_by(Book.release_year).all()
+
+        return books[self.__indexes[page]: self.__indexes[page] + BOOKS_PER_PAGE]
 
     def get_highest_index(self) -> int:
-        """ Returns the book with highest index value in dataset of books.
-        """
-        raise NotImplementedError
+        return (math.ceil(len(self.dataset_of_books) / BOOKS_PER_PAGE) - 1) * BOOKS_PER_PAGE
 
     def first(self, page):
-        """ Returns first page of book. """
-        raise NotImplementedError
+        self.__indexes[page] = 0
 
     def last(self, page):
-        """ Returns last page of book. """
-        raise NotImplementedError
+        self.__indexes[page] = self.get_highest_index()
 
     def previous(self, page):
-        """ Returns previous page of book.
-        """
-        raise NotImplementedError
+        self.__indexes[page] = max(0, self.__indexes[page] - BOOKS_PER_PAGE)
+
+    def next(self, page):
+        self.__indexes[page] = min(self.__indexes[page] + 12, self.get_highest_index())
 
     def add_book(self, book: Book):
         with self._session_cm as scm:
