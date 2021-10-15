@@ -34,7 +34,9 @@ def load_users(repo, filename: str):
     for user_item_json in users_json:
         reading_list = []
         for book_id in user_item_json["reading_list"]:
-            reading_list.append(repo.get_book_by_id(int(book_id)))
+            book = repo.get_book_by_id(int(book_id))
+            if book is not None:
+                reading_list.append(book)
         user:User = User(user_item_json["user_name"], user_item_json["password"], reading_list)
         repo.users.append(user)
 
