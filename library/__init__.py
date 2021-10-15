@@ -17,6 +17,11 @@ def create_app(test_config=None):
     # Configure the app from configuration-file settings.
     app.config.from_object('config.Config')
     data_path = Path('library') / 'adapters' / 'data'
+    
+    if test_config is not None:
+        # Load test configuration, and override any configuration settings.
+        app.config.from_mapping(test_config)
+        data_path = app.config['TEST_DATA_PATH']
 
     # if test_config is not None:
     #     # Load test configuration, and override any configuration settings.
