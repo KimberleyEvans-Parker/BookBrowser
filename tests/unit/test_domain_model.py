@@ -403,10 +403,10 @@ def read_books_and_authors():
     # we use a method from a utils file in the root folder to figure out the root
     # this way testing code is always finding the right path to the data files
     data_folder = Path("library/adapters/data")
-    reader = BooksJSONReader(data_path=data_folder)
-    repository_populate.populate(data_folder, reader, False)
+    repo = BooksJSONReader()
+    repository_populate.populate(data_folder, repo, False)
 
-    return reader.dataset_of_books
+    return repo.dataset_of_books
 
 
 class TestBooksJSONReader:
@@ -448,10 +448,10 @@ def get_books_inventory():
     # we use a method from a utils file in the root folder to figure out the root
     # this way testing code is always finding the right path to the data files
     data_folder = Path("library/adapters/data")
-    reader = BooksJSONReader(data_path=data_folder)
-    repository_populate.populate(data_folder, reader, False)
+    repo = BooksJSONReader()
+    repository_populate.populate(data_folder, repo, False)
 
-    return reader.books_inventory
+    return repo.books_inventory
 
 
 class TestRepoInventory:

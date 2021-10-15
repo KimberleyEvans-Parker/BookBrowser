@@ -23,18 +23,13 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
         data_path = app.config['TEST_DATA_PATH']
 
-    # if test_config is not None:
-    #     # Load test configuration, and override any configuration settings.
-    #     app.config.from_mapping(test_config)
-
     # # Initialise repo
-    # jsondatareader.book_dataset = BooksJSONReader(data_path)
         # Here the "magic" of our repository pattern happens. We can easily switch between in memory data and
     # persistent database data storage for our application.
 
     if app.config['REPOSITORY'] == 'memory':
         # Create the MemoryRepository implementation for a memory-based repository.
-        repo.book_dataset = BooksJSONReader(data_path) # Initialise repo
+        repo.book_dataset = BooksJSONReader() # Initialise repo
         # fill the content of the repository from the provided csv files (has to be done every time we start app!)
         database_mode = False
         repository_populate.populate(data_path, repo.book_dataset, database_mode)

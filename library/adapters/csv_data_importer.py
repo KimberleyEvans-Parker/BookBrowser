@@ -29,8 +29,8 @@ def read_json_file(filename):
             lines.append(json.loads(line))
     return lines
 
-def load_users(repo, filename: str):
-    users_json = read_json_file(repo.data_path/filename)
+def load_users(repo, data_path: Path, filename: str):
+    users_json = read_json_file(data_path/filename)
     for user_item_json in users_json:
         reading_list = []
         for book_id in user_item_json["reading_list"]:
@@ -40,8 +40,8 @@ def load_users(repo, filename: str):
         user:User = User(user_item_json["user_name"], user_item_json["password"], reading_list)
         repo.users.append(user)
 
-def load_reviews(repo, filename: str):
-    for data_row in read_csv_file(repo.data_path/filename):
+def load_reviews(repo, data_path: Path, filename: str):
+    for data_row in read_csv_file(data_path/filename):
         id: int = int(data_row[0])
         user_name: str = data_row[1]
         book_id: int = int(data_row[2])
@@ -59,9 +59,9 @@ def load_reviews(repo, filename: str):
         if isinstance(user, User):
             user.add_review(review)
 
-def load_authors_and_books(repo, books_filename, authors_filename):
-    authors_json = read_json_file(repo.data_path/authors_filename)
-    books_json = read_json_file(repo.data_path/books_filename)
+def load_authors_and_books(repo, data_path: Path, books_filename, authors_filename):
+    authors_json = read_json_file(data_path/authors_filename)
+    books_json = read_json_file(data_path/books_filename)
 
     for book_json in books_json:
         book_instance = Book(int(book_json['book_id']), book_json['title'])
@@ -95,8 +95,8 @@ def load_authors_and_books(repo, books_filename, authors_filename):
 
         repo.dataset_of_books.append(book_instance)
 
-def load_inventory(repo, filename):
-    inventory_json = read_json_file(repo.data_path/filename)
+def load_inventory(repo, data_path: Path, filename):
+    inventory_json = read_json_file(data_path/filename)
     for inventory_item_json in inventory_json:
         book:Book = repo.get_book_by_id(int(inventory_item_json["book_id"]))
         if book is not None:

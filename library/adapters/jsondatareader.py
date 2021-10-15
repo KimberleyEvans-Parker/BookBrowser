@@ -10,8 +10,7 @@ book_dataset = None
 
 
 class BooksJSONReader(AbstractRepository):
-    def __init__(self, data_path: Path):
-        self.__data_path = data_path
+    def __init__(self):
         self.__dataset_of_books = []
         self.__books_inventory = BooksInventory()
         self.__indexes = {"home": 0, "books_by_date": 0, "authors": 0, "publishers": 0}
@@ -28,10 +27,6 @@ class BooksJSONReader(AbstractRepository):
         if isinstance(user, User):
             user.add_review(review)
         book.add_review(review)
-
-    @property
-    def data_path(self):
-        return self.__data_path
 
     @property
     def data_path(self):
