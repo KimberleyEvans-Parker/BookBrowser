@@ -5,6 +5,7 @@ from utils import get_project_root
 
 from library.domain.model import Publisher, Author, Book, Review, User, BooksInventory
 from library.adapters.jsondatareader import BooksJSONReader
+from library.adapters import database_repository, repository_populate
 
 class TestPublisher:
 
@@ -399,23 +400,12 @@ class TestUser:
 
 @pytest.fixture
 def read_books_and_authors():
-    books_file_name = 'comic_books_excerpt.json'
-    authors_file_name = 'book_authors_excerpt.json'
-    inventory_file_name = 'book_inventory.json'
-    reviews_file_name = 'book_reviews.csv'
-    users_file_name = 'users.json'
-
     # we use a method from a utils file in the root folder to figure out the root
     # this way testing code is always finding the right path to the data files
-    root_folder = get_project_root()
     data_folder = Path("library/adapters/data")
-    path_to_books_file = str(root_folder / data_folder / books_file_name)
-    path_to_authors_file = str(root_folder / data_folder / authors_file_name)
-    path_to_inventory_file = str(root_folder / data_folder / inventory_file_name)
-    path_to_reviews_file = str(root_folder / data_folder / reviews_file_name)
-    path_to_users_file = str(root_folder / data_folder / users_file_name)
-    reader = BooksJSONReader(path_to_books_file, path_to_authors_file, path_to_inventory_file, path_to_reviews_file, path_to_users_file)
-    reader.read_json_files()
+    reader = BooksJSONReader(data_path=data_folder)
+    repository_populate.populate(data_folder, reader, False)
+
     return reader.dataset_of_books
 
 
@@ -455,23 +445,12 @@ class TestBooksJSONReader:
 
 @pytest.fixture
 def get_books_inventory():
-    books_file_name = 'comic_books_excerpt.json'
-    authors_file_name = 'book_authors_excerpt.json'
-    inventory_file_name = 'book_inventory.json'
-    reviews_file_name = 'book_reviews.csv'
-    users_file_name = 'users.json'
-
     # we use a method from a utils file in the root folder to figure out the root
     # this way testing code is always finding the right path to the data files
-    root_folder = get_project_root()
     data_folder = Path("library/adapters/data")
-    path_to_books_file = str(root_folder / data_folder / books_file_name)
-    path_to_authors_file = str(root_folder / data_folder / authors_file_name)
-    path_to_inventory_file = str(root_folder / data_folder / inventory_file_name)
-    path_to_reviews_file = str(root_folder / data_folder / reviews_file_name)
-    path_to_users_file = str(root_folder / data_folder / users_file_name)
-    reader = BooksJSONReader(path_to_books_file, path_to_authors_file, path_to_inventory_file, path_to_reviews_file, path_to_users_file)
-    reader.read_json_files()
+    reader = BooksJSONReader(data_path=data_folder)
+    repository_populate.populate(data_folder, reader, False)
+
     return reader.books_inventory
 
 
