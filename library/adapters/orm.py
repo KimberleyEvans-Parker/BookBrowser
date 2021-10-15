@@ -23,7 +23,7 @@ users_table = Table(
 authors_table = Table(
     'authors', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('author_id', ForeignKey('books.id')),
+    Column('author_id', ForeignKey('books.book_id')),
     Column('full-name', String(255), nullable=False)
 )
 
@@ -38,7 +38,7 @@ reviews_table = Table(
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user_name', String(255), nullable=False),
     Column('user_id', ForeignKey('users.id')),
-    Column('book_id', ForeignKey('books.id')),
+    Column('book_id', ForeignKey('books.book_id')),
     Column('rating', Integer, nullable=False),
     Column('review', String(1024), nullable=False),
     Column('timestamp', DateTime, nullable=False)
@@ -62,21 +62,21 @@ books_table = Table(
     Column('ratings_count', Integer),
     Column('url', String(255)),
     Column('reviews', String(255)), # TODO: Should this be multiple review objects?
-    Column('user_id', ForeignKey('users.id'))
+    Column('user_id', ForeignKey('users.id')) # TODO: Is this required?  As in I know the user has a list of fav books, but idk if the books table needs to store the users
 )
 
-tags_table = Table(
-    'tags', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('tag_name', String(64), nullable=False)
-)
+# tags_table = Table( # TODO: Remove?
+#     'tags', metadata,
+#     Column('id', Integer, primary_key=True, autoincrement=True),
+#     Column('tag_name', String(64), nullable=False)
+# )
 
-book_tags_table = Table(
-    'book_tags', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('book_id', ForeignKey('books.id')),
-    Column('tag_id', ForeignKey('tags.id'))
-)
+# book_tags_table = Table(
+#     'book_tags', metadata,
+#     Column('id', Integer, primary_key=True, autoincrement=True),
+#     Column('book_id', ForeignKey('books.book_id')),
+#     Column('tag_id', ForeignKey('tags.id'))
+# )
 
 def map_model_to_tables():
     mapper(model.User, users_table, properties={
@@ -91,21 +91,27 @@ def map_model_to_tables():
         '_Review__timestamp': reviews_table.c.timestamp
     })
     mapper(model.Book, books_table, properties={
-        '_Book__id': books_table.c.id,
-        '_Book__date': books_table.c.date,
+        '_Book__id': books_table.c.book_id,
         '_Book__title': books_table.c.title,
-        '_Book__first_paragraph': books_table.c.first_paragraph,
-        '_Book__hyperlink': books_table.c.hyperlink,
-        '_Book__image_hyperlink': books_table.c.image_hyperlink,
+        '_Book__description': books_table.c.description,
+        '_Book__publisher': books_table.c.publisher,
+        '_Book__authors': books_table.c.authors,
+        '_Book__release_year': books_table.c.release_year,
+        '_Book__ebook': books_table.c.ebook,
+        '_Book__num_pages': books_table.c.num_pages,
+        '_Book__average_rating': books_table.c.average_rating,
+        '_Book__ratings_count': books_table.c.ratings_count,
+        '_Book__url': books_table.c.url,
         '_Book__reviews': relationship(model.Review, backref='_Review__book'),
-        '_Book__tags': relationship(model.Tag, secondary=book_tags_table,
-                                       back_populates='_Tag__tagged_books')
+        # '_Book__tags': relationship(model.Tag, secondary=book_tags_table,
+        #                                back_populates='_Tag__tagged_books')
+        # 
     })
-    mapper(model.Tag, tags_table, properties={
-        '_Tag__tag_name': tags_table.c.tag_name,
-        '_Tag__tagged_books': relationship(
-            model.Book,
-            secondary=book_tags_table,
-            back_populates="_Book__tags"
-        )
-    })
+    # mapper(model.Tag, tags_table, properties={
+    #     '_Tag__tag_name': tags_table.c.tag_name,
+    #     '_Tag__tagged_books': relationship(
+    #         model.Book,
+    #         secondary=book_tags_table,
+    #         back_populates="_Book__tags"
+    #     )
+    # })
