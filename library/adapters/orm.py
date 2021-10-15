@@ -61,22 +61,16 @@ books_table = Table(
     Column('average_rating', Float),
     Column('ratings_count', Integer),
     Column('url', String(255)),
-    Column('reviews', String(255)), # TODO: Should this be multiple review objects?
-    # Column('user_id', ForeignKey('users.id')) # TODO: Is this required?  As in I know the user has a list of fav books, but idk if the books table needs to store the users
+    # Column('reviews', ForeignKey('reviews.id')), # TODO: Should this be multiple review objects?
+    Column('user_id', ForeignKey('users.id')) # TODO: Is this required?  As in I know the user has a list of fav books, but idk if the books table needs to store the users
 )
 
-# tags_table = Table( # TODO: Remove?
-#     'tags', metadata,
-#     Column('id', Integer, primary_key=True, autoincrement=True),
-#     Column('tag_name', String(64), nullable=False)
-# )
-
-# book_tags_table = Table(
-#     'book_tags', metadata,
-#     Column('id', Integer, primary_key=True, autoincrement=True),
-#     Column('book_id', ForeignKey('books.book_id')),
-#     Column('tag_id', ForeignKey('tags.id'))
-# )
+reading_list_user_table = Table(
+    'reading_list', metadata,
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('book_id', ForeignKey('books.book_id')),
+    Column('user_id', ForeignKey('users.id'))
+)
 
 def map_model_to_tables():
     mapper(model.User, users_table, properties={
