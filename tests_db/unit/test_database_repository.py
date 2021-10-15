@@ -75,10 +75,6 @@ from library.adapters.repository import RepositoryException
 #     assert review_one.user.user_name == 'fmercury'
 #     assert review_two.user.user_name == "thorke"
 
-#     # Check that the Book is tagged as expected.
-#     assert book.is_tagged_by(Tag('Health'))
-#     assert book.is_tagged_by(Tag('New Zealand'))
-
 # def test_repository_does_not_retrieve_a_non_existent_book(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
 
@@ -104,23 +100,6 @@ from library.adapters.repository import RepositoryException
 
 #     books = repo.get_books_by_date(date(2020, 3, 8))
 #     assert len(books) == 0
-
-# def test_repository_can_retrieve_tags(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-
-#     tags = repo.get_tags()
-
-#     assert len(tags) == 10
-
-#     tag_one = [tag for tag in tags if tag.tag_name == 'New Zealand'][0]
-#     tag_two = [tag for tag in tags if tag.tag_name == 'Health'][0]
-#     tag_three = [tag for tag in tags if tag.tag_name == 'World'][0]
-#     tag_four = [tag for tag in tags if tag.tag_name == 'Politics'][0]
-
-#     assert tag_one.number_of_tagged_books == 53
-#     assert tag_two.number_of_tagged_books == 2
-#     assert tag_three.number_of_tagged_books == 64
-#     assert tag_four.number_of_tagged_books == 1
 
 # def test_repository_can_get_first_book(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
@@ -161,20 +140,6 @@ from library.adapters.repository import RepositoryException
 
 #     assert len(books) == 0
 
-# def test_repository_returns_book_ids_for_existing_tag(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-
-#     book_ids = repo.get_book_ids_for_tag('Health')
-
-#     assert book_ids == [1, 2]
-
-# def test_repository_returns_an_empty_list_for_non_existent_tag(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-
-#     book_ids = repo.get_book_ids_for_tag('United States')
-
-#     assert len(book_ids) == 0
-
 
 # def test_repository_returns_date_of_previous_book(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
@@ -210,15 +175,6 @@ from library.adapters.repository import RepositoryException
 #     next_date = repo.get_date_of_next_book(book)
 
 #     assert next_date is None
-
-
-# def test_repository_can_add_a_tag(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-
-#     tag = Tag('Motoring')
-#     repo.add_tag(tag)
-
-#     assert tag in repo.get_tags()
 
 
 # def test_repository_can_add_a_review(session_factory):

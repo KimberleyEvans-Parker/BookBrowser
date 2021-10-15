@@ -10,23 +10,6 @@ def test_database_populate_inspect_table_names(database_engine):
     print(inspector.get_table_names())
     assert inspector.get_table_names() == ['authors', 'publishers', 'books', 'reviews', 'users']
 
-# def test_database_populate_select_all_tags(database_engine):
-
-#     # Get table information
-#     inspector = inspect(database_engine)
-#     name_of_tags_table = inspector.get_table_names()[3]
-
-#     with database_engine.connect() as connection:
-#         # query for records in table tags
-#         select_statement = select([metadata.tables[name_of_tags_table]])
-#         result = connection.execute(select_statement)
-
-#         all_tag_names = []
-#         for row in result:
-#             all_tag_names.append(row['tag_name'])
-
-#         assert all_tag_names == ['New Zealand', 'Health', 'World', 'Politics']
-
 # def test_database_populate_select_all_users(database_engine):
 
 #     # Get table information
