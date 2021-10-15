@@ -93,7 +93,7 @@ def load_authors_and_books(repo, data_path: Path, books_filename, authors_filena
                     author_name = author_json['name']
             book_instance.add_author(Author(numerical_id, author_name))
 
-        repo.dataset_of_books.append(book_instance)
+        repo.add_book(book_instance)
 
 def load_inventory(repo, data_path: Path, filename):
     inventory_json = read_json_file(data_path/filename)

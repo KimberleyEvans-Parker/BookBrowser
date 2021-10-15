@@ -62,7 +62,7 @@ books_table = Table(
     Column('ratings_count', Integer),
     Column('url', String(255)),
     Column('reviews', String(255)), # TODO: Should this be multiple review objects?
-    Column('user_id', ForeignKey('users.id')) # TODO: Is this required?  As in I know the user has a list of fav books, but idk if the books table needs to store the users
+    # Column('user_id', ForeignKey('users.id')) # TODO: Is this required?  As in I know the user has a list of fav books, but idk if the books table needs to store the users
 )
 
 # tags_table = Table( # TODO: Remove?
