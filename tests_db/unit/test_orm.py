@@ -9,86 +9,86 @@ from library.domain.model import BooksInventory, Publisher, Author, Book, Review
 
 book_date = datetime.date(2020, 2, 28)
 
-# def insert_user(empty_session, values=None):
-#     new_name = "Andrew"
-#     new_password = "1234"
+def insert_user(empty_session, values=None):
+    new_name = "Bob"
+    new_password = "Password123"
 
-#     if values is not None:
-#         new_name = values[0]
-#         new_password = values[1]
+    if values is not None:
+        new_name = values[0]
+        new_password = values[1]
 
-#     empty_session.execute('INSERT INTO users (user_name, password) VALUES (:user_name, :password)',
-#                           {'user_name': new_name, 'password': new_password})
-#     row = empty_session.execute('SELECT id from users where user_name = :user_name',
-#                                 {'user_name': new_name}).fetchone()
-#     return row[0]
+    empty_session.execute('INSERT INTO users (user_name, password) VALUES (:user_name, :password)',
+                          {'user_name': new_name, 'password': new_password})
+    row = empty_session.execute('SELECT id from users where user_name = :user_name',
+                                {'user_name': new_name}).fetchone()
+    return row[0]
 
-# def insert_users(empty_session, values):
-#     for value in values:
-#         empty_session.execute('INSERT INTO users (user_name, password) VALUES (:user_name, :password)',
-#                               {'user_name': value[0], 'password': value[1]})
-#     rows = list(empty_session.execute('SELECT id from users'))
-#     keys = tuple(row[0] for row in rows)
-#     return keys
+def insert_users(empty_session, values):
+    for value in values:
+        empty_session.execute('INSERT INTO users (user_name, password) VALUES (:user_name, :password)',
+                              {'user_name': value[0], 'password': value[1]})
+    rows = list(empty_session.execute('SELECT id from users'))
+    keys = tuple(row[0] for row in rows)
+    return keys
 
-# def insert_book(empty_session):
-#     empty_session.execute(
-#         'INSERT INTO books (date, title, first_paragraph, hyperlink, image_hyperlink) VALUES '
-#         '(:date, "Coronavirus: First case of virus in New Zealand", '
-#         '"The first case of coronavirus has been confirmed in New Zealand  and authorities are now scrambling to track down people who may have come into contact with the patient.", '
-#         '"https://www.stuff.co.nz/national/health/119899280/ministry-of-health-gives-latest-update-on-novel-coronavirus", '
-#         '"https://resources.stuff.co.nz/content/dam/images/1/z/e/3/w/n/image.related.StuffLandscapeSixteenByNine.1240x700.1zduvk.png/1583369866749.jpg")',
-#         {'date': book_date.isoformat()}
-#     )
-#     row = empty_session.execute('SELECT id from books').fetchone()
-#     return row[0]
-
-
-# def insert_reviewed_book(empty_session):
-#     book_key = insert_book(empty_session)
-#     user_key = insert_user(empty_session)
-
-#     timestamp_1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-#     timestamp_2 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-#     empty_session.execute(
-#         'INSERT INTO reviews (user_id, book_id, review, timestamp) VALUES '
-#         '(:user_id, :book_id, "Review 1", :timestamp_1),'
-#         '(:user_id, :book_id, "Review 2", :timestamp_2)',
-#         {'user_id': user_key, 'book_id': book_key, 'timestamp_1': timestamp_1, 'timestamp_2': timestamp_2}
-#     )
-
-#     row = empty_session.execute('SELECT id from books').fetchone()
-#     return row[0]
+def insert_book(empty_session):
+    empty_session.execute(
+        'INSERT INTO books (date, title, first_paragraph, hyperlink, image_hyperlink) VALUES '
+        '(:date, "Coronavirus: First case of virus in New Zealand", '
+        '"The first case of coronavirus has been confirmed in New Zealand  and authorities are now scrambling to track down people who may have come into contact with the patient.", '
+        '"https://www.stuff.co.nz/national/health/119899280/ministry-of-health-gives-latest-update-on-novel-coronavirus", '
+        '"https://resources.stuff.co.nz/content/dam/images/1/z/e/3/w/n/image.related.StuffLandscapeSixteenByNine.1240x700.1zduvk.png/1583369866749.jpg")',
+        {'date': book_date.isoformat()}
+    )
+    row = empty_session.execute('SELECT id from books').fetchone()
+    return row[0]
 
 
-# def make_book():
-#     book = Book(
-#         book_date,
-#         "Coronavirus: First case of virus in New Zealand",
-#         "The first case of coronavirus has been confirmed in New Zealand  and authorities are now scrambling to track down people who may have come into contact with the patient.",
-#         "https://www.stuff.co.nz/national/health/119899280/ministry-of-health-gives-latest-update-on-novel-coronavirus",
-#         "https://resources.stuff.co.nz/content/dam/images/1/z/e/3/w/n/image.related.StuffLandscapeSixteenByNine.1240x700.1zduvk.png/1583369866749.jpg"
-#     )
-#     return book
+def insert_reviewed_book(empty_session):
+    book_key = insert_book(empty_session)
+    user_key = insert_user(empty_session)
+
+    timestamp_1 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    timestamp_2 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    empty_session.execute(
+        'INSERT INTO reviews (user_id, book_id, review, timestamp) VALUES '
+        '(:user_id, :book_id, "Review 1", :timestamp_1),'
+        '(:user_id, :book_id, "Review 2", :timestamp_2)',
+        {'user_id': user_key, 'book_id': book_key, 'timestamp_1': timestamp_1, 'timestamp_2': timestamp_2}
+    )
+
+    row = empty_session.execute('SELECT id from books').fetchone()
+    return row[0]
 
 
-# def make_user():
-#     user = User("Andrew", "111")
-#     return user
+def make_book():
+    book = Book(
+        book_date,
+        "Coronavirus: First case of virus in New Zealand",
+        "The first case of coronavirus has been confirmed in New Zealand  and authorities are now scrambling to track down people who may have come into contact with the patient.",
+        "https://www.stuff.co.nz/national/health/119899280/ministry-of-health-gives-latest-update-on-novel-coronavirus",
+        "https://resources.stuff.co.nz/content/dam/images/1/z/e/3/w/n/image.related.StuffLandscapeSixteenByNine.1240x700.1zduvk.png/1583369866749.jpg"
+    )
+    return book
 
 
-# def test_loading_of_users(empty_session):
-#     users = list()
-#     users.append(("Andrew", "1234"))
-#     users.append(("Cindy", "1111"))
-#     insert_users(empty_session, users)
+def make_user():
+    user = User("Bob", "111")
+    return user
 
-#     expected = [
-#         User("Andrew", "1234"),
-#         User("Cindy", "999")
-#     ]
-#     assert empty_session.query(User).all() == expected
+
+def test_loading_of_users(empty_session):
+    users = list()
+    users.append(("Bob", "Password123"))
+    users.append(("Cindy", "1111"))
+    insert_users(empty_session, users)
+
+    expected = [
+        User("Bob", "Password123"),
+        User("Cindy", "999")
+    ]
+    assert empty_session.query(User).all() == expected
 
 # def test_saving_of_users(empty_session):
 #     user = make_user()
@@ -96,15 +96,15 @@ book_date = datetime.date(2020, 2, 28)
 #     empty_session.commit()
 
 #     rows = list(empty_session.execute('SELECT user_name, password FROM users'))
-#     assert rows == [("Andrew", "111")]
+#     assert rows == [("Bob", "111")]
 
 
 # def test_saving_of_users_with_common_user_name(empty_session):
-#     insert_user(empty_session, ("Andrew", "1234"))
+#     insert_user(empty_session, ("Bob", "Password123"))
 #     empty_session.commit()
 
 #     with pytest.raises(IntegrityError):
-#         user = User("Andrew", "111")
+#         user = User("Bob", "111")
 #         empty_session.add(user)
 #         empty_session.commit()
 
@@ -130,11 +130,11 @@ book_date = datetime.date(2020, 2, 28)
 
 # def test_saving_of_review(empty_session):
 #     book_key = insert_book(empty_session)
-#     user_key = insert_user(empty_session, ("Andrew", "1234"))
+#     user_key = insert_user(empty_session, ("Bob", "Password123"))
 
 #     rows = empty_session.query(Book).all()
 #     book = rows[0]
-#     user = empty_session.query(User).filter(User._User__user_name == "Andrew").one()
+#     user = empty_session.query(User).filter(User._User__user_name == "Bob").one()
 
 #     # Create a new Review that is bidirectionally linked with the User and Book.
 #     review_text = "Some review text."

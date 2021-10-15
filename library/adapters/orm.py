@@ -53,8 +53,8 @@ books_table = Table(
     Column('book_id', Integer, primary_key=True, autoincrement=True),
     Column('title', String(255), nullable=False),
     Column('description', String(1024), nullable=False),
-    Column('publisher', String(1024)), # TODO: Should this be a publisher object?
-    Column('authors', String(1024)), # TODO: Should this be multiple author objects?
+    Column('publisher', ForeignKey('publishers.id')), # TODO: Should this be a publisher object?
+    # Column('authors', String(1024)), # TODO: Should this be multiple author objects?
     Column('release_year', Date),
     Column('ebook', Boolean),
     Column('num_pages', String(63)),

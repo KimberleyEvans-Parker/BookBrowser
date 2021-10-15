@@ -2,13 +2,13 @@ from sqlalchemy import select, inspect
 
 from library.adapters.orm import metadata
 
-def test_database_populate_inspect_table_names(database_engine):
+# def test_database_populate_inspect_table_names(database_engine):
 
-    # Get table information
-    inspector = inspect(database_engine)
-    print()
-    print(inspector.get_table_names())
-    assert inspector.get_table_names() == ['authors', 'publishers', 'books', 'reviews', 'users']
+#     # Get table information
+#     inspector = inspect(database_engine)
+#     print()
+#     print(inspector.get_table_names())
+#     assert inspector.get_table_names() == ['authors', 'publishers', 'books', 'reviews', 'users']
 
 # def test_database_populate_select_all_users(database_engine):
 
