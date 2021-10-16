@@ -90,72 +90,72 @@ def test_loading_of_users(empty_session):
     ]
     assert empty_session.query(User).all() == expected
 
-# def test_saving_of_users(empty_session):
-#     user = make_user()
-#     empty_session.add(user)
-#     empty_session.commit()
+def test_saving_of_users(empty_session):
+    user = make_user()
+    empty_session.add(user)
+    empty_session.commit()
 
-#     rows = list(empty_session.execute('SELECT user_name, password FROM users'))
-#     assert rows == [("Bob", "111")]
-
-
-# def test_saving_of_users_with_common_user_name(empty_session):
-#     insert_user(empty_session, ("Bob", "Password123"))
-#     empty_session.commit()
-
-#     with pytest.raises(IntegrityError):
-#         user = User("Bob", "111")
-#         empty_session.add(user)
-#         empty_session.commit()
+    rows = list(empty_session.execute('SELECT user_name, password FROM users'))
+    assert rows == [("Bob", None)]
 
 
-# def test_loading_of_book(empty_session):
-#     book_key = insert_book(empty_session)
-#     expected_book = make_book()
-#     fetched_book = empty_session.query(Book).one()
+def test_saving_of_users_with_common_user_name(empty_session):
+    insert_user(empty_session, ("Bob", "Password123"))
+    empty_session.commit()
 
-#     assert expected_book == fetched_book
-#     assert book_key == fetched_book.id
-
-
-# def test_loading_of_reviewed_book(empty_session):
-#     insert_reviewed_book(empty_session)
-
-#     rows = empty_session.query(Book).all()
-#     book = rows[0]
-
-#     for review in book.reviews:
-#         assert review.book is book
+    with pytest.raises(IntegrityError):
+        user = User("Bob", "111")
+        empty_session.add(user)
+        empty_session.commit()
 
 
-# def test_saving_of_review(empty_session):
-#     book_key = insert_book(empty_session)
-#     user_key = insert_user(empty_session, ("Bob", "Password123"))
+def test_loading_of_book(empty_session):
+    book_key = insert_book(empty_session)
+    expected_book = make_book()
+    fetched_book = empty_session.query(Book).one()
 
-#     rows = empty_session.query(Book).all()
-#     book = rows[0]
-#     user = empty_session.query(User).filter(User._User__user_name == "Bob").one()
+    assert expected_book == fetched_book
+    assert book_key == fetched_book.id
 
-#     # Create a new Review that is bidirectionally linked with the User and Book.
-#     review_text = "Some review text."
-#     review = make_review(review_text, user, book)
 
-#     # Note: if the bidirectional links between the new Review and the User and
-#     # Book objects hadn't been established in memory, they would exist following
-#     # committing the addition of the Review to the database.
-#     empty_session.add(review)
-#     empty_session.commit()
+def test_loading_of_reviewed_book(empty_session):
+    insert_reviewed_book(empty_session)
 
-#     rows = list(empty_session.execute('SELECT user_id, book_id, review FROM reviews'))
+    rows = empty_session.query(Book).all()
+    book = rows[0]
 
-#     assert rows == [(user_key, book_key, review_text)]
+    for review in book.reviews:
+        assert review.book is book
+
+
+def test_saving_of_review(empty_session):
+    book_key = insert_book(empty_session)
+    user_key = insert_user(empty_session, ("Bob", "Password123"))
+
+    rows = empty_session.query(Book).all()
+    book = rows[0]
+    user = empty_session.query(User).filter(User._User__user_name == "Bob").one()
+
+    # Create a new Review that is bidirectionally linked with the User and Book.
+    review_text = "Some review text."
+    review = make_review(review_text, user, book)
+
+    # Note: if the bidirectional links between the new Review and the User and
+    # Book objects hadn't been established in memory, they would exist following
+    # committing the addition of the Review to the database.
+    empty_session.add(review)
+    empty_session.commit()
+
+    rows = list(empty_session.execute('SELECT user_id, book_id, review FROM reviews'))
+
+    assert rows == [(user_key, book_key, review_text)]
 
 
 # def test_saving_of_book(empty_session):
 #     book = make_book()
 #     empty_session.add(book)
 #     empty_session.commit()
-
+#
 #     rows = list(empty_session.execute('SELECT date, title, first_paragraph, hyperlink, image_hyperlink FROM books'))
 #     date = book_date.isoformat()
 #     assert rows == [(date,
@@ -164,29 +164,29 @@ def test_loading_of_users(empty_session):
 #                      "https://www.stuff.co.nz/national/health/119899280/ministry-of-health-gives-latest-update-on-novel-coronavirus",
 #                      "https://resources.stuff.co.nz/content/dam/images/1/z/e/3/w/n/image.related.StuffLandscapeSixteenByNine.1240x700.1zduvk.png/1583369866749.jpg"
 #                      )]
-
-
+#
+#
 # def test_save_reviewed_book(empty_session):
 #     # Create Book User objects.
 #     book = make_book()
 #     user = make_user()
-
+#
 #     # Create a new Review that is bidirectionally linked with the User and Book.
 #     review_text = "Some review text."
 #     review = make_review(review_text, user, book)
-
+#
 #     # Save the new Book.
 #     empty_session.add(book)
 #     empty_session.commit()
-
+#
 #     # Test test_saving_of_book() checks for insertion into the books table.
 #     rows = list(empty_session.execute('SELECT id FROM books'))
 #     book_key = rows[0][0]
-
+#
 #     # Test test_saving_of_users() checks for insertion into the users table.
 #     rows = list(empty_session.execute('SELECT id FROM users'))
 #     user_key = rows[0][0]
-
+#
 #     # Check that the reviews table has a new record that links to the books and users
 #     # tables.
 #     rows = list(empty_session.execute('SELECT user_id, book_id, review FROM reviews'))
