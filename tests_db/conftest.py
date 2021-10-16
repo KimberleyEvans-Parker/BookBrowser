@@ -8,7 +8,7 @@ from library.adapters.orm import metadata, map_model_to_tables
 
 from utils import get_project_root
 
-TEST_DATA_PATH_DATABASE_FULL = get_project_root() / "covid" / "adapters" / "data"
+TEST_DATA_PATH_DATABASE_FULL = get_project_root() / "library" / "adapters" / "data"
 TEST_DATA_PATH_DATABASE_LIMITED = get_project_root() / "tests" / "data"
 
 TEST_DATABASE_URI_IN_MEMORY = 'sqlite://'
