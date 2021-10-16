@@ -33,14 +33,14 @@ def insert_users(empty_session, values):
 
 def insert_book(empty_session):
     empty_session.execute(
-        'INSERT INTO books (date, title, first_paragraph, hyperlink, image_hyperlink) VALUES '
-        '(:date, "Coronavirus: First case of virus in New Zealand", '
-        '"The first case of coronavirus has been confirmed in New Zealand  and authorities are now scrambling to track down people who may have come into contact with the patient.", '
+        'INSERT INTO books (release_year, title, description, url, ebook) VALUES '
+        '(:date, "Inkheart", '
+        '"Dare to read aloud...", '
         '"https://www.stuff.co.nz/national/health/119899280/ministry-of-health-gives-latest-update-on-novel-coronavirus", '
-        '"https://resources.stuff.co.nz/content/dam/images/1/z/e/3/w/n/image.related.StuffLandscapeSixteenByNine.1240x700.1zduvk.png/1583369866749.jpg")',
+        'true)',
         {'date': book_date.isoformat()}
     )
-    row = empty_session.execute('SELECT id from books').fetchone()
+    row = empty_session.execute('SELECT book_id from books').fetchone()
     return row[0]
 
 
