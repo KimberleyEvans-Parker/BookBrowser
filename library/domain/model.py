@@ -165,7 +165,7 @@ class Book:
         # use the attribute setter
         self.title = book_title
         self.description = None
-        self.__publisher = None
+        self.__publisher = []
         self.__authors = []
         self.__release_year = None
         self.__ebook = None
@@ -245,9 +245,9 @@ class Book:
     @publisher.setter
     def publisher(self, publisher: Publisher):
         if isinstance(publisher, Publisher):
-            self.__publisher = publisher
+            self.__publisher = [publisher]
         else:
-            self.__publisher = None
+            self.__publisher = []
 
     @property
     def authors(self) -> List[Author]:

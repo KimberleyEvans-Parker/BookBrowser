@@ -29,9 +29,9 @@ authors_table = Table(
 
 publishers_table = Table(
     'publishers', metadata,
-    # Column('book_id', ForeignKey('books.book_id')),
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('name', String(255), nullable=False)
+    Column('name', String(255), nullable=False),
+    Column('book_id', ForeignKey('books.book_id')),
 )
 
 reviews_table = Table(
@@ -54,7 +54,7 @@ books_table = Table(
     Column('book_id', Integer, primary_key=True),
     Column('title', String(255), nullable=False),
     Column('description', String(1024)),
-    Column('publisher_id', ForeignKey('publishers.id')),
+    # Column('publisher_id', ForeignKey('publishers.id')),
     Column('release_year', Date),
     Column('ebook', Boolean),
     Column('num_pages', String(63)),
@@ -77,7 +77,7 @@ def map_model_to_tables():
     mapper(model.User, users_table, properties={
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
-        '_User__reviews': relationship(model.Review, backref='_Review__id')
+        '_User__reviews': relationship(model.Review, backref='_Review_id')
     })
     mapper(model.Author, authors_table, properties={
         '_Author__full_name': authors_table.c.full_name
@@ -96,14 +96,14 @@ def map_model_to_tables():
         '_Book__id': books_table.c.book_id,
         '_Book__title': books_table.c.title,
         '_Book__description': books_table.c.description,
-        '_Book__publisher': relationship(model.Publisher, backref='_Books__publisher_id'),
-        '_Book__authors': relationship(model.Author, backref='_Author__id'),
+        '_Book__publisher': relationship(model.Publisher, backref='_Publisher_name'),
+        '_Book__authors': relationship(model.Author, backref='_Author_book'),
         '_Book__release_year': books_table.c.release_year,
         '_Book__ebook': books_table.c.ebook,
         '_Book__num_pages': books_table.c.num_pages,
         '_Book__average_rating': books_table.c.average_rating,
         '_Book__ratings_count': books_table.c.ratings_count,
         '_Book__url': books_table.c.url,
-        '_Book__reviews': relationship(model.Review, backref='_Review__book_title'),    # There was no _Review__book instance variable in books so I made it _Review__book_title. Perhaps this will work.
+        '_Book__reviews': relationship(model.Review, backref='_Review_book_title'),    # There was no _Review__book instance variable in books so I made it _Review__book_title. Perhaps this will work.
         '_Book__reading_list': relationship(model.Book, secondary=reading_list_user_table)
     })
