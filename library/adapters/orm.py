@@ -31,7 +31,7 @@ publishers_table = Table(
     'publishers', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('name', String(255), nullable=False),
-    Column('book_id', ForeignKey('books.book_id')),
+    Column('book_id', ForeignKey('books.book_id'))
 )
 
 reviews_table = Table(
