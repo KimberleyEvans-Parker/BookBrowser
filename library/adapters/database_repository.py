@@ -50,6 +50,11 @@ class SqlAlchemyRepository(AbstractRepository):
     def __init__(self, session_factory):
         self._session_cm = SessionContextManager(session_factory)
         self.__indexes = {"home": 0, "books_by_date": 0, "authors": 0, "publishers": 0}
+        self.__books_inventory = BooksInventory()
+
+    @property
+    def books_inventory(self) -> BooksInventory:
+        return self.__books_inventory
 
     def close_session(self):
         self._session_cm.close_current_session()
@@ -72,21 +77,17 @@ class SqlAlchemyRepository(AbstractRepository):
 
         return user
 
+    @property
     def indexes(self):
         return self.__indexes
 
     def dataset_of_books(self) -> List[Book]:
         return self._session_cm.session.query(Book).all()
 
-    def books_inventory(self) -> BooksInventory:
-        """ Returns a BooksInventory Object
-        """
-        raise NotImplementedError
-
     def get_book_by_id(self, book_id) -> Book:
         book = None
         try:
-            book = self._session_cm.session.query(Book).filter(Book._Book__id == book_id).one()
+            book = self._session_cm.session.query(Book).filter(Book._Book__book_id == book_id).one()
         except NoResultFound:
             pass # Ignore any exception and return None.
 
@@ -110,36 +111,36 @@ class SqlAlchemyRepository(AbstractRepository):
         if text is None or text.strip() == "":
             if page == "home":
                 # Query to get all books, sort by first title
-                books = self._session_cm.session.query(Book).order_by(Book.title.lower()).all()
+                books = self._session_cm.session.query(Book).order_by(Book._Book__title).all()
             elif page == "publishers": 
                 # Query to get all books, sort by publisher
-                books = self._session_cm.session.query(Book).order_by(Book.publisher.name.lower()).all()
+                books = self._session_cm.session.query(Book).order_by(Book._Book__publisher.name).all()
             elif page == "authors": 
                 # Query to get all books, sort by first author
-                books = self._session_cm.session.query(Book).order_by(Book.authors[0].lower()).all()
+                books = self._session_cm.session.query(Book).order_by(Book._Book__authors[0]).all()
             else: 
                 # Query to get all books, sort by date
-                books = self._session_cm.session.query(Book).order_by(Book.release_year).all()
+                books = self._session_cm.session.query(Book).order_by(Book._Book__release_year).all()
         else:
             text = text.lower().strip()
             self.indexes[page] = 0
             if page == "home":
                 # Query to get all books with text in title, sort by title
-                books = self._session_cm.session.query(Book).filter(text in Book.title).order_by(Book.title.lower()).all()
+                books = self._session_cm.session.query(Book).filter(text in Book.title).order_by(Book._Book__title).all()
             elif page == "publishers":
                 # Query to get all books with text in publisher, sort by publisher.name.lower
-                books = self._session_cm.session.query(Book).filter(text in Book.publisher.name).order_by(Book.publisher.name.lower()).all()
+                books = self._session_cm.session.query(Book).filter(text in Book.publisher.name).order_by(Book._Book__publisher.name).all()
             elif page == "authors":
                 # Query to get all books with text in any author's name, sort by first author
-                books = self._session_cm.session.query(Book).filter(text in "".join(Book.authors)).order_by(Book.authors[0].lower()).all()
+                books = self._session_cm.session.query(Book).filter(text in "".join(Book.authors)).order_by(Book._Book__authors[0]).all()
             else:
                 # Query to get all books with text in date, sort by first date
-                books = self._session_cm.session.query(Book).filter(text in Book.release_year).order_by(Book.release_year).all()
+                books = self._session_cm.session.query(Book).filter(text in Book.release_year).order_by(Book._Book__release_year).all()
 
         return books[self.__indexes[page]: self.__indexes[page] + BOOKS_PER_PAGE]
 
     def get_highest_index(self) -> int:
-        return (math.ceil(len(self.dataset_of_books) / BOOKS_PER_PAGE) - 1) * BOOKS_PER_PAGE
+        return (math.ceil(self.get_number_of_books() / BOOKS_PER_PAGE) - 1) * BOOKS_PER_PAGE
 
     def first(self, page):
         self.__indexes[page] = 0
