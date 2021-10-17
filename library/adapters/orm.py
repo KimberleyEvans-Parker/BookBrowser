@@ -23,8 +23,8 @@ users_table = Table(
 authors_table = Table(
     'authors', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('author_id', ForeignKey('books.book_id')),   # One book has many authors but a author only has one book.
-    Column('full-name', String(255), nullable=False)
+    Column('book_id', ForeignKey('books.book_id')),   # One book has many authors but a author only has one book.
+    Column('full_name', String(255), nullable=False)
 )
 
 publishers_table = Table(
@@ -80,8 +80,13 @@ def map_model_to_tables():
     mapper(model.User, users_table, properties={
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
-        '_User__reviews': relationship(model.Review, backref='_Review__user_name') # User.__reviews is a list of review objects help by a user.
+        '_User__reviews': relationship(model.Review, backref='_Review__id') # User.__reviews is a list of review objects help by a user.
         # '_User__reading_list:' relationship(model.Book, backref='_')
+    })
+    mapper(model.Author, authors_table, properties={
+        '_Review__id': authors_table.c.id,
+        '_Review__book_id': authors_table.c.book_id,
+        '_Review__full_name': authors_table.c.full_name
     })
     mapper(model.Review, reviews_table, properties={
         '_Review__book_id': reviews_table.c.book_id, #TODO: get title rather than book
@@ -95,7 +100,7 @@ def map_model_to_tables():
         '_Book__title': books_table.c.title,
         '_Book__description': books_table.c.description,
         '_Book__publisher': books_table.c.publisher,
-        '_Book__authors': books_table.c.authors,
+        '_Book__authors': relationship(model.Author, backref='_Author__id'),
         '_Book__release_year': books_table.c.release_year,
         '_Book__ebook': books_table.c.ebook,
         '_Book__num_pages': books_table.c.num_pages,
@@ -105,4 +110,3 @@ def map_model_to_tables():
         '_Book__reviews': relationship(model.Review, backref='_Review__book_title'),    # There was no _Review__book instance variable in books so I made it _Review__book_title. Perhaps this will work.
         '_Book__reading_list': relationship(model.Book, secondary=reading_list_user_table)
     })
-    
