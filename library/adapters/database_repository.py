@@ -84,11 +84,6 @@ class SqlAlchemyRepository(AbstractRepository):
     def dataset_of_books(self) -> List[Book]:
         return self._session_cm.session.query(Book).all()
 
-    # def books_inventory(self) -> BooksInventory:
-    #     """ Returns a BooksInventory Object
-    #     """
-    #     raise NotImplementedError
-
     def get_book_by_id(self, book_id) -> Book:
         book = None
         try:

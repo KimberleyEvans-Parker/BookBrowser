@@ -90,7 +90,7 @@ def map_model_to_tables():
         '_Review__review_text': reviews_table.c.review_text,
         '_Review__rating': reviews_table.c.rating,
         '_Review__timestamp': reviews_table.c.timestamp,
-        # '_Review__user_name': reviews_table.c.user_name # TODO: get username rather than user?
+        '_Review__user_name': reviews_table.c.user_name
     })
     mapper(model.Book, books_table, properties={
         '_Book__book_id': books_table.c.book_id,
