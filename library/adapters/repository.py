@@ -1,7 +1,13 @@
 import abc
 from typing import List
+from datetime import date
 
 from library.domain.model import BooksInventory, Publisher, Author, Book, Review, User
+
+
+repo_instance = None
+
+BOOKS_PER_PAGE = 12
 
 
 class RepositoryException(Exception):
@@ -82,7 +88,7 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def get_highest_index(self) -> int:
-        """ Returns the book with highest index value in dataset of books.
+        """ Returns the highest possible page index given the number of books.
         """
         raise NotImplementedError
 
@@ -101,3 +107,42 @@ class AbstractRepository(abc.ABC):
         """ Returns previous page of book.
         """
         raise NotImplementedError
+        
+    def add_book(self, book: Book):
+        """ Adds an Book to the repository. """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_book_by_id(self, id: int) -> Book:
+        """ Returns Book with id from the repository.
+
+        If there is no Book with the given id, this method returns None.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_number_of_books(self) -> int:
+        """ Returns the number of Books in the repository. """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_review(self, user_name: str, book: Book, review: Review):
+        """ Adds a Review to the repository.
+
+        If the Review doesn't have bidirectional links with an Book and a User, this method raises a
+        RepositoryException and doesn't update the repository.
+        """
+        if review.user is None or review not in review.user.reviews:
+            raise RepositoryException('Review not correctly attached to a User')
+        if review.book is None or review not in review.book.reviews:
+            raise RepositoryException('Review not correctly attached to an Book')
+
+
+
+    # @abc.abstractmethod
+    # def get_books_by_date(self, target_date: date) -> List[Book]:
+    #     """ Returns a list of Books that were published on target_date.
+
+    #     If there are no Books on the given date, this method returns an empty list.
+    #     """
+    #     raise NotImplementedError

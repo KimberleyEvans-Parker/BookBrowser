@@ -1,6 +1,7 @@
 from datetime import datetime, time
 from typing import List
 
+
 class Publisher:
 
     def __init__(self, publisher_name: str):
@@ -95,10 +96,10 @@ class Author:
         return hash(self.unique_id)
 
 
-
 class Review:
 
-    def __init__(self, book_title: str, review_text: str, rating: int, user_name: str, review_id: int = None, timestamp = None):
+    def __init__(self, book_title: str, review_text: str, rating: int, user_name: str, review_id: int = None,
+                 timestamp=None):
         self.__book_title = book_title
 
         if isinstance(review_text, str):
@@ -163,8 +164,7 @@ class Book:
 
         # use the attribute setter
         self.title = book_title
-
-        self.__description = None
+        self.description = None
         self.__publisher = None
         self.__authors = []
         self.__release_year = None
@@ -174,7 +174,6 @@ class Book:
         self.__ratings_count = None
         self.__url = None
         self.__reviews = []
-
 
     @property
     def book_id(self) -> int:
@@ -318,7 +317,7 @@ class Book:
 
 class User:
 
-    def __init__(self, user_name: str, password: str, reading_list = None):
+    def __init__(self, user_name: str, password: str, reading_list=None):
         if user_name == "" or not isinstance(user_name, str):
             self.__user_name = None
         else:
@@ -367,7 +366,7 @@ class User:
             if book.num_pages is not None:
                 self.__pages_read += book.num_pages
 
-    def is_in_reading_list(self, book:Book):
+    def is_in_reading_list(self, book: Book):
         return book in self.__reading_list
 
     def add_to_reading_list(self, book: Book):
@@ -376,7 +375,7 @@ class User:
 
     def remove_from_reading_list(self, book: Book):
         if isinstance(book, Book) and book in self.__reading_list:
-                self.__reading_list.remove(book)
+            self.__reading_list.remove(book)
 
     def add_review(self, review: Review):
         if isinstance(review, Review):
