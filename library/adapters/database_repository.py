@@ -163,13 +163,13 @@ class SqlAlchemyRepository(AbstractRepository):
         return number_of_books
 
     def add_review(self, user_name: str, book: Book, review: Review):
-        user: User = self.get_user(user_name)
-        if isinstance(user, User):
-            user.add_review(review)
-        book.add_review(review)
+        # user: User = self.get_user(user_name)
+        # if isinstance(user, User):
+        #     user.add_review(review)
+        # book.add_review(review)
 
-        # super().add_review(review)
-        # with self._session_cm as scm:
-        #     scm.session.add(review)
-        #     scm.commit()
+        super().add_review(review)
+        with self._session_cm as scm:
+            scm.session.add(review)
+            scm.commit()
         

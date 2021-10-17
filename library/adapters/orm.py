@@ -40,7 +40,7 @@ reviews_table = Table(
     Column('user_id', ForeignKey('users.id')),  # One review has only one user but one user can have N reviews.
     Column('book_id', ForeignKey('books.book_id')), # One review belongs to a single book, but one book can have N reviews.
     Column('rating', Integer, nullable=False),
-    Column('review', String(1024), nullable=False),
+    Column('review_text', String(1024), nullable=False),
     Column('timestamp', DateTime, nullable=False)
 )
 
@@ -52,9 +52,10 @@ books_table = Table(
     'books', metadata,
     Column('book_id', Integer, primary_key=True, autoincrement=True),
     Column('title', String(255), nullable=False),
-    Column('description', String(1024), nullable=False),
-    Column('publisher', String(1024)), # TODO: Should this be a publisher object? No Don't think so.
-    Column('authors', ForeignKey('authors.id')), # TODO: Should this be multiple author objects? Yes I think so as one book can have N authors
+    Column('description', String(1024)),
+    Column('publisher', ForeignKey('publishers.id')),
+    # Column('publisher', String(1024)), # TODO: Should this be a publisher object? No Don't think so.
+    # Column('authors', ForeignKey('authors.id')), # TODO: Should this be multiple author objects? Yes I think so as one book can have N authors
     Column('release_year', Date),
     Column('ebook', Boolean),
     Column('num_pages', String(63)),
@@ -83,8 +84,11 @@ def map_model_to_tables():
         # '_User__reading_list:' relationship(model.Book, backref='_')
     })
     mapper(model.Review, reviews_table, properties={
-        '_Review__review': reviews_table.c.review,
-        '_Review__timestamp': reviews_table.c.timestamp
+        '_Review__book_id': reviews_table.c.book_id, #TODO: get title rather than book
+        '_Review__review_text': reviews_table.c.review_text,
+        '_Review__rating': reviews_table.c.rating,
+        '_Review__timestamp': reviews_table.c.timestamp,
+        '_Review__user_name': reviews_table.c.user_name # TODO: get username rather than user?
     })
     mapper(model.Book, books_table, properties={
         '_Book__id': books_table.c.book_id,
@@ -99,15 +103,6 @@ def map_model_to_tables():
         '_Book__ratings_count': books_table.c.ratings_count,
         '_Book__url': books_table.c.url,
         '_Book__reviews': relationship(model.Review, backref='_Review__book_title'),    # There was no _Review__book instance variable in books so I made it _Review__book_title. Perhaps this will work.
-        # '_Book__tags': relationship(model.Tag, secondary=book_tags_table,
-        #                                back_populates='_Tag__tagged_books')
-        # 
+        '_Book__reading_list': relationship(model.Book, secondary=reading_list_user_table)
     })
-    # mapper(model.Tag, tags_table, properties={
-    #     '_Tag__tag_name': tags_table.c.tag_name,
-    #     '_Tag__tagged_books': relationship(
-    #         model.Book,
-    #         secondary=book_tags_table,
-    #         back_populates="_Book__tags"
-    #     )
-    # })
+    
