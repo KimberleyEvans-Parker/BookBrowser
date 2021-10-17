@@ -29,6 +29,7 @@ authors_table = Table(
 
 publishers_table = Table(
     'publishers', metadata,
+    # Column('book_id', ForeignKey('books.book_id')),
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('name', String(255), nullable=False)
 )
@@ -53,7 +54,7 @@ books_table = Table(
     Column('book_id', Integer, primary_key=True),
     Column('title', String(255), nullable=False),
     Column('description', String(1024)),
-    Column('publisher', ForeignKey('publishers.id')),
+    Column('publisher_id', ForeignKey('publishers.id')),
     Column('release_year', Date),
     Column('ebook', Boolean),
     Column('num_pages', String(63)),
@@ -81,6 +82,9 @@ def map_model_to_tables():
     mapper(model.Author, authors_table, properties={
         '_Author__full_name': authors_table.c.full_name
     })
+    mapper(model.Publisher, publishers_table, properties={
+        '_Publisher__name': publishers_table.c.name
+    })
     mapper(model.Review, reviews_table, properties={
         # '_Review__book_id': reviews_table.c.book_id, #TODO: get title rather than book
         '_Review__review_text': reviews_table.c.review_text,
@@ -92,7 +96,7 @@ def map_model_to_tables():
         '_Book__id': books_table.c.book_id,
         '_Book__title': books_table.c.title,
         '_Book__description': books_table.c.description,
-        '_Book__publisher': books_table.c.publisher,
+        '_Book__publisher': relationship(model.Publisher, backref='_Books__publisher_id'),
         '_Book__authors': relationship(model.Author, backref='_Author__id'),
         '_Book__release_year': books_table.c.release_year,
         '_Book__ebook': books_table.c.ebook,
