@@ -38,7 +38,7 @@ def load_users(repo, data_path: Path, filename: str):
             if book is not None:
                 reading_list.append(book)
         user:User = User(user_item_json["user_name"], user_item_json["password"], reading_list)
-        repo.users.append(user)
+        repo.add_user(user)
 
 def load_reviews(repo, data_path: Path, filename: str):
     for data_row in read_csv_file(data_path/filename):

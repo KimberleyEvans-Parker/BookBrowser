@@ -86,7 +86,7 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_book_by_id(self, book_id) -> Book:
         book = None
         try:
-            book = self._session_cm.session.query(Book).filter(Book._Book__id == book_id).one()
+            book = self._session_cm.session.query(Book).filter(Book._Book__book_id == book_id).one()
         except NoResultFound:
             pass # Ignore any exception and return None.
 

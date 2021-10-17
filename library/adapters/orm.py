@@ -55,7 +55,7 @@ books_table = Table(
     Column('title', String(255), nullable=False),
     Column('description', String(1024)),
     # Column('publisher_id', ForeignKey('publishers.id')),
-    Column('release_year', Date),
+    Column('release_year', Integer),
     Column('ebook', Boolean),
     Column('num_pages', String(63)),
     Column('average_rating', Float),
@@ -93,7 +93,7 @@ def map_model_to_tables():
         # '_Review__user_name': reviews_table.c.user_name # TODO: get username rather than user?
     })
     mapper(model.Book, books_table, properties={
-        '_Book__id': books_table.c.book_id,
+        '_Book__book_id': books_table.c.book_id,
         '_Book__title': books_table.c.title,
         '_Book__description': books_table.c.description,
         '_Book__publisher': relationship(model.Publisher, backref='_Publisher_name'),
