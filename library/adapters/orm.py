@@ -23,8 +23,16 @@ users_table = Table(
 authors_table = Table(
     'authors', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('book_id', ForeignKey('books.book_id')),   # One book has many authors but a author only has one book.
+    Column('unique_id', Integer), # TODO: this used to be the primary key, but was throwing a non-unique error for some reason
+    # Column('book_id', ForeignKey('books.book_id')),   # One book has many authors but a author only has one book.
     Column('full_name', String(255), nullable=False)
+)
+
+authors_books_table = Table(
+    'authors_books', metadata,
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('book_id', ForeignKey('books.book_id')),
+    Column('author_id', ForeignKey('authors.unique_id'))
 )
 
 publishers_table = Table(
@@ -66,8 +74,8 @@ books_table = Table(
 reading_list_user_table = Table(
     'reading_list', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('book_id', ForeignKey('books.book_id')),     # This implies that a single book can have many reading lists but a readlist can only have a single book. I don't think this holds.
-    Column('user_id', ForeignKey('users.id'))       # This implies that a single user can have many reading lists but a readinglist can only have a single user. I think it should be just a one to one relationship?
+    Column('book_id', ForeignKey('books.book_id')),
+    Column('user_id', ForeignKey('users.id'))
 )
 
 def map_model_to_tables():
@@ -81,6 +89,7 @@ def map_model_to_tables():
         '_User__reading_list': relationship(model.Book, secondary=reading_list_user_table)
     })
     mapper(model.Author, authors_table, properties={
+        '_Author__unique_id': authors_table.c.unique_id,
         '_Author__full_name': authors_table.c.full_name
     })
     mapper(model.Publisher, publishers_table, properties={
@@ -98,7 +107,7 @@ def map_model_to_tables():
         '_Book__title': books_table.c.title,
         '_Book__description': books_table.c.description,
         '_Book__publisher': relationship(model.Publisher, backref='_Publisher_name'),
-        '_Book__authors': relationship(model.Author, backref='_Author_id'),     # Was _Author__book before, don't think there is a _Author__book?
+        '_Book__authors': relationship(model.Author, secondary=authors_books_table),
         '_Book__release_year': books_table.c.release_year,
         '_Book__ebook': books_table.c.ebook,
         '_Book__num_pages': books_table.c.num_pages,

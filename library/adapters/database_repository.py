@@ -140,7 +140,7 @@ class SqlAlchemyRepository(AbstractRepository):
         return books[self.__indexes[page]: self.__indexes[page] + BOOKS_PER_PAGE]
 
     def get_highest_index(self) -> int:
-        return (math.ceil(len(self.dataset_of_books) / BOOKS_PER_PAGE) - 1) * BOOKS_PER_PAGE
+        return (math.ceil(self.get_number_of_books() / BOOKS_PER_PAGE) - 1) * BOOKS_PER_PAGE
 
     def first(self, page):
         self.__indexes[page] = 0
