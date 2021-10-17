@@ -23,7 +23,7 @@ users_table = Table(
 authors_table = Table(
     'authors', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('unique_id', Integer), # TODO: this used to be the primary key, but was throwing a non-unique error for some reason
+    Column('unique_id', Integer), # TODO: this used to be the primary key, but was throwing a non-unique error for some reason.  Can try it again?
     # Column('book_id', ForeignKey('books.book_id')),   # One book has many authors but a author only has one book.
     Column('full_name', String(255), nullable=False)
 )
@@ -85,7 +85,9 @@ def map_model_to_tables():
     mapper(model.User, users_table, properties={
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
-        '_User__reviews': relationship(model.Review, backref='_Review_id'),
+        # '_User__reviews': relationship(model.Review, backref='_Review__id'),
+        '_User__reviews': relationship(model.Review, backref='_Review__user'),
+        # '_User__reviews': relationship(model.Review, secondary=reviews_table),
         '_User__reading_list': relationship(model.Book, secondary=reading_list_user_table)
     })
     mapper(model.Author, authors_table, properties={
@@ -114,5 +116,6 @@ def map_model_to_tables():
         '_Book__average_rating': books_table.c.average_rating,
         '_Book__ratings_count': books_table.c.ratings_count,
         '_Book__url': books_table.c.url,
-        '_Book__reviews': relationship(model.Review, backref='_Review_book_title'),    # There was no _Review__book instance variable in books so I made it _Review__book_title. Perhaps this will work.
+        # '_Book__reviews': relationship(model.Review, backref='_Review_book'),    # There was no _Review__book instance variable in books so I made it _Review__book_title. Perhaps this will work.
+        '_Book__reviews': relationship(model.Review, backref='_Review__book'),
     })
