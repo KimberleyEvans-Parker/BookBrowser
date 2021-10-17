@@ -77,7 +77,8 @@ def map_model_to_tables():
     mapper(model.User, users_table, properties={
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
-        '_User__reviews': relationship(model.Review, backref='_Review_id')
+        '_User__reviews': relationship(model.Review, backref='_Review_id'),
+        '_User__reading_list': relationship(model.Book, secondary=reading_list_user_table)
     })
     mapper(model.Author, authors_table, properties={
         '_Author__full_name': authors_table.c.full_name
@@ -105,5 +106,4 @@ def map_model_to_tables():
         '_Book__ratings_count': books_table.c.ratings_count,
         '_Book__url': books_table.c.url,
         '_Book__reviews': relationship(model.Review, backref='_Review_book_title'),    # There was no _Review__book instance variable in books so I made it _Review__book_title. Perhaps this will work.
-        '_Book__reading_list': relationship(model.Book, secondary=reading_list_user_table)
     })
