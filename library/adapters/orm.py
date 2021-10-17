@@ -50,20 +50,16 @@ reviews_table = Table(
 # To form this relationship we use the ForeignKey functionality.
 books_table = Table(
     'books', metadata,
-    Column('book_id', Integer, primary_key=True, autoincrement=True),
+    Column('book_id', Integer, primary_key=True),
     Column('title', String(255), nullable=False),
     Column('description', String(1024)),
     Column('publisher', ForeignKey('publishers.id')),
-    # Column('publisher', String(1024)), # TODO: Should this be a publisher object? No Don't think so.
-    # Column('authors', ForeignKey('authors.id')), # TODO: Should this be multiple author objects? Yes I think so as one book can have N authors
     Column('release_year', Date),
     Column('ebook', Boolean),
     Column('num_pages', String(63)),
     Column('average_rating', Float),
     Column('ratings_count', Integer),
     Column('url', String(255)),
-    Column('reviews', String(1024)), # TODO: Should this be multiple review objects? I removed the ForeignKey here and it worked so let's see how it goes. :)
-    # Column('user_id', ForeignKey('users.id')) # TODO: Is this required?  As in I know the user has a list of fav books, but idk if the books table needs to store the users. I don't think the book needs to store the user either. Let's assume not for now.
 )
 
 reading_list_user_table = Table(
@@ -80,20 +76,17 @@ def map_model_to_tables():
     mapper(model.User, users_table, properties={
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
-        '_User__reviews': relationship(model.Review, backref='_Review__id') # User.__reviews is a list of review objects help by a user.
-        # '_User__reading_list:' relationship(model.Book, backref='_')
+        '_User__reviews': relationship(model.Review, backref='_Review__id')
     })
     mapper(model.Author, authors_table, properties={
-        '_Review__id': authors_table.c.id,
-        '_Review__book_id': authors_table.c.book_id,
-        '_Review__full_name': authors_table.c.full_name
+        '_Author__full_name': authors_table.c.full_name
     })
     mapper(model.Review, reviews_table, properties={
-        '_Review__book_id': reviews_table.c.book_id, #TODO: get title rather than book
+        # '_Review__book_id': reviews_table.c.book_id, #TODO: get title rather than book
         '_Review__review_text': reviews_table.c.review_text,
         '_Review__rating': reviews_table.c.rating,
         '_Review__timestamp': reviews_table.c.timestamp,
-        '_Review__user_name': reviews_table.c.user_name # TODO: get username rather than user?
+        # '_Review__user_name': reviews_table.c.user_name # TODO: get username rather than user?
     })
     mapper(model.Book, books_table, properties={
         '_Book__id': books_table.c.book_id,

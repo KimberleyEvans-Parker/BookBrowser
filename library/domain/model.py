@@ -164,8 +164,7 @@ class Book:
 
         # use the attribute setter
         self.title = book_title
-
-        self.__description = None
+        self.description = None
         self.__publisher = None
         self.__authors = []
         self.__release_year = None
