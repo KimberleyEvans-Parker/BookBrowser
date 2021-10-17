@@ -54,7 +54,6 @@ class SqlAlchemyRepository(AbstractRepository):
 
     @property
     def books_inventory(self) -> BooksInventory:
-        print("type:", self.__books_inventory)
         return self.__books_inventory
 
     def close_session(self):
@@ -78,6 +77,7 @@ class SqlAlchemyRepository(AbstractRepository):
 
         return user
 
+    @property
     def indexes(self):
         return self.__indexes
 

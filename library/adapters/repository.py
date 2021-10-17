@@ -31,10 +31,10 @@ class AbstractRepository(abc.ABC):
         """
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def indexes(self):
-        """ Indexes property for repo. """
-        raise NotImplementedError
+    # @abc.abstractmethod
+    # def indexes(self):
+    #     """ Indexes property for repo. """
+    #     raise NotImplementedError
 
     @abc.abstractmethod
     def dataset_of_books(self) -> List[Book]:
