@@ -97,7 +97,7 @@ def map_model_to_tables():
         '_Book__title': books_table.c.title,
         '_Book__description': books_table.c.description,
         '_Book__publisher': relationship(model.Publisher, backref='_Publisher_name'),
-        '_Book__authors': relationship(model.Author, backref='_Author_book'),
+        '_Book__authors': relationship(model.Author, backref='_Author_id'),     # Was _Author__book before, don't think there is a _Author__book?
         '_Book__release_year': books_table.c.release_year,
         '_Book__ebook': books_table.c.ebook,
         '_Book__num_pages': books_table.c.num_pages,

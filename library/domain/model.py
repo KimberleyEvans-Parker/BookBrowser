@@ -6,7 +6,7 @@ class Publisher:
 
     def __init__(self, publisher_name: str):
         # This makes sure the setter is called here in the initializer/constructor as well.
-        self.name = [publisher_name]
+        self.name = publisher_name
 
     @property
     def name(self) -> str:

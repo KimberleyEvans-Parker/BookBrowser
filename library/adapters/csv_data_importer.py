@@ -96,7 +96,8 @@ def load_authors_and_books(repo, data_path: Path, books_filename, authors_filena
                 if int(author_json['author_id']) == numerical_id:
                     author_name = author_json['name']
             book_instance.add_author(Author(numerical_id, author_name))
-            repo.add_book(book_instance)
+
+        repo.add_book(book_instance)
 
 
 def load_inventory(repo, data_path: Path, filename):
