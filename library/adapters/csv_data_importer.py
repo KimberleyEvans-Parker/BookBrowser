@@ -105,4 +105,8 @@ def load_inventory(repo, data_path: Path, filename):
     for inventory_item_json in inventory_json:
         book: Book = repo.get_book_by_id(int(inventory_item_json["book_id"]))
         if book is not None:
-            repo.books_inventory.add_book(book, inventory_item_json["price"], inventory_item_json["stock"])
+            book_inventory: BooksInventory = repo.books_inventory
+            print()
+            print(book_inventory)
+            print()
+            book_inventory.add_book(book, inventory_item_json["price"], inventory_item_json["stock"])

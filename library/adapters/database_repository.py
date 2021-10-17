@@ -50,6 +50,12 @@ class SqlAlchemyRepository(AbstractRepository):
     def __init__(self, session_factory):
         self._session_cm = SessionContextManager(session_factory)
         self.__indexes = {"home": 0, "books_by_date": 0, "authors": 0, "publishers": 0}
+        self.__books_inventory = BooksInventory()
+
+    @property
+    def books_inventory(self) -> BooksInventory:
+        print("type:", self.__books_inventory)
+        return self.__books_inventory
 
     def close_session(self):
         self._session_cm.close_current_session()
@@ -78,10 +84,10 @@ class SqlAlchemyRepository(AbstractRepository):
     def dataset_of_books(self) -> List[Book]:
         return self._session_cm.session.query(Book).all()
 
-    def books_inventory(self) -> BooksInventory:
-        """ Returns a BooksInventory Object
-        """
-        raise NotImplementedError
+    # def books_inventory(self) -> BooksInventory:
+    #     """ Returns a BooksInventory Object
+    #     """
+    #     raise NotImplementedError
 
     def get_book_by_id(self, book_id) -> Book:
         book = None
