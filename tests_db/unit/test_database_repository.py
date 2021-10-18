@@ -87,14 +87,6 @@ def test_repository_can_retrieve_book(session_factory):
     # Check that the Book has the expected title.
     assert book.title == 'Inkheart'
 
-    # # Check that the Book is reviewed as expected.
-    # review_one = [review for review in book.reviews if review.review_text == 'Oh no, COVID-19 has hit New Zealand'][
-    #     0]
-    # review_two = [review for review in book.reviews if review.review == 'Yeah Freddie, bad news'][0]
-    #
-    # assert review_one.user.user_name == 'fmercury'
-    # # assert review_two.user.user_name == "thorke"
-
 def test_repository_does_not_retrieve_a_non_existent_book(session_factory):
     repo = SqlAlchemyRepository(session_factory)
 
@@ -111,60 +103,77 @@ def test_repository_can_retrieve_books_by_date(session_factory):
     book.release_year = 2020
     books = repo.get_date(book)
 
-    # Check that the query returned 3 Books.
     assert books == 2020
-    #
-    # # these books are no jokes...
-    # books = repo.get_date(date(2020, 4, 1))
-    #
-    # # Check that the query returned 5 Books.
-    # assert len(books) == 5
 
-#
-# def test_repository_does_not_retrieve_an_book_when_there_are_no_books_for_a_given_date(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     books = repo.get_books_by_date(date(2020, 3, 8))
-#     assert len(books) == 0
-#
-# def test_repository_can_get_first_book(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     book = repo.get_first_book()
-#     assert book.title == 'Coronavirus: First case of virus in New Zealand'
 
-# def test_repository_can_get_last_book(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     book = repo.get_last_book()
-#     assert book.title == 'Covid 19 coronavirus: Kiwi mum on the heartbreak of losing her baby in lockdown'
-#
-# def test_repository_can_get_books_by_ids(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     books = repo.get_books_by_id([2, 5, 6])
-#
-#     assert len(books) == 3
-#     assert books[
-#                0].title == 'Covid 19 coronavirus: US deaths double in two days, Trump says quarantine not necessary'
-#     assert books[1].title == "Australia's first coronavirus fatality as man dies in Perth"
-#     assert books[2].title == 'Coronavirus: Death confirmed as six more test positive in NSW'
-#
-# def test_repository_does_not_retrieve_book_for_non_existent_id(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     books = repo.get_books_by_id([2, 209])
-#
-#     assert len(books) == 1
-#     assert books[
-#                0].title == 'Covid 19 coronavirus: US deaths double in two days, Trump says quarantine not necessary'
-#
-# def test_repository_returns_an_empty_list_for_non_existent_ids(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     books = repo.get_books_by_id([0, 199])
-#
-#     assert len(books) == 0
+def test_repository_can_get_first_book(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+    books = Book(
+        1,
+        "Inkheart"
+    )
+    repo.add_book(books)
+    book = repo.get_book(books.book_id)
+    assert book.title == 'Inkheart'
+
+def can_get_number_of_books(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+    book1 = Book(1,"Inkheart")
+    book2 = Book(2, "lionheart")
+    book3 = Book(3, "dogheart")
+    repo.add_book(book1)
+    repo.add_book(book2)
+    repo.add_book(book3)
+    assert repo.get_number_of_books == 3
+
+def can_get_first_author(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+    book1 = Book(1, "Inkheart")
+    book1.author.append(Author(1, 'Bob Dylan'))
+    book1.author.append(Author(2, 'Sideshow Bob'))
+    repo.add_book(book1)
+    assert repo.get_first_author(book1) == 'Bob Dylan'
+
+def check_author_list_length(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+    book1 = Book(1, "Inkheart")
+    book1.author.append(Author(1, 'Bob Dylan'))
+    book1.author.append(Author(2, 'Sideshow Bob'))
+    repo.add_book(book1)
+    assert repo.get_number_authors(book1) == 2
+
+def check_can_get_publisher(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+    book1 = Book(1, "Inkheart")
+    book1.publisher = 'Kentaro Miura'
+    repo.add_book(book1)
+    assert repo.get_publisher == 'Kentaro Miura'
+
+
+def test_repository_can_get_books_by_ids(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+    book1 = Book(1, "Inkheart")
+    repo.add_book(book1)
+    books = repo.get_book_by_id(1)
+
+    assert books == book1
+    assert books.title == "Inkheart"
+
+def test_repository_does_not_retrieve_non_existent_book_by_id(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+    book1 = Book(1, "Inkheart")
+    repo.add_book(book1)
+    books = repo.get_book_by_id(2)
+
+    assert books != book1
+
+def test_repository_returns_null_for_non_existent_book_by_id(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+    book1 = Book(1, "Inkheart")
+    repo.add_book(book1)
+    books = repo.get_book_by_id(2)
+
+    assert books is None
 #
 #
 # def test_repository_returns_date_of_previous_book(session_factory):
@@ -208,8 +217,10 @@ def test_repository_can_retrieve_books_by_date(session_factory):
 #
 #     user = repo.get_user('thorke')
 #     book = repo.get_book(2)
-#     review = make_review("Trump's onto it!", user, book)
-#
+#     review_text = "Some review text."
+#     review = Review(book.title, review_text, 5, user, 7)
+#     repo.add_book(book)
+#     book.reviews.append(review)
 #     repo.add_review(review)
 #
 #     assert review in repo.get_reviews()
@@ -232,14 +243,8 @@ def test_repository_can_retrieve_books_by_date(session_factory):
 #
 #
 # def make_book(new_book_date):
-#     book = Book(
-#         new_book_date,
-#         'Coronavirus travel restrictions: Self-isolation deadline pushed back to give airlines breathing room',
-#         'The self-isolation deadline has been pushed back',
-#         'https://www.nzherald.co.nz/business/news/book.cfm?c_id=3&objectid=12316800',
-#         'https://th.bing.com/th/id/OIP.0lCxLKfDnOyswQCF9rcv7AHaCz?w=344&h=132&c=7&o=5&pid=1.7'
-#     )
-#     return book
+#     book1 = Book(1, "Inkheart")
+#     return book1
 #
 # def test_can_retrieve_an_book_and_add_a_review_to_it(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
