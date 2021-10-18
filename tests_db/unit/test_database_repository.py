@@ -1,3 +1,4 @@
+import math
 from datetime import date, datetime
 
 import pytest
@@ -174,6 +175,13 @@ def test_repository_returns_null_for_non_existent_book_by_id(session_factory):
     books = repo.get_book_by_id(2)
 
     assert books is None
+
+def test_invalid_date_returns_inf(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+    book1 = Book(1, "Inkheart")
+    repo.add_book(book1)
+    assert repo.get_date(book1) == math.inf
+
 #
 #
 # def test_repository_returns_date_of_previous_book(session_factory):
