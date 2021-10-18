@@ -45,6 +45,7 @@ def load_users(repo, data_path: Path, filename: str):
 
 def load_reviews(repo, data_path: Path, filename: str):
     for data_row in read_csv_file(data_path / filename):
+        print(data_row)
         id: int = int(data_row[0])
         user_name: str = data_row[1]
         book_id: int = int(data_row[2])
@@ -55,12 +56,7 @@ def load_reviews(repo, data_path: Path, filename: str):
         book: Book = repo.get_book_by_id(book_id)
 
         review: Review = Review(book.title, review_text, rating, user_name, review_id=id, timestamp=timestamp)
-
-        book.add_review(review)
-
-        user: User = repo.get_user(user_name)
-        if isinstance(user, User):
-            user.add_review(review)
+        repo.add_review(user_name, book, review)
 
 
 def load_authors_and_books(repo, data_path: Path, books_filename, authors_filename):
