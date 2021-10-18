@@ -105,6 +105,9 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_first_author(self, book: Book) -> str:
         return book.authors[0].full_name
 
+    def get_number_authors(self, book: Book) -> int:
+        return len(book.authors)
+
     def get_date(self, book: Book) -> int:
         if book.release_year == None:
             return math.inf
