@@ -52,23 +52,20 @@ def insert_reviewed_book(empty_session):
     timestamp_2 = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     empty_session.execute(
-        'INSERT INTO reviews (user_id, book_id, review, timestamp) VALUES '
+        'INSERT INTO reviews (user_id, book_id, review_text, timestamp) VALUES '
         '(:user_id, :book_id, "Review 1", :timestamp_1),'
         '(:user_id, :book_id, "Review 2", :timestamp_2)',
         {'user_id': user_key, 'book_id': book_key, 'timestamp_1': timestamp_1, 'timestamp_2': timestamp_2}
     )
 
-    row = empty_session.execute('SELECT id from books').fetchone()
+    row = empty_session.execute('SELECT book_id from books').fetchone()
     return row[0]
 
 
 def make_book():
     book = Book(
-        book_date,
-        "Coronavirus: First case of virus in New Zealand",
-        "The first case of coronavirus has been confirmed in New Zealand  and authorities are now scrambling to track down people who may have come into contact with the patient.",
-        "https://www.stuff.co.nz/national/health/119899280/ministry-of-health-gives-latest-update-on-novel-coronavirus",
-        "https://resources.stuff.co.nz/content/dam/images/1/z/e/3/w/n/image.related.StuffLandscapeSixteenByNine.1240x700.1zduvk.png/1583369866749.jpg"
+        1,
+        "Inkheart"
     )
     return book
 
@@ -115,55 +112,64 @@ def test_loading_of_book(empty_session):
     fetched_book = empty_session.query(Book).one()
 
     assert expected_book == fetched_book
-    assert book_key == fetched_book.id
+    assert book_key == fetched_book.book_id
 
 
-def test_loading_of_reviewed_book(empty_session):
+def test_loading_of_reviewed_book_rating(empty_session):
     insert_reviewed_book(empty_session)
 
     rows = empty_session.query(Book).all()
     book = rows[0]
 
     for review in book.reviews:
-        assert review.book is book
+        assert review.rating is book.ratings_count
 
-
-def test_saving_of_review(empty_session):
-    book_key = insert_book(empty_session)
-    user_key = insert_user(empty_session, ("Bob", "Password123"))
+def test_loading_of_reviewed_book_name(empty_session):
+    insert_reviewed_book(empty_session)
 
     rows = empty_session.query(Book).all()
     book = rows[0]
-    user = empty_session.query(User).filter(User._User__user_name == "Bob").one()
 
-    # Create a new Review that is bidirectionally linked with the User and Book.
-    review_text = "Some review text."
-    review = make_review(review_text, user, book)
-
-    # Note: if the bidirectional links between the new Review and the User and
-    # Book objects hadn't been established in memory, they would exist following
-    # committing the addition of the Review to the database.
-    empty_session.add(review)
-    empty_session.commit()
-
-    rows = list(empty_session.execute('SELECT user_id, book_id, review FROM reviews'))
-
-    assert rows == [(user_key, book_key, review_text)]
+    for review in book.reviews:
+        assert review.timestamp == book.reviews[0].timestamp
 
 
-# def test_saving_of_book(empty_session):
-#     book = make_book()
-#     empty_session.add(book)
+# def test_saving_of_review(empty_session):
+#     book_key = insert_book(empty_session)
+#     user_key = insert_user(empty_session, ("Bob", "Password123"))
+#
+#     rows = empty_session.query(Book).all()
+#     book = rows[0]
+#     user = empty_session.query(User).filter(User._User__user_name == "Bob").one()
+#
+#     # Create a new Review that is bidirectionally linked with the User and Book.
+#     review_text = "Some review text."
+#     review = Review(book.title, review_text, 5, user, 7)
+#
+#     # Note: if the bidirectional links between the new Review and the User and
+#     # Book objects hadn't been established in memory, they would exist following
+#     # committing the addition of the Review to the database.
+#     empty_session.add(review)
 #     empty_session.commit()
 #
-#     rows = list(empty_session.execute('SELECT date, title, first_paragraph, hyperlink, image_hyperlink FROM books'))
-#     date = book_date.isoformat()
-#     assert rows == [(date,
-#                      "Coronavirus: First case of virus in New Zealand",
-#                      "The first case of coronavirus has been confirmed in New Zealand  and authorities are now scrambling to track down people who may have come into contact with the patient.",
-#                      "https://www.stuff.co.nz/national/health/119899280/ministry-of-health-gives-latest-update-on-novel-coronavirus",
-#                      "https://resources.stuff.co.nz/content/dam/images/1/z/e/3/w/n/image.related.StuffLandscapeSixteenByNine.1240x700.1zduvk.png/1583369866749.jpg"
-#                      )]
+#     rows = list(empty_session.execute('SELECT user_id, book_id, review FROM reviews'))
+#
+#     assert rows == [(user_key, book_key, review_text)]
+
+
+def test_saving_of_book(empty_session):
+    book = make_book()
+    empty_session.add(book)
+    empty_session.commit()
+
+    rows = list(empty_session.execute('SELECT date, title, first_paragraph, hyperlink, image_hyperlink FROM books'))
+    date = book_date.isoformat()
+    assert rows == [(date,
+                     "Coronavirus: First case of virus in New Zealand",
+                     "The first case of coronavirus has been confirmed in New Zealand  and authorities are now scrambling to track down people who may have come into contact with the patient.",
+                     "https://www.stuff.co.nz/national/health/119899280/ministry-of-health-gives-latest-update-on-novel-coronavirus",
+                     "https://resources.stuff.co.nz/content/dam/images/1/z/e/3/w/n/image.related.StuffLandscapeSixteenByNine.1240x700.1zduvk.png/1583369866749.jpg"
+                     )]
 #
 #
 # def test_save_reviewed_book(empty_session):
