@@ -144,8 +144,7 @@ class Review:
         if not isinstance(other, self.__class__):
             return False
 
-        return other.book_title == self.book_title and other.review_text == self.review_text \
-               and other.rating == self.rating and other.timestamp == self.timestamp
+        return other.__review_text == self.__review_text and other.__timestamp == self.__timestamp
 
     def __repr__(self):
         return f'<Review by {self.__user_name}, rating = {self.__rating}, timestamp = {self.__timestamp}>'
