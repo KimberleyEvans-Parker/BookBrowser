@@ -101,19 +101,23 @@ def test_repository_does_not_retrieve_a_non_existent_book(session_factory):
     book = repo.get_book(201)
     assert book is None
 
-# def test_repository_can_retrieve_books_by_date(session_factory):
-#     repo = SqlAlchemyRepository(session_factory)
-#
-#     books = repo.get_date(date(2020, 3, 1))
-#
-#     # Check that the query returned 3 Books.
-#     assert len(books) == 3
-#
-#     # these books are no jokes...
-#     books = repo.get_date(date(2020, 4, 1))
-#
-#     # Check that the query returned 5 Books.
-#     assert len(books) == 5
+def test_repository_can_retrieve_books_by_date(session_factory):
+    repo = SqlAlchemyRepository(session_factory)
+    book = Book(
+        1,
+        "Inkheart"
+    )
+    book.release_year = 2020
+    books = repo.get_date(book)
+
+    # Check that the query returned 3 Books.
+    assert books == 2020
+
+    # # these books are no jokes...
+    # books = repo.get_date(date(2020, 4, 1))
+    #
+    # # Check that the query returned 5 Books.
+    # assert len(books) == 5
 #
 # def test_repository_does_not_retrieve_an_book_when_there_are_no_books_for_a_given_date(session_factory):
 #     repo = SqlAlchemyRepository(session_factory)
