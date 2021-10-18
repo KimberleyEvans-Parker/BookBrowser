@@ -14,8 +14,7 @@ users_table = Table(
     'users', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user_name', String(255), unique=True, nullable=False),
-    Column('password', String(255)),
-    Column('reading_list', String(255)), # TODO: Should this be multiple book objects? Yes I believe so.
+    Column('password', String(255))
 )
 
 # Books and authors have a one to many relationship.
