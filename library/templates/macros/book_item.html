@@ -1,5 +1,5 @@
 
-{% macro book_item(book, cost = -1, stock = -1) %}
+{% macro book_item(book, show_tags = false) %}
 
 <a href="{{ url_for('books_bp.book', id=book.book_id) }}">
 <div class="book-item">
@@ -41,10 +41,10 @@
         </div>
     </div>
 
-    {% if cost != -1 %}
+    {% if show_tags %}
         <div class="price-tag book-tag"><p>${{book.price}}</p></div>
     {% endif %}
-    {% if stock != -1 %}
+    {% if show_tags %}
         <div class="stock-tag book-tag">
             <p>{{book.stock}}</p>
             <p class="small">left</p>
