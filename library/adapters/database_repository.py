@@ -99,6 +99,9 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_publisher(self, book: Book) -> str:
         return book.publisher
 
+    def get_book(self, books_id) -> Book:
+        return self.get_book_by_id(books_id)
+
     def get_first_author(self, book: Book) -> str:
         return book.authors[0].full_name
 
