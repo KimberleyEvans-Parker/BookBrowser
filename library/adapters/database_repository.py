@@ -109,7 +109,7 @@ class SqlAlchemyRepository(AbstractRepository):
         return len(book.authors)
 
     def get_date(self, book: Book) -> int:
-        if book.release_year == None:
+        if book.release_year == None or book.release_year < 0:
             return math.inf
         return book.release_year
 
