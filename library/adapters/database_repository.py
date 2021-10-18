@@ -114,7 +114,7 @@ class SqlAlchemyRepository(AbstractRepository):
                 books = self._session_cm.session.query(Book).order_by(Book._Book__title).all()
             elif page == "publishers": 
                 # Query to get all books, sort by publisher
-                books = self._session_cm.session.query(Book).order_by(Book._Book__publisher).all()
+                books = self._session_cm.session.query(Book).join(Publisher).order_by(Publisher._Publisher__name).all()
             elif page == "authors": 
                 # Query to get all books, sort by first author
                 books = self._session_cm.session.query(Book).order_by(Book._Book__authors).all()
@@ -129,7 +129,7 @@ class SqlAlchemyRepository(AbstractRepository):
                 books = self._session_cm.session.query(Book).filter(Book._Book__title.contains(text)).order_by(Book._Book__title).all()
             elif page == "publishers":
                 # Query to get all books with text in publisher, sort by publisher.name.lower
-                books = self._session_cm.session.query(Book).filter(Book._Book__publisher.name.contains(text)).order_by(Book._Book__publisher.name).all()
+                books = self._session_cm.session.query(Book).join(Publisher).order_by(Publisher._Publisher__name).filter(Publisher._Publisher__name.contains(text)).all()
             elif page == "authors":
                 # Query to get all books with text in any author's name, sort by first author
                 books = self._session_cm.session.query(Book).filter(Book._Book__authors.contains(text)).order_by(Book._Book__authors).all()
