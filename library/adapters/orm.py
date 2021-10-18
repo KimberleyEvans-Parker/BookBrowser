@@ -44,12 +44,12 @@ publishers_table = Table(
 reviews_table = Table(
     'reviews', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('user_name', String(255), nullable=False),
+    Column('user_name', String(255)),
     Column('user_id', ForeignKey('users.id')),  # One review has only one user but one user can have N reviews.
     Column('book_id', ForeignKey('books.book_id')), # One review belongs to a single book, but one book can have N reviews.
-    Column('rating', Integer, nullable=False),
-    Column('review_text', String(1024), nullable=False),
-    Column('timestamp', DateTime, nullable=False)
+    Column('rating', Integer),
+    Column('review_text', String(1024)),
+    Column('timestamp', DateTime)
 )
 
 # One book can have multiple publishers, authors and reviews.
