@@ -114,10 +114,10 @@ class SqlAlchemyRepository(AbstractRepository):
                 books = self._session_cm.session.query(Book).order_by(Book._Book__title).all()
             elif page == "publishers": 
                 # Query to get all books, sort by publisher
-                books = self._session_cm.session.query(Book).order_by(Book._Book__publisher.name).all()
+                books = self._session_cm.session.query(Book).join(Publisher).order_by(Publisher._Publisher__name).all()
             elif page == "authors": 
                 # Query to get all books, sort by first author
-                books = self._session_cm.session.query(Book).order_by(Book._Book__authors[0]).all()
+                books = self._session_cm.session.query(Book).select_from(Author).order_by(Author._Author__full_name).all()
             else: 
                 # Query to get all books, sort by date
                 books = self._session_cm.session.query(Book).order_by(Book._Book__release_year).all()
@@ -126,16 +126,20 @@ class SqlAlchemyRepository(AbstractRepository):
             self.indexes[page] = 0
             if page == "home":
                 # Query to get all books with text in title, sort by title
-                books = self._session_cm.session.query(Book).filter(text in Book.title).order_by(Book._Book__title).all()
+                books = self._session_cm.session.query(Book).filter(Book._Book__title.contains(text)).order_by(Book._Book__title).all()
             elif page == "publishers":
                 # Query to get all books with text in publisher, sort by publisher.name.lower
-                books = self._session_cm.session.query(Book).filter(text in Book.publisher.name).order_by(Book._Book__publisher.name).all()
+                books = self._session_cm.session.query(Book).join(Publisher).order_by(Publisher._Publisher__name).filter(Publisher._Publisher__name.contains(text)).all()
             elif page == "authors":
                 # Query to get all books with text in any author's name, sort by first author
-                books = self._session_cm.session.query(Book).filter(text in "".join(Book.authors)).order_by(Book._Book__authors[0]).all()
+                books = self._session_cm.session.query(Book).select_from(Author).filter(Book._Book__authors.contains(text)).order_by(Author._Author__full_name).all()
             else:
+                try:
+                    text = int(text)
+                except:
+                    return []
                 # Query to get all books with text in date, sort by first date
-                books = self._session_cm.session.query(Book).filter(text in Book.release_year).order_by(Book._Book__release_year).all()
+                books = self._session_cm.session.query(Book).filter(text == Book._Book__release_year).order_by(Book._Book__release_year).all()
 
         return books[self.__indexes[page]: self.__indexes[page] + BOOKS_PER_PAGE]
 
@@ -164,13 +168,27 @@ class SqlAlchemyRepository(AbstractRepository):
         return number_of_books
 
     def add_review(self, user_name: str, book: Book, review: Review):
-        # user: User = self.get_user(user_name)
+        print("adding a review")
+        user: User = self.get_user(user_name)
+        print(user)
+        if isinstance(user, User):
+            user.add_review(review)
+        book.add_review(review)
+
+        print(book.reviews)
+        print(user.reviews)
+
+        # book.add_review(review)
+        # user: User = repo.get_user(user_name)
         # if isinstance(user, User):
         #     user.add_review(review)
-        # book.add_review(review)
 
-        super().add_review(review)
+        # super().add_review(review)
         with self._session_cm as scm:
             scm.session.add(review)
             scm.commit()
         
+        print()
+        print(user.reviews)
+        print("Added review")
+        print()

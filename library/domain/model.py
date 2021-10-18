@@ -148,7 +148,7 @@ class Review:
                and other.rating == self.rating and other.timestamp == self.timestamp
 
     def __repr__(self):
-        return f'<Review by {self.user}, rating = {self.rating}, timestamp = {self.timestamp}>'
+        return f'<Review by {self.__user_name}, rating = {self.__rating}, timestamp = {self.__timestamp}>'
 
 
 class Book:

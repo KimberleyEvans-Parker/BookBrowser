@@ -14,8 +14,7 @@ users_table = Table(
     'users', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user_name', String(255), unique=True, nullable=False),
-    Column('password', String(255)),
-    Column('reading_list', String(255)), # TODO: Should this be multiple book objects? Yes I believe so.
+    Column('password', String(255))
 )
 
 # Books and authors have a one to many relationship.
@@ -108,7 +107,8 @@ def map_model_to_tables():
         '_Book__book_id': books_table.c.book_id,
         '_Book__title': books_table.c.title,
         '_Book__description': books_table.c.description,
-        '_Book__publisher': relationship(model.Publisher, backref='_Publisher_name'),
+        # '_Book__publisher': relationship(model.Publisher, backref='books', foreign_keys=books_table.c.book_id),
+        '_Book__publisher': relationship(model.Publisher, uselist=False),
         '_Book__authors': relationship(model.Author, secondary=authors_books_table),
         '_Book__release_year': books_table.c.release_year,
         '_Book__ebook': books_table.c.ebook,
