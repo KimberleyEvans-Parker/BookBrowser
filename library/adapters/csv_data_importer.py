@@ -103,3 +103,5 @@ def load_inventory(repo, data_path: Path, filename):
         if book is not None:
             book_inventory: BooksInventory = repo.books_inventory
             book_inventory.add_book(book, inventory_item_json["price"], inventory_item_json["stock"])
+            book.price = inventory_item_json["price"]
+            book.stock = inventory_item_json["stock"]

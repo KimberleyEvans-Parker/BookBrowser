@@ -13,7 +13,7 @@
             </header>
 
             <div class="book-item flex-item-left">
-                {{ book_macro.book_item(book, price, stock) }}
+                {{ book_macro.book_item(book, true) }}
             </div>
             
             <div class="single-book flex-item-right">
@@ -84,8 +84,8 @@
                 <li class="book-info-list">{% if book.ebook %}<strong>Format:</strong> Hardback and Ebook
                     {%else%}<strong>Format:</strong> Hardback only{%endif%}
                 </li>
-                <li class="book-info-list"><strong>Price:</strong> ${{price}}</li>
-                <li class="book-info-list"><strong>Stock:</strong> {{stock}}</li>
+                <li class="book-info-list"><strong>Price:</strong> ${{book.price}}</li>
+                <li class="book-info-list"><strong>Stock:</strong> {{book.stock}}</li>
                 <li class="book-info-list"><strong>ISBN:</strong> {{book.book_id}}</li>
                 <li class="book-info-list"><strong>Stars:</strong> {{book.average_rating}}</li>
                 <li class="book-info-list"><strong>Number of Ratings:</strong> {{ book.ratings_count }}</li>

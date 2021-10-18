@@ -67,6 +67,8 @@ books_table = Table(
     Column('num_pages', String(63)),
     Column('average_rating', Float),
     Column('ratings_count', Integer),
+    Column('price', Integer),
+    Column('stock', Integer),
     Column('url', String(255)),
 )
 
@@ -116,6 +118,8 @@ def map_model_to_tables():
         '_Book__average_rating': books_table.c.average_rating,
         '_Book__ratings_count': books_table.c.ratings_count,
         '_Book__url': books_table.c.url,
+        '_Book__price': books_table.c.price,
+        '_Book__stock': books_table.c.stock,
         # '_Book__reviews': relationship(model.Review, backref='_Review_book'),    # There was no _Review__book instance variable in books so I made it _Review__book_title. Perhaps this will work.
         '_Book__reviews': relationship(model.Review, backref='_Review__book'),
     })

@@ -174,6 +174,8 @@ class Book:
         self.__ratings_count = None
         self.__url = None
         self.__reviews = []
+        self.__stock = 0
+        self.__price = 5
 
     @property
     def book_id(self) -> int:
@@ -195,11 +197,27 @@ class Book:
             raise ValueError
 
     @property
-    def url(self) -> float:
+    def stock(self) -> int:
+        return self.__stock
+
+    @stock.setter
+    def stock(self, stock: int):
+        self.__stock = stock
+
+    @property
+    def price(self) -> int:
+        return self.__price
+
+    @price.setter
+    def price(self, price: int):
+        self.__price = price
+
+    @property
+    def url(self) -> str:
         return self.__url
 
     @url.setter
-    def url(self, url: float):
+    def url(self, url: str):
         self.__url = url
 
     @property
