@@ -52,13 +52,15 @@ def create_app(test_config=None):
         # Create the SQLAlchemy DatabaseRepository instance for an sqlite3-based repository.
         repo.book_dataset = database_repository.SqlAlchemyRepository(session_factory)
 
-        if app.config['TESTING'] == 'True' or len(database_engine.table_names()) == 0:
+        if app.config['TESTING'] == True or len(database_engine.table_names()) == 0:
             print("REPOPULATING DATABASE...")
             # For testing, or first-time use of the web application, reinitialise the database.
             clear_mappers()
             metadata.create_all(database_engine)  # Conditionally create database tables.
             for table in reversed(metadata.sorted_tables):  # Remove any data from the tables.
                 database_engine.execute(table.delete())
+
+            print("CLEARED DATABASE")
 
             # Generate mappings that map domain model classes to the database tables.
             map_model_to_tables()
