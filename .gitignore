@@ -130,3 +130,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .vscode/settings.json
+
+# databases are made on the go
+.db
