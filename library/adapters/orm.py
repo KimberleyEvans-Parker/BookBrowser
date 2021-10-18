@@ -44,6 +44,7 @@ publishers_table = Table(
 reviews_table = Table(
     'reviews', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('book_title', String(255)),
     Column('user_name', String(255)),
     Column('user_id', ForeignKey('users.id')),  # One review has only one user but one user can have N reviews.
     Column('book_id', ForeignKey('books.book_id')), # One review belongs to a single book, but one book can have N reviews.
@@ -101,7 +102,8 @@ def map_model_to_tables():
         '_Review__review_text': reviews_table.c.review_text,
         '_Review__rating': reviews_table.c.rating,
         '_Review__timestamp': reviews_table.c.timestamp,
-        '_Review__user_name': reviews_table.c.user_name
+        '_Review__user_name': reviews_table.c.user_name,
+        '_Review__book_title': reviews_table.c.book_title,
     })
     mapper(model.Book, books_table, properties={
         '_Book__book_id': books_table.c.book_id,
