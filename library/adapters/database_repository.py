@@ -117,7 +117,7 @@ class SqlAlchemyRepository(AbstractRepository):
                 books = self._session_cm.session.query(Book).join(Publisher).order_by(Publisher._Publisher__name).all()
             elif page == "authors": 
                 # Query to get all books, sort by first author
-                books = self._session_cm.session.query(Book).order_by(Book._Book__authors).all()
+                books = self._session_cm.session.query(Book).select_from(Author).order_by(Author._Author__full_name).all()
             else: 
                 # Query to get all books, sort by date
                 books = self._session_cm.session.query(Book).order_by(Book._Book__release_year).all()
@@ -132,7 +132,7 @@ class SqlAlchemyRepository(AbstractRepository):
                 books = self._session_cm.session.query(Book).join(Publisher).order_by(Publisher._Publisher__name).filter(Publisher._Publisher__name.contains(text)).all()
             elif page == "authors":
                 # Query to get all books with text in any author's name, sort by first author
-                books = self._session_cm.session.query(Book).filter(Book._Book__authors.contains(text)).order_by(Book._Book__authors).all()
+                books = self._session_cm.session.query(Book).select_from(Author).filter(Book._Book__authors.contains(text)).order_by(Author._Author__full_name).all()
             else:
                 try:
                     text = int(text)
