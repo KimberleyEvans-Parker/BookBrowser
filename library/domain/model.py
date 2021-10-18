@@ -121,7 +121,7 @@ class Review:
         self.__id = review_id
 
     @property
-    def book_title(self) -> int:
+    def book_title(self) -> str:
         return self.__book_title
 
     @property
